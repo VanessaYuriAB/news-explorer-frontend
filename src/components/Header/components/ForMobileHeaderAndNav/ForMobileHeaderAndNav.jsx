@@ -2,17 +2,25 @@ import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import AuthContext from '../../../../contexts/AuthContext';
 import CurrentUserContext from '../../../../contexts/CurrentUserContext';
+import PopupsContext from '../../../../contexts/PopupsContext';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import newsExplorer from '../../../../assets/news-explorer-logo.svg';
 import lineHeader from '../../../../assets/line-header.svg';
 import btnOut from '../../../../assets/btn-out.svg';
 import './ForMobileHeaderAndNav.css';
 
-function ForMobileHeaderAndNav({ setMobile, handleOpenPopup, signinPopup }) {
+function ForMobileHeaderAndNav({ setMobile }) {
   // Contexto de autenticação, extraindo estado de login e handle para logout
   const { loggedIn, handleLogout } = useContext(AuthContext);
 
   // Contexto do usuário atual: assina o contexto CurrentUserContext
   const { currentUser } = useContext(CurrentUserContext);
+
+  // Contexto de popups, extaindo handler
+  const { handleOpenPopup } = useContext(PopupsContext);
+
+  // Hook de abertura de popups, extraindo openSignin
+  const { openSignin } = useOpenedPopups({ handleOpenPopup });
 
   // As funções getNavLinkClass e getNavLinkClassOut são nativas do componente <NavLink>
   // Aceitam um objeto como parâmetro, que possui uma propriedade, isActive, que é
@@ -100,7 +108,7 @@ function ForMobileHeaderAndNav({ setMobile, handleOpenPopup, signinPopup }) {
               <button
                 className="header-mobile__btn header-mobile__btn_out"
                 type="button"
-                onClick={() => handleOpenPopup(signinPopup)}
+                onClick={() => openSignin()}
                 aria-label="Logar usuário"
               >
                 <p className="header-mobile__btn-text header-mobile__btn-text_out">

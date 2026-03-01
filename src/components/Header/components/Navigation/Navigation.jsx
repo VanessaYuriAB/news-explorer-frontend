@@ -2,15 +2,23 @@ import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../../../../contexts/AuthContext';
 import CurrentUserContext from '../../../../contexts/CurrentUserContext';
+import PopupsContext from '../../../../contexts/PopupsContext';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import btnOut from '../../../../assets/btn-out.svg';
 import './Navigation.css';
 
-function Navigation({ handleOpenPopup, signinPopup }) {
+function Navigation() {
   // Contexto de autenticação, extraindo estado de login e handle para logout
   const { loggedIn, handleLogout } = useContext(AuthContext);
 
   // Contexto do usuário atual: assina o contexto CurrentUserContext
   const { currentUser } = useContext(CurrentUserContext);
+
+  // Contexto de popups, extaindo handler
+  const { handleOpenPopup } = useContext(PopupsContext);
+
+  // Hook de abertura de popups, extraindo openSignin
+  const { openSignin } = useOpenedPopups({ handleOpenPopup });
 
   // As funções getNavLinkClass e getNavLinkClassOut são nativas do componente <NavLink>
   // Aceitam um objeto como parâmetro, que possui uma propriedade, isActive, que é
@@ -67,7 +75,7 @@ function Navigation({ handleOpenPopup, signinPopup }) {
           <button
             className="header__btn header__btn_out"
             type="button"
-            onClick={() => handleOpenPopup(signinPopup)}
+            onClick={() => openSignin()}
             aria-label="Logar usuário"
           >
             <p className="header__btn-text header__btn-text_out">Entrar</p>

@@ -1,24 +1,20 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import PopupsContext from '../../../../contexts/PopupsContext';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import useFormSubmit from '../../../../hooks/useFormSubmit';
-import SearchTooltip from '../../../Popups/components/SearchTooltip/SearchTooltip';
 import './SearchForm.css';
 
-function SearchForm({
-  handleOpenPopup,
-  setIsSearchLoading,
-  handleGetNews,
-  setSearchedNews,
-}) {
+function SearchForm({ setIsSearchLoading, handleGetNews, setSearchedNews }) {
   // Variável de estado: controle do input do formulário
   const [queryString, setQueryString] = useState('');
 
-  // Objeto para configurar children de Popups: abertura do search tooltip (SearchTooltip)
-  // tooltipType para verificação no handleOpenPopup
-  const searchTooltip = {
-    children: <SearchTooltip />,
-    type: 'tooltip',
-    tooltipType: 'search',
-  };
+  // Contexto de popups, extraindo handler
+  const { handleOpenPopup } = useContext(PopupsContext);
+
+  // Hook de abertura de popups, extraindo openSearchTooltip
+  const { openSearchTooltip } = useOpenedPopups({
+    handleOpenPopup,
+  });
 
   // Envio do formulário com hook personalizado (inclui preventDefault,
   // onSubmit, onSuccess e onError)
@@ -31,7 +27,7 @@ function SearchForm({
       // Valida formulário antes de enviar a requisição HTTP à API
       if (queryString.length === 0) {
         // Se não houver palavra-chave, abre modal de informativo ao usuário
-        handleOpenPopup(searchTooltip);
+        openSearchTooltip();
       } else {
         // Se houver, define o início do estado de carregamento da pesquisa
         setIsSearchLoading(true);

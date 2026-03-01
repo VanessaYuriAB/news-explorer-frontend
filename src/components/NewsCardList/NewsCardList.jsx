@@ -8,8 +8,6 @@ function NewsCardList({
   handleSaveCard,
   memoizedHandleUnsave,
   savedUserNews,
-  handleOpenPopup,
-  signupPopup,
 }) {
   // Contexto de autenticação, extraindo estado de login
   const { loggedIn } = useContext(AuthContext);
@@ -73,8 +71,6 @@ function NewsCardList({
                   handleSaveCard={memoizedHandleSave} // valor memorizado
                   memoizedHandleUnsave={memoizedHandleUnsave}
                   savedUserNews={savedUserNews}
-                  handleOpenPopup={handleOpenPopup}
-                  signupPopup={signupPopup}
                 />
               ))}
           </ul>

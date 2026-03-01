@@ -1,12 +1,12 @@
 import { useContext, useState, useEffect } from 'react';
 import { useFormAndValidationWithReset } from '../../../../hooks/useFormAndValidationWithReset';
 import AuthContext from '../../../../contexts/AuthContext';
+import PopupsContext from '../../../../contexts/PopupsContext';
 import useFormSubmit from '../../../../hooks/useFormSubmit';
-import Signin from '../Signin/Signin';
-import SignupTooltip from '../SignupTooltip/SignupTooltip';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import './Signup.css';
 
-function Signup({ popup, handleOpenPopup, handleClosePopup }) {
+function Signup() {
   // Desestruturação para extração do retorno do hook para controle do formulário com
   // validação e reset da validação
   const { values, handleChange, errors, isFormValid, resetForm } =
@@ -28,34 +28,16 @@ function Signup({ popup, handleOpenPopup, handleClosePopup }) {
     };
   }, []);
 
+  // Contexto de popups, extraindo handler
+  const { handleOpenPopup } = useContext(PopupsContext);
+
+  // Hook de abertura de popups: extração de openSignin e openSignupTooltip
+  const { openSignin, openSignupTooltip } = useOpenedPopups({
+    handleOpenPopup,
+  });
+
   // Contexto de autenticação, extraindo set do estado de login
   const { handleRegistration } = useContext(AuthContext);
-
-  // Objeto para configurar children de Popups para abertura do popup de login (Signin)
-  // Obj duplicado, este usado aqui e em SignupTooltip
-  const signinPopup = {
-    children: (
-      <Signin
-        popup={popup}
-        handleOpenPopup={handleOpenPopup}
-        handleClosePopup={handleClosePopup}
-      />
-    ),
-    type: 'signin',
-  };
-
-  // Objeto para configurar children de Popups: abertura do popup tooltip (SignupTooltip)
-  // tooltipType para verificação no handleOpenPopup
-  const signupTooltip = {
-    children: (
-      <SignupTooltip
-        handleOpenPopup={handleOpenPopup}
-        signinPopup={signinPopup}
-      />
-    ),
-    type: 'tooltip',
-    tooltipType: 'signupSuccess',
-  };
 
   // Envio do formulário com hook personalizado (inclui preventDefault,
   // loading, onSubmit, onSuccess e onError)
@@ -74,7 +56,7 @@ function Signup({ popup, handleOpenPopup, handleClosePopup }) {
       // Limpa inputs (campos), erros e status da validação
       resetForm();
       // Abre o tooltip para msg de sucesso, que tbm é renderizado por Popup
-      handleOpenPopup(signupTooltip);
+      openSignupTooltip();
     },
     // onError
     (error) => {
@@ -173,7 +155,7 @@ function Signup({ popup, handleOpenPopup, handleClosePopup }) {
         <button
           className="popup__signup-link"
           type="button"
-          onClick={() => handleOpenPopup(signinPopup)}
+          onClick={() => openSignin()}
         >
           Entre
         </button>

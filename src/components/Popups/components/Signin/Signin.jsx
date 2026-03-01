@@ -1,11 +1,12 @@
 import { useContext, useState, useEffect } from 'react';
 import { useFormAndValidationWithReset } from '../../../../hooks/useFormAndValidationWithReset';
 import AuthContext from '../../../../contexts/AuthContext';
+import PopupsContext from '../../../../contexts/PopupsContext';
 import useFormSubmit from '../../../../hooks/useFormSubmit';
-import Signup from '../Signup/Signup';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import './Signin.css';
 
-function Signin({ popup, handleOpenPopup, handleClosePopup }) {
+function Signin() {
   // Desestruturação para extração do retorno do hook para controle do formulário com
   // validação e reset da validação
   const { values, handleChange, errors, isFormValid, resetForm } =
@@ -27,21 +28,16 @@ function Signin({ popup, handleOpenPopup, handleClosePopup }) {
     };
   }, []);
 
+  // Contexto de popups, extraindo handlers
+  const { handleOpenPopup, handleClosePopup } = useContext(PopupsContext);
+
+  // Extração de openSignin e openSignupTooltip
+  const { openSignup } = useOpenedPopups({
+    handleOpenPopup,
+  });
+
   // Contexto de autenticação, extraindo set do estado de login
   const { handleLogin } = useContext(AuthContext);
-
-  // Objeto para configurar children de Popups: abertura do popup de inscrição (Signup)
-  // Obj duplicado, outro declarado em App para NewsCard
-  const signupPopup = {
-    children: (
-      <Signup
-        popup={popup}
-        handleOpenPopup={handleOpenPopup}
-        handleClosePopup={handleClosePopup}
-      />
-    ),
-    type: 'signup',
-  };
 
   // Envio do formulário com hook personalizado (inclui preventDefault,
   // loading, onSubmit, onSuccess e onError)
@@ -136,7 +132,7 @@ function Signin({ popup, handleOpenPopup, handleClosePopup }) {
         <button
           className="popup__signin-link"
           type="button"
-          onClick={() => handleOpenPopup(signupPopup)}
+          onClick={() => openSignup()}
         >
           Inscreva-se
         </button>

@@ -13,6 +13,7 @@ import Signup from '../Popups/components/Signup/Signup';
 import Popups from '../Popups/Popups';
 import AuthContext from '../../contexts/AuthContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
+import PopupsContext from '../../contexts/PopupsContext';
 import getNews from '../../utils/NewsApi';
 import { register, login } from '../../utils/authApi';
 import { setAndStorageToken, getToken, removeToken } from '../../utils/token';
@@ -487,40 +488,6 @@ function App() {
   );
 
   /* ------------------------------
-          OBJ SIGNIN POPUP
-  ------------------------------- */
-
-  // Objeto para configurar children de Popups para abertura do popup de login (Signin)
-  // Obj duplicado, este usado em Navigation e em ForMobileHeaderAndNav
-  const signinPopup = {
-    children: (
-      <Signin
-        popup={popup}
-        handleOpenPopup={handleOpenPopup}
-        handleClosePopup={handleClosePopup}
-      />
-    ),
-    type: 'signin',
-  };
-
-  /* ------------------------------
-          OBJ SIGNUP POPUP
-  ------------------------------- */
-
-  // Objeto para configurar children de Popups: abertura do popup de inscrição (Signup)
-  // Obj duplicado, este usado em NewsCard
-  const signupPopup = {
-    children: (
-      <Signup
-        popup={popup}
-        handleOpenPopup={handleOpenPopup}
-        handleClosePopup={handleClosePopup}
-      />
-    ),
-    type: 'signup',
-  };
-
-  /* ------------------------------
                 JSX
   ------------------------------- */
 
@@ -536,7 +503,8 @@ function App() {
 
   // Depois que verificar, renderiza o app normalmente
   return (
-    // Provedores de contexto: compartilha dados de login e do usuário atual
+    // Provedores de contexto: compartilham infos de login, infos do usuário atual e
+    // infos de popups
     <AuthContext.Provider
       value={{
         loggedIn, // booleano de estado: status de login
@@ -548,106 +516,95 @@ function App() {
       <CurrentUserContext.Provider
         value={{ currentUser }} // obj de estado: dados do usuário atual
       >
-        <div className="page">
-          {/* O Header é renderizado estando deslogado ou logado, em '/' */}
+        <PopupsContext.Provider
+          value={{ handleOpenPopup, handleClosePopup }} // handlers de abertura e fechamento
+        >
+          <div className="page">
+            {/* O Header é renderizado estando deslogado ou logado, em '/' */}
 
-          {/* O SavedNewsHeader precisa ser renderizado caso o usuário esteja logado e
+            {/* O SavedNewsHeader precisa ser renderizado caso o usuário esteja logado e
           acesse '/saved-news' */}
 
-          {loggedIn && location.pathname === '/saved-news' ? (
-            <SavedNewsHeader mobile={mobile} setMobile={setMobile} />
-          ) : (
-            <Header
-              handleOpenPopup={handleOpenPopup}
-              mobile={mobile}
-              setMobile={setMobile}
-              signinPopup={signinPopup}
-            />
-          )}
+            {loggedIn && location.pathname === '/saved-news' ? (
+              <SavedNewsHeader mobile={mobile} setMobile={setMobile} />
+            ) : (
+              <Header mobile={mobile} setMobile={setMobile} />
+            )}
 
-          <main className="main page__main">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <SearchMain
-                      handleOpenPopup={handleOpenPopup}
-                      setIsSearchLoading={setIsSearchLoading}
-                      handleGetNews={handleGetNews}
-                      setSearchedNews={setSearchedNews}
-                    />
+            <main className="main page__main">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <SearchMain
+                        setIsSearchLoading={setIsSearchLoading}
+                        handleGetNews={handleGetNews}
+                        setSearchedNews={setSearchedNews}
+                      />
 
-                    {/* Enquanto a solicitação de pesquisa estiver em loading, renderiza
+                      {/* Enquanto a solicitação de pesquisa estiver em loading, renderiza
                     o Preloader */}
 
-                    {isSearchLoading && <Preloader />}
+                      {isSearchLoading && <Preloader />}
 
-                    {/* Se não estiver em loading e não houver resultados para a pesquisa
+                      {/* Se não estiver em loading e não houver resultados para a pesquisa
                     realizada, renderiza o NothingFound */}
 
-                    {!isSearchLoading &&
-                      searchedNews.status === 'ok' &&
-                      searchedNews.articles.length === 0 && <NothingFound />}
+                      {!isSearchLoading &&
+                        searchedNews.status === 'ok' &&
+                        searchedNews.articles.length === 0 && <NothingFound />}
 
-                    {/* Se não estiver em loading e houver resultados ou se não estiver em
+                      {/* Se não estiver em loading e houver resultados ou se não estiver em
                     loading e o status for 'error', renderiza o NewsCardList com o devido
                     conteúdo */}
 
-                    {!isSearchLoading &&
-                      (searchedNews.articles.length > 0 ||
-                        searchedNews.status === 'error') && (
-                        <NewsCardList
-                          searchedNews={searchedNews}
-                          handleSaveCard={handleSaveCard}
-                          memoizedHandleUnsave={memoizedHandleUnsave}
-                          savedUserNews={savedUserNews}
-                          handleOpenPopup={handleOpenPopup}
-                          signupPopup={signupPopup}
-                        />
-                      )}
+                      {!isSearchLoading &&
+                        (searchedNews.articles.length > 0 ||
+                          searchedNews.status === 'error') && (
+                          <NewsCardList
+                            searchedNews={searchedNews}
+                            handleSaveCard={handleSaveCard}
+                            memoizedHandleUnsave={memoizedHandleUnsave}
+                            savedUserNews={savedUserNews}
+                          />
+                        )}
 
-                    <About />
-                  </>
-                }
-              />
+                      <About />
+                    </>
+                  }
+                />
 
-              <Route
-                path="/saved-news"
-                element={
-                  <ProtectedRoute
-                    handleOpenPopup={handleOpenPopup}
-                    signinPopup={signinPopup}
-                  >
-                    <SavedNewsCardList
-                      savedUserNews={savedUserNews}
-                      memoizedHandleUnsave={memoizedHandleUnsave}
-                    />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/saved-news"
+                  element={
+                    <ProtectedRoute>
+                      <SavedNewsCardList
+                        savedUserNews={savedUserNews}
+                        memoizedHandleUnsave={memoizedHandleUnsave}
+                      />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Para qlqr outra rota que não exista no app, redireciona para página principal */}
+                {/* Para qlqr outra rota que não exista no app, redireciona para página principal */}
 
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </main>
 
-          <Footer />
+            <Footer />
 
-          {/* Se o popup não for nulo, algum dos componentes será renderizado na tela:
+            {/* Se o popup não for nulo, algum dos componentes será renderizado na tela:
           Signup, Signin, SignupTooltip, SearchTooltip ou ApiErrorTooltip */}
 
-          {popup && (
-            <Popups
-              popup={popup}
-              handleClosePopup={handleClosePopup}
-              type={popup.type}
-            >
-              {popup.children}
-            </Popups>
-          )}
-        </div>
+            {popup && (
+              <Popups popup={popup} type={popup.type}>
+                {popup.children}
+              </Popups>
+            )}
+          </div>
+        </PopupsContext.Provider>
       </CurrentUserContext.Provider>
     </AuthContext.Provider>
   );

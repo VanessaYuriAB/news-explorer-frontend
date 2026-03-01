@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import AuthContext from '../../../../contexts/AuthContext';
+import PopupsContext from '../../../../contexts/PopupsContext';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import useFormattedDateBR from '../../../../hooks/useformattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
 import './NewsCard.css';
@@ -9,8 +11,6 @@ function NewsCard({
   handleSaveCard,
   memoizedHandleUnsave,
   savedUserNews,
-  handleOpenPopup,
-  signupPopup,
 }) {
   // Desestruturação de propriedades do obj para cada notícia, dentro do array de
   // artigos da resposta bem-sucedida da NewsApi
@@ -20,6 +20,14 @@ function NewsCard({
 
   // Contexto de autenticação, extraindo estado de login
   const { loggedIn } = useContext(AuthContext);
+
+  // Contexto de popups, extraindo handler
+  const { handleOpenPopup } = useContext(PopupsContext);
+
+  // Hook de abertura de popups: extração de openSignup
+  const { openSignup } = useOpenedPopups({
+    handleOpenPopup,
+  });
 
   // Verificação para classe do botão 'salvar': a classe 'new-card__btn_active'
   // será aplicada para mostrar que o botão está no status "salvo"
@@ -87,7 +95,7 @@ function NewsCard({
               type="button"
               aria-label="Logar para poder salvar"
               onClick={() => {
-                handleOpenPopup(signupPopup);
+                openSignup();
               }}
             ></button>
           </>

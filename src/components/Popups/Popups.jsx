@@ -1,10 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
+import PopupsContext from '../../contexts/PopupsContext';
 import './Popups.css';
 
 function Popups(props) {
   // Desestruturação do objeto passado como props, onde children é o conteúdo de popup
   // que pode ser Signin ou Signup, configurado no componente de abertura
-  const { popup, handleClosePopup, children, type } = props;
+  const { popup, children, type } = props;
+
+  // Contexto de popups, extraindo handler
+  const { handleClosePopup } = useContext(PopupsContext);
 
   // Ref para encapsulamento de children: para fechamento do popup por clique fora da
   // caixa
