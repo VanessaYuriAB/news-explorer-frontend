@@ -2,16 +2,18 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <!-- CSP usada apenas para desenvolvimento local
     <meta
       http-equiv="Content-Security-Policy"
       content="
         default-src 'self';
-        connect-src 'self' https://api.newsexplorer.sevencomets.com https://nomoreparties.co;
+        connect-src 'self' http://localhost:3001 https://newsapi.org https://api.newsexplorer.sevencomets.com https://nomoreparties.co ;
         img-src 'self' data: https:;
         script-src 'self';
         style-src 'self' 'unsafe-inline';
       "
     />
+    -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Vanessa Yuri A. Brito" />
