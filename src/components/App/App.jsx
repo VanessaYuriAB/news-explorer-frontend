@@ -14,7 +14,7 @@ import Popups from '../Popups/Popups';
 import AuthContext from '../../contexts/AuthContext';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import PopupsContext from '../../contexts/PopupsContext';
-import getNews from '../../utils/NewsApi';
+import getNews from '../../utils/newsApi';
 import { register, login } from '../../utils/authApi';
 import { setAndStorageToken, getToken, removeToken } from '../../utils/token';
 import {
