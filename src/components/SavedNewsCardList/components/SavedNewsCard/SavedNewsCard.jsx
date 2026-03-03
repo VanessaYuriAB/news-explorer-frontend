@@ -1,5 +1,5 @@
 import React from 'react';
-import useFormattedDateBR from '../../../../hooks/useformattedDateBR';
+import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
 import './SavedNewsCard.css';
 

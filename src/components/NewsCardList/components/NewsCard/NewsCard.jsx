@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AuthContext from '../../../../contexts/AuthContext';
 import PopupsContext from '../../../../contexts/PopupsContext';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
-import useFormattedDateBR from '../../../../hooks/useformattedDateBR';
+import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
 import './NewsCard.css';
 
