@@ -137,7 +137,7 @@ O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios té
 - Classificação de palavras pesquisadas em ordem descendente por popularidade
 - Cabeçalho com estados **autorizado / não autorizado**
 - Persistência de sessão após refresh
-- Redirecionamento automático para usuários não autorizados
+- Redirecionamento automático para usuários não autorizados e para rotas inexistentes
 - Validação instantânea de formulários
 - Tratamento de erros
 
