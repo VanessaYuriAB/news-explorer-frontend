@@ -60,7 +60,7 @@ Aplicação **full‑stack** para pesquisa e salvamento de notícias, com autent
 
 O **News Explorer** é uma aplicação web full‑stack que permite aos usuários:
 
-- Pesquisar notícias a partir de palavras‑chave (API de terceiros: [News API](https://newsapi.org/))
+- Pesquisar notícias a partir de palavras‑chave (API de terceiros: https://newsapi.org)
 - Criar conta e autenticar‑se
 - Salvar e remover artigos associados ao seu perfil
 - Acessar uma área protegida com artigos salvos
@@ -80,10 +80,10 @@ O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios té
 - **Autenticação**: JWT
 - **Comunicação**: API REST via fetch
 - **Deploy**:
-  - Frontend: Vercel
-  - Backend: servidor próprio em VM no Google Cloud (API acessível via domínio: [https://api.newsexplorer.sevencomets.com](https://api.newsexplorer.sevencomets.com))
+  - Frontend: Vercel (https://new-explorer-frontend-git-stage-51d26c-vanessayuriabs-projects.vercel.app)
+  - Backend: servidor próprio em VM no Google Cloud (API acessível via domínio: https://api.newsexplorer.sevencomets.com)
 
-📦 Repositório do backend: [https://github.com/VanessaYuriAB/new-explorer-backend](https://github.com/VanessaYuriAB/new-explorer-backend)
+📦 Repositório do backend: https://github.com/VanessaYuriAB/new-explorer-backend
 
 📌 Como frontend e backend estão em **origens diferentes**, a aplicação utiliza **CSP via meta tag** no frontend para permitir comunicação segura entre domínios, quando o deploy é separado.
 
@@ -392,7 +392,9 @@ npm run dev
 
 - Fase 3 — Em finalização / revisão
 
-Projeto pronto para **deploy full‑stack.**
+🔗 Aplicação **full‑stack** online (Preview Deployment – branch estágio-react-auth):
+
+https://new-explorer-frontend-git-stage-51d26c-vanessayuriabs-projects.vercel.app
 
 [Voltar ao topo 🔝](#top)
 
