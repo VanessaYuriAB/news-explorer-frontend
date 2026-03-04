@@ -502,7 +502,7 @@ _Hover com a mensagem “Remover dos salvos”._
 
 ## 🎥 14. Demonstração
 
-Vídeo demonstrativo no Loom: [clique aqui](https://www.loom.com/share/b7abb3ad2cc44866975bfcc2a84251f6)
+Vídeo demonstrativo no Loom: [clique aqui](https://www.loom.com/share/35eb573676a84098822b770295206871)
 
 [Voltar ao topo 🔝](#top)
 
