@@ -10,16 +10,12 @@ import btnOut from '../../../../assets/btn-out.svg';
 import './ForMobileHeaderAndNav.css';
 
 function ForMobileHeaderAndNav({ setMobile }) {
-  // Contexto de autenticação, extraindo estado de login e handle para logout
   const { loggedIn, handleLogout } = useContext(AuthContext);
 
-  // Contexto do usuário atual: assina o contexto CurrentUserContext
   const { currentUser } = useContext(CurrentUserContext);
 
-  // Contexto de popups, extaindo handler
   const { handleOpenPopup } = useContext(PopupsContext);
 
-  // Hook de abertura de popups, extraindo openSignin
   const { openSignin } = useOpenedPopups({ handleOpenPopup });
 
   // As funções getNavLinkClass e getNavLinkClassOut são nativas do componente <NavLink>

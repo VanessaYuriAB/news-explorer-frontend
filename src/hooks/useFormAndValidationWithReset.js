@@ -28,7 +28,7 @@ export function useFormAndValidationWithReset() {
   // O React e a Constraint Validation API usam name como: chave lógica do campo,
   // identificação de qual valor deve ser atualizado e identificação de qual erro
   // pertence ao campo - esse é o padrão de formulários HTML desde sempre
-  // (não usa-se id)
+  // (não usa id)
   const handleChange = (event) => {
     const target = event.target; // elemento atual
     const name = target.name; // 'name' do elemento (input)

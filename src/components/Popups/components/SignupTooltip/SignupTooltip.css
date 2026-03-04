@@ -56,7 +56,7 @@
   }
 
   .popup__tooltip-title {
-    width: 234px; /* 430/315 - 320/x > x=234,4186046511628  */
+    width: 234px; /* 430/315 - 320/x > x=234,42 */
     margin: 43px 0 0 36px;
   }
 }

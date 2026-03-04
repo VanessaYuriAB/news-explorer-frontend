@@ -6,10 +6,8 @@ import btnOutBlack from '../../../../assets/btn-out-black.svg';
 import './SavedNewsNavigation.css';
 
 function SavedNewsNavigation() {
-  // Contexto de autenticação, extraindo handle para logout
   const { handleLogout } = useContext(AuthContext);
 
-  // Contexto do usuário atual: assina o contexto CurrentUserContext
   const { currentUser } = useContext(CurrentUserContext);
 
   // A função getNavLinkClass é nativa do componente <NavLink>

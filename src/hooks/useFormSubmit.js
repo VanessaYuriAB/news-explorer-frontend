@@ -34,17 +34,14 @@ function useFormSubmit(onSubmit, onSuccess, onError) {
 
   // Função principal de envio do formulário
   const handleSubmit = async (event) => {
-    event.preventDefault(); // evita o recarregamento da página padrão do formulário
+    event.preventDefault();
     setIsLoading(true); // ativa o estado de carregamento
 
     try {
-      // Executa a função de envio
       await onSubmit();
 
-      // Se houver uma função de sucesso, executa-a
       if (onSuccess) onSuccess();
     } catch (error) {
-      // Se houver uma função de erro, executa-a passando o erro capturado
       if (onError) {
         onError(error);
       } else {

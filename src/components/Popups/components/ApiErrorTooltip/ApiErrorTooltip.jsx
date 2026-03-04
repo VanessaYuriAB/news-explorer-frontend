@@ -2,11 +2,11 @@ import { useContext } from 'react';
 import CurrentUserContext from '../../../../contexts/CurrentUserContext';
 import './ApiErrorTooltip.css';
 
-// Popup tooltip, para exibir erros ao salvar e des-salvar artigos
+// Componente para exibir erros ao salvar e des-salvar artigos, também para setar
+// infos do usuário no efeito de montagem e refresh
 // Registro e login são exibidos no próprio componente do form
 
 function ApiErrorTooltip({ message }) {
-  // Contexto extraindo currentUser para aplicação do nome do usuário logado
   const { currentUser } = useContext(CurrentUserContext);
 
   return (

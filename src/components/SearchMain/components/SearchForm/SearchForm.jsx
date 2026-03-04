@@ -8,16 +8,14 @@ function SearchForm({ setIsSearchLoading, handleGetNews, setSearchedNews }) {
   // Variável de estado: controle do input do formulário
   const [queryString, setQueryString] = useState('');
 
-  // Contexto de popups, extraindo handler
   const { handleOpenPopup } = useContext(PopupsContext);
 
-  // Hook de abertura de popups, extraindo openSearchTooltip
   const { openSearchTooltip } = useOpenedPopups({
     handleOpenPopup,
   });
 
-  // Envio do formulário com hook personalizado (inclui preventDefault,
-  // onSubmit, onSuccess e onError)
+  // Hooke de envio de formulário (inclui preventDefault, onSubmit, onSuccess e
+  // onError)
   // Configuração para o loading do hook não é utilizada, é configurado manualmente,
   // devido ordem das funcionalidades por causa da validação para envio da pesquisa
   // sem palavra-chave

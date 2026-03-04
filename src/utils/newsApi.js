@@ -5,10 +5,10 @@ import {
   dataFromSevenDays,
 } from './utilsApis';
 
-// Assinatura: fetch(url-to-requested-resource, options-object);
+// Assinatura: fetch(url-to-requested-resource, options-object)
 // É um método assíncrono, retorna uma promisse e method padrão: GET
 
-// GET - /everything > aplicado no botão do SearchForm
+// GET - /everything
 const getNews = async (queryString) => {
   const news = await makeApisRequest({
     endpoint: `${baseNewsApiUrl}/everything`,
@@ -28,8 +28,6 @@ const getNews = async (queryString) => {
     }, */
   });
 
-  // Se a solicitação for bem-sucedida, retorna os dados para serem aplicados
-  // no handleGetNews
   return news;
 
   // Try/catch desnecessário aqui tbm, se a solicitação não for bem-sucedida,

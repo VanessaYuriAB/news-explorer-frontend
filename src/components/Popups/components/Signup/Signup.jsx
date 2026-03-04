@@ -7,8 +7,7 @@ import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import './Signup.css';
 
 function Signup() {
-  // Desestruturação para extração do retorno do hook para controle do formulário com
-  // validação e reset da validação
+  // Hook para controle do formulário com validação e reset da validação
   const { values, handleChange, errors, isFormValid, resetForm } =
     useFormAndValidationWithReset();
 
@@ -28,23 +27,19 @@ function Signup() {
     };
   }, []);
 
-  // Contexto de popups, extraindo handler
   const { handleOpenPopup } = useContext(PopupsContext);
 
-  // Hook de abertura de popups: extração de openSignin e openSignupTooltip
   const { openSignin, openSignupTooltip } = useOpenedPopups({
     handleOpenPopup,
   });
 
-  // Contexto de autenticação, extraindo set do estado de login
   const { handleRegistration } = useContext(AuthContext);
 
-  // Envio do formulário com hook personalizado (inclui preventDefault,
-  // loading, onSubmit, onSuccess e onError)
+  // Hook de envio de formulário (inclui preventDefault,loading, onSubmit, onSuccess e
+  // onError)
   const { handleSubmit, isLoading } = useFormSubmit(
     // onSubmit
     () => {
-      // Envia dados de inscrição para a API do backend (servidor) e retorna a Promisse
       return handleRegistration({
         email: values.email,
         password: values.password,
@@ -55,7 +50,7 @@ function Signup() {
     () => {
       // Limpa inputs (campos), erros e status da validação
       resetForm();
-      // Abre o tooltip para msg de sucesso, que tbm é renderizado por Popup
+      // Abre o tooltip para msg de sucesso
       openSignupTooltip();
     },
     // onError

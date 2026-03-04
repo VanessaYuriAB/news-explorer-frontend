@@ -9,7 +9,6 @@ function NewsCardList({
   memoizedHandleUnsave,
   savedUserNews,
 }) {
-  // Contexto de autenticação, extraindo estado de login
   const { loggedIn } = useContext(AuthContext);
 
   // Variável de estado: controle da qtdd de cards renderizados, iniciando com apenas três

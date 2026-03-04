@@ -4,7 +4,6 @@ import SavedNewsCard from './components/SavedNewsCard/SavedNewsCard';
 import './SavedNewsCardList.css';
 
 function SavedNewsCardList({ savedUserNews, memoizedHandleUnsave }) {
-  // Contexto do usuário atual: assina o contexto CurrentUserContext
   const { currentUser } = useContext(CurrentUserContext);
 
   // Se o array do estado para os cards salvos do usuário estiver vazio, renderiza msg
@@ -182,8 +181,7 @@ function SavedNewsCardList({ savedUserNews, memoizedHandleUnsave }) {
           <ul className="saved-news__cards">
             {savedUserNews.userArticles.map((savedCard) => {
               // A lista de cards salvos possui a propriedade _id em cada elemento, pois
-              // é o servidor do banco de dados (Mongo DB) > mas, para simplificar
-              // renderização, com backend inativo, usar a url de cada notícia como 'key'
+              // é o servidor do banco de dados (Mongo DB)
               return (
                 <SavedNewsCard
                   key={savedCard._id}

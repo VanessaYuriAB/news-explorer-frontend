@@ -7,8 +7,7 @@ import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import './Signin.css';
 
 function Signin() {
-  // Desestruturação para extração do retorno do hook para controle do formulário com
-  // validação e reset da validação
+  // Hook para controle do formulário com validação e reset da validação
   const { values, handleChange, errors, isFormValid, resetForm } =
     useFormAndValidationWithReset();
 
@@ -28,23 +27,19 @@ function Signin() {
     };
   }, []);
 
-  // Contexto de popups, extraindo handlers
   const { handleOpenPopup, handleClosePopup } = useContext(PopupsContext);
 
-  // Extração de openSignin e openSignupTooltip
   const { openSignup } = useOpenedPopups({
     handleOpenPopup,
   });
 
-  // Contexto de autenticação, extraindo set do estado de login
   const { handleLogin } = useContext(AuthContext);
 
-  // Envio do formulário com hook personalizado (inclui preventDefault,
-  // loading, onSubmit, onSuccess e onError)
+  // Hook para envio de formulário (inclui preventDefault, loading, onSubmit, onSuccess e
+  // onError)
   const { handleSubmit, isLoading } = useFormSubmit(
     // onSubmit
     () => {
-      // Envia dados de login e retorna a Promisse
       return handleLogin({ email: values.email, password: values.password });
     },
     // onSuccess

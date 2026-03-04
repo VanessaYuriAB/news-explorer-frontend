@@ -40,8 +40,6 @@ function SavedNewsCard({ savedCard, memoizedHandleUnsave }) {
         ></button>
 
         <div className="saved-card__infos">
-          {/* Atualizar 'datetime' dinâmico */}
-
           <time className="saved-card__date" dateTime={date}>
             {`${formattedDateBR}`}
           </time>

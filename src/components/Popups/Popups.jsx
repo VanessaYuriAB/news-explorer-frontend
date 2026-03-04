@@ -3,11 +3,9 @@ import PopupsContext from '../../contexts/PopupsContext';
 import './Popups.css';
 
 function Popups(props) {
-  // Desestruturação do objeto passado como props, onde children é o conteúdo de popup
-  // que pode ser Signin ou Signup, configurado no componente de abertura
+  // 'children' é o conteúdo de popup
   const { popup, children, type } = props;
 
-  // Contexto de popups, extraindo handler
   const { handleClosePopup } = useContext(PopupsContext);
 
   // Ref para encapsulamento de children: para fechamento do popup por clique fora da
@@ -24,8 +22,7 @@ function Popups(props) {
       if (evt.code === 'Escape') handleClosePopup();
     };
 
-    document.addEventListener('keydown', handleEscClose); // adiciona o evento em document >
-    // escuta globalmente → essencial para capturar a tecla Esc mesmo sem foco
+    document.addEventListener('keydown', handleEscClose);
 
     // Wipe function: função de limpeza
     return () => {

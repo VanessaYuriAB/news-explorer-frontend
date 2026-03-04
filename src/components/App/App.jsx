@@ -39,27 +39,18 @@ function App() {
           HOOKS DE ROUTER
   ------------------------------- */
 
-  // Hook de localização para saber a rota atual
   const location = useLocation();
 
-  // Hook de navegação para redirecionamento de rota
   const navigate = useNavigate();
 
   /* ------------------------------
               ESTADOS
   ------------------------------- */
 
-  // Variável de estado: status de login
   const [loggedIn, setLoggedIn] = useState(false);
 
-  // Variável de estado: controle do Preloader
   const [isSearchLoading, setIsSearchLoading] = useState(false);
 
-  // Variável de estado: controle do resultado de notícias pesquisadas
-  // Inicia com os dados do localStorage, se houver
-  // Definição do obj para evitar verificações e erros, não podendo ser null, articles
-  // é um array e pode ser iterado sem erros
-  // Propriedades do obj de retorno de erro da Api inclusas no mesmo objeto definido
   const [searchedNews, setSearchedNews] = useState(() => {
     const searched = localStorage.getItem('searchedNewsData');
     return searched
@@ -73,31 +64,23 @@ function App() {
         };
   });
 
-  // Variável de estado: token JWT
   const [tokenJwt, setTokenJwt] = useState(() => {
     const jwt = getToken();
     return jwt ? jwt : '';
   });
 
-  // Variável de estado: dados do usuário atualmente logado
   const [currentUser, setCurrentUser] = useState({
     email: '',
     name: '',
   });
 
-  // Variável de estado: controle da lista de cartões salvos do usuário atual
-  // Definição de vetor vazio para evitar verificações e erros, não podendo ser null,
-  // savedUserNews.userArticles é um array de objs e pode ser iterado sem erros
   const [savedUserNews, setSavedUserNews] = useState({ userArticles: [] });
 
-  // Variável de estado: controle dos popups (Signin, Signup e Tooltip)
   const [popup, setPopup] = useState(null);
 
-  // Variável de estado: controle do header e nav para mobile
   const [mobile, setMobile] = useState(false);
 
-  // Variável de estado para verificar autenticação ao montar o app
-  // Está verificando ou não está verificando?
+  // Para verificar autenticação ao montar o app: está verificando?
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   /* ------------------------------
@@ -115,7 +98,6 @@ function App() {
   // Open e Close: genéricos
   // Para abrir Popups, que renderiza cinco children diferentes
 
-  // Handler: abre Popups
   // Memoizada para não gerar loop no efeito de montagem e efeito do ProtectedRoute
   // Com verificação de type, tbm para evitar loop, no efeito para proteção de rota
   // Se o tipo de popup for o mesmo do anteriormente aberto, não altera, não re-renderiza
@@ -135,7 +117,6 @@ function App() {
     });
   }, []);
 
-  // Handler: fecha Popups
   const handleClosePopup = () => {
     setPopup(null);
   };
@@ -158,18 +139,13 @@ function App() {
   // Manipulador para deslogar: configurado antes do efeito de montagem e memorizado em
   // useCallback para estabilizar e não causar re-render
   const handleLogout = useCallback(() => {
-    // Limpa estados: perfil + artigos
     setCurrentUser({ email: '', name: '' });
     setSavedUserNews({ userArticles: [] });
 
-    // Limpa infos do token com função utilitária (armazenamento local + variável de
-    // estado)
     removeToken(setTokenJwt);
 
-    // Desabilita o login
     setLoggedIn(false);
 
-    // Redireciona para página de início
     navigate('/', { replace: true });
   }, [navigate]);
 
@@ -201,7 +177,7 @@ function App() {
     // Verifica se há um JWT no armazenamento local, pela variável state
     // Se não houver, sai da função do efeito
     if (!tokenJwt) {
-      setCheckingAuth(false); // sem token, login falso
+      setCheckingAuth(false);
 
       // Cleanup
       return () => {
@@ -209,20 +185,17 @@ function App() {
       };
     }
 
-    // Fetch e set do dados + navegação
+    // Fetch e set dos dados + navegação
     // Define e executa função assíncrona
     (async () => {
       try {
-        // Busca infos de perfil do usuário atual
         const userInfos = await getCurrentUser(tokenJwt);
 
-        // Busca cards do usuário atual, na Api do banco de dados
         const userSavedCards = await getUserNews(tokenJwt);
 
         // Verifica se o componente ainda está montado
         if (!isMounted) return;
 
-        // Permite login para o usuário
         setLoggedIn(true);
 
         // Seta variável de estado com dados do backend (user)
@@ -271,11 +244,10 @@ function App() {
     };
   }, [tokenJwt, handleLogout, showApiError]);
 
-  // Efeito derivado, reagindo apenas aos estados relevantes: para sincronizar estados
-  // derivados (merge de searchedNews com savedUserNews) e adicionar a info 'isSaved' aos
-  // artigos (para o ícone do botão 'salvar', no NewsCard)
+  // Efeito derivado: para sincronizar estados derivados (merge de searchedNews com
+  // savedUserNews) e adicionar a info 'isSaved' aos artigos (para o ícone do botão
+  // 'salvar', no NewsCard)
   useEffect(() => {
-    // Se não estiver logado, não executa
     if (!loggedIn) return;
 
     // Verificação de segurança para erro de leitura de searchedNews.articles > null
@@ -284,9 +256,6 @@ function App() {
     if (!searchedNews || !Array.isArray(searchedNews.articles)) return;
 
     function mergeNewsLists() {
-      // Lista de notícias da pesquisa > searchedNews.articles
-      // Lista de notícias salvas do usuário atual > savedUserNews.userArticles
-
       try {
         // Dentro do array searchedNews.articles, existe algum elemento com a propriedade
         // url igual a algum elemento dentro do array savedUserNews.userArticles? Se sim,
@@ -398,7 +367,6 @@ function App() {
       });
       setSavedUserNews({ userArticles: [] });
 
-      // Seta token: variável de estado + armazenamento local
       setAndStorageToken(loggedUser.token, setTokenJwt);
     }
 
@@ -409,7 +377,6 @@ function App() {
   };
 
   // Salvar e des-salvar artigos: com o backend ativo, sem armazenamento local
-  // Os cards são salvos todos na Api, de onde vêm os dados para cada usuário
 
   // Handler: salvar cards
   const handleSaveCard = async (searchedNewsCard) => {
@@ -426,7 +393,6 @@ function App() {
         urlToImage: card.urlToImage,
       });
 
-      // POST para o banco de dados
       const savedCard = await saveNews(
         normalizeCard(searchedNewsCard),
         tokenJwt,
@@ -456,7 +422,6 @@ function App() {
   const memoizedHandleUnsave = useCallback(
     async (cardId) => {
       try {
-        // DELETE para o banco de dados
         // Passa o _id do card como parâmetro (_id gerado automaticamente pelo Mongo DB ao
         // salvar o artigo na coleção do banco de dados)
         await unsaveNews(cardId, tokenJwt);
@@ -507,18 +472,14 @@ function App() {
     // infos de popups
     <AuthContext.Provider
       value={{
-        loggedIn, // booleano de estado: status de login
+        loggedIn,
         handleRegistration,
         handleLogin,
         handleLogout,
       }}
     >
-      <CurrentUserContext.Provider
-        value={{ currentUser }} // obj de estado: dados do usuário atual
-      >
-        <PopupsContext.Provider
-          value={{ handleOpenPopup, handleClosePopup }} // handlers de abertura e fechamento
-        >
+      <CurrentUserContext.Provider value={{ currentUser }}>
+        <PopupsContext.Provider value={{ handleOpenPopup, handleClosePopup }}>
           <div className="page">
             {/* O Header é renderizado estando deslogado ou logado, em '/' */}
 

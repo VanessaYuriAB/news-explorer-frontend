@@ -4,10 +4,8 @@ import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import './SignupTooltip.css';
 
 function SignupTooltip() {
-  // Contexto de popups, extraindo handler
   const { handleOpenPopup } = useContext(PopupsContext);
 
-  // Extração de openSignin e openSignupTooltip
   const { openSignin } = useOpenedPopups({
     handleOpenPopup,
   });

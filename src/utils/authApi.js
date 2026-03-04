@@ -1,6 +1,6 @@
 import { baseMainApiUrl, makeApisRequest } from './utilsApis';
 
-// Assinatura: fetch(url-to-requested-resource, options-object);
+// Assinatura: fetch(url-to-requested-resource, options-object)
 // É um método assíncrono, retorna uma promisse e method padrão: GET
 
 // POST - /signup

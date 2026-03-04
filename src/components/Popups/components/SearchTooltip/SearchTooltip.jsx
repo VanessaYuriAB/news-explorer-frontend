@@ -4,12 +4,11 @@ import CurrentUserContext from '../../../../contexts/CurrentUserContext';
 import './SearchTooltip.css';
 
 function SearchTooltip() {
-  // Contextos extraindo infos necessárias ao componente
   const { loggedIn } = useContext(AuthContext);
   const { currentUser } = useContext(CurrentUserContext);
 
   // Em React, o padrão é retornar null (ou nem renderizar) > verificação com &&
-  // para renderizar apenas caso true
+  // para renderizar apenas caso true > e não com ?
 
   return (
     <div className="search__tooltip">

@@ -30,7 +30,9 @@
 .popup__position-btn {
   position: relative; /* permite o posicionamento do botão fechar em relação à caixa
   do popup */
-  height: fit-content; /* garante que a altura da <div> seja apenas o suficiente para conter o conteúdo da caixa do popup, evitando que ela cubra o restante da tela e interfira na função de fechar por clique (fora da caixa do popup */
+  height: fit-content; /* garante que a altura da <div> seja apenas o suficiente para conter
+  o conteúdo da caixa do popup, evitando que ela cubra o restante da tela e interfira na função
+  de fechar por clique (fora da caixa do popup) */
 }
 
 .popup__close-btn {

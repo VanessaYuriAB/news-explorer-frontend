@@ -137,7 +137,7 @@ deslogado */
 
 .new-card__title {
   margin: 0;
-  width: 88%; /* 400/100 - 352/x > 400x = 35200 > X = 88 */
+  width: 88%; /* 400/100 - 352/x > X = 88 */
   max-height: 90px;
   font-family: 'Roboto Slab', Arial, sans-serif;
   font-weight: 400;
@@ -165,7 +165,7 @@ deslogado */
 
 .new-card__text {
   margin: 0;
-  width: 88%; /* 400/100 - 352/x > 400x = 35200 > X = 88 */
+  width: 88%; /* 400/100 - 352/x > X = 88 */
   max-height: 88px;
   min-height: 66px;
   font-size: 16px;

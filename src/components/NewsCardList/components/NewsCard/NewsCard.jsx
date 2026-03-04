@@ -12,19 +12,14 @@ function NewsCard({
   memoizedHandleUnsave,
   savedUserNews,
 }) {
-  // Desestruturação de propriedades do obj para cada notícia, dentro do array de
-  // artigos da resposta bem-sucedida da NewsApi
   // Os nomes das propriedades são definidas pela News Api
   const { source, title, description, url, urlToImage, publishedAt, isSaved } =
     searchedNewsCard;
 
-  // Contexto de autenticação, extraindo estado de login
   const { loggedIn } = useContext(AuthContext);
 
-  // Contexto de popups, extraindo handler
   const { handleOpenPopup } = useContext(PopupsContext);
 
-  // Hook de abertura de popups: extração de openSignup
   const { openSignup } = useOpenedPopups({
     handleOpenPopup,
   });
