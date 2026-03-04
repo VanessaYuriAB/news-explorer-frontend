@@ -404,41 +404,95 @@ https://new-explorer-frontend-git-stage-51d26c-vanessayuriabs-projects.vercel.ap
 
 ## 📸 13. Capturas de Tela
 
-- 1️⃣ Tela de Pesquisa (estado inicial)
+- 1️⃣ Tela inicial (deslogado)
 
-![Tela de Pesquisa](./screenshots/1tela_de_pesquisa.png)
+![Início Deslogado](./screenshots/01inicio-deslogado.png)
 
 _Campo de busca, header, layout limpo. "Porta de entrada" do app._
 
-- 2️⃣ Tela com Cards Retornados da Pesquisa
+- 2️⃣ Cards Retornados da Pesquisa
 
-![Tela de Resultados](./screenshots/2tela-de-resultados.png)
+![Searched News](./screenshots/02searched-news.png)
 
 _Cards organizados em 3 colunas, botão “Mostrar mais”, imagens, títulos e fontes. O funcionamento principal do projeto._
 
-- 3️⃣ Tela de Cards Salvos
+- 3️⃣ Preloader em Ação
 
-![Tela de Artigos Salvos](./screenshots/3tela-de-artigos-salvos.png)
-
-_Estado logado, ícones de lixeira, lista de artigos salvos, header especial de “Artigos Salvos”. O CRUD (parcial)._
-
-- 4️⃣ Tela do Preloader em ação
-
-![Tela do Preloader](./screenshots/4tela-de-preloader.png)
+![Tela do Preloader](./screenshots/03preloader.png)
 
 _Atenção ao UX e uso correto de estado de carregamento._
 
-- 5️⃣ Tela “Nada Encontrado”
+- 4️⃣ “Nada Encontrado”
 
-![Tela do Nothing Found](./screenshots/5tela-de-nothing-found.png)
+![Tela do Nothing Found](./screenshots/04nothing-found.png)
 
-_Tratamento de erro/estado vazio._
+_Tratamento de erro: estado vazio._
 
-- 6️⃣ Tooltip do botão de salvar (versão deslogada)
+- 5️⃣ Erro na Pesquisa
 
-![Tela do Tooltip Login To Save](./screenshots/6tooltip-login-to-save.png)
+![Searched News com Msg de Erro na Pesquisa](./screenshots/05searched-news-msg-de-erro.png)
+
+_Tratamento de erro: algo errado durante a solicitação enviada._
+
+- 6️⃣ Tooltip do Botão 'Salvar' (versão deslogada)
+
+![Searched News com Tooltip Login To Save](./screenshots/06searched-news-com-tooltip-login.png)
 
 _O hover com a mensagem “Faça login para salvar artigos”._
+
+- 7️⃣ Tooltip do botão 'Salvar' (versão logada)
+
+![Searched News com Tooltip Save](./screenshots/07searched-news-com-tooltip-salvar.png)
+
+_O hover com a mensagem “Adicionar aos salvos”._
+
+- 8️⃣ Tooltip do botão 'Des-salvar'
+
+![Searched News com Tooltip Remove](./screenshots/08searched-news-com-tooltip-remover.png)
+
+_Ícone no estado 'salvo' + hover com a mensagem “Remover dos salvos”._
+
+- 9️⃣ Popups de Inscrição e Login
+
+![Signup](./screenshots/09A-signup-ok.png)
+
+![Signin](./screenshots/09B-signin-ok.png)
+
+_Popups preenchidos, no estado 'ok', sem erros de validação e botão ativo._
+
+- 🔟 Popups de Inscrição e Login com Erros de Validação de Campos
+
+![Signup - Validação](./screenshots/10A-signup-msg-validation.png)
+
+![Signin - Validação](./screenshots/10B-signin-msg-validation.png)
+
+_Popups com mensagens de erros de validação de cada campo._
+
+- 1️⃣1️⃣ Popups de Inscrição e Login com Erros no Processamento
+
+![Signup - Erro](./screenshots/11A-signup-msg-de-erro.png)
+
+![Signin - Erro](./screenshots/11B-signin-msg-de-erro.png)
+
+_Popups com mensagens de erros em cada solicitação enviada._
+
+- 1️⃣2️⃣ Artigos Salvos
+
+![Saved News](./screenshots/12saved-news.png)
+
+_Estado logado, ícones de lixeira, lista de artigos salvos, header especial de “Artigos Salvos”. O CRUD (parcial)._
+
+- 1️⃣3️⃣ Artigos Salvos (sem artigo)
+
+![Saved News - Vazia](./screenshots/13saved-news-vazia.png)
+
+_Mensagem ao usuário, informando que não há artigos salvos._
+
+- 1️⃣4️⃣ Tooltip do botão 'Des-salvar' na Página de Artigos Salvos
+
+![Saved News - Tooltip](./screenshots/14saved-news-tooltip-remove.png)
+
+_Hover com a mensagem “Remover dos salvos”._
 
 [Voltar ao topo 🔝](#top)
 
