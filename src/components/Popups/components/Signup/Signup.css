@@ -52,6 +52,10 @@
   padding: 0;
 }
 
+.popup__signup-input_type_error {
+  color: rgba(255, 0, 0, 1);
+}
+
 .popup__signup-span {
   font-family: 'Inter', Arial, sans-serif;
   font-weight: 400;
@@ -99,15 +103,24 @@
   background-color: rgba(42, 101, 204, 1);
 }
 
-.popup__signup-btn:disabled {
+.popup__signup-btn_disabled {
   background-color: rgba(230, 232, 235, 1);
   color: rgba(182, 188, 191, 1);
   box-shadow: none;
 }
 
-.popup__signup-btn:disabled:hover {
+.popup__signup-btn_disabled:hover {
   opacity: 0.8;
   cursor: not-allowed;
+  background-color: rgba(230, 232, 235, 1);
+  color: rgba(182, 188, 191, 1);
+}
+
+.popup__signup-btn_disabled:active {
+  cursor: not-allowed;
+  background-color: rgba(230, 232, 235, 1);
+  color: rgba(182, 188, 191, 1);
+  opacity: 0.6;
 }
 
 .popup__signup-plink {

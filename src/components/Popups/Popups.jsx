@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
+import PopupsContext from '../../contexts/PopupsContext';
 import './Popups.css';
 
 function Popups(props) {
-  // Desestruturação do objeto passado como props, onde children é o conteúdo de popup
-  // que pode ser Signin ou Signup, configurado no componente de abertura
-  const { popup, handleClosePopup, children, type } = props;
+  // 'children' é o conteúdo de popup
+  const { popup, children, type } = props;
+
+  const { handleClosePopup } = useContext(PopupsContext);
 
   // Ref para encapsulamento de children: para fechamento do popup por clique fora da
   // caixa
@@ -13,14 +15,14 @@ function Popups(props) {
   // Fechamento do popup pela tecla 'Esc', ativado sempre que o popup for aberto
   useEffect(() => {
     const handleEscClose = (evt) => {
-      const keyIsEsc = evt.code === 'Escape'; // escape: esc
+      // Só renderiza <Popups /> qdo popup && (...), então não é preciso verificar popup
+      // Se o popup estiver aberto e a tecla pressionada for a esc, o popup fecha
+      // escape: esc
 
-      if (popup && keyIsEsc) handleClosePopup(); // se o popup estiver aberto e a tecla pressionada
-      // for a esc, o popup fecha
+      if (evt.code === 'Escape') handleClosePopup();
     };
 
-    document.addEventListener('keydown', handleEscClose); // adiciona o evento em document >
-    // escuta globalmente → essencial para capturar a tecla Esc mesmo sem foco
+    document.addEventListener('keydown', handleEscClose);
 
     // Wipe function: função de limpeza
     return () => {

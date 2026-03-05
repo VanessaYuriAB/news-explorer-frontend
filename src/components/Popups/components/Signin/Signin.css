@@ -52,6 +52,10 @@
   padding: 0;
 }
 
+.popup__signin-input_type_error {
+  color: rgba(255, 0, 0, 1);
+}
+
 .popup__signin-span {
   font-family: 'Inter', Arial, sans-serif;
   font-weight: 400;
@@ -65,7 +69,8 @@
 }
 
 .popup__signin-span:last-of-type {
-  margin-bottom: 0;
+  align-self: center;
+  margin: 0;
 }
 
 .popup__signin-btn {
@@ -81,7 +86,8 @@
   line-height: 1.33;
   vertical-align: middle;
   color: rgba(255, 255, 255, 1);
-  margin: 24px 0 0 -1px;
+  margin: 8px 0 0 -1px; /* margem superior ajustada para span de msg de erro de login,
+  inicialmente a medida era de 24px */
 }
 
 .popup__signin-btn:hover {
@@ -94,15 +100,24 @@
   background-color: rgba(42, 101, 204, 1);
 }
 
-.popup__signin-btn:disabled {
+.popup__signin-btn_disabled {
   background-color: rgba(230, 232, 235, 1);
   color: rgba(182, 188, 191, 1);
   box-shadow: none;
 }
 
-.popup__signin-btn:disabled:hover {
+.popup__signin-btn_disabled:hover {
   opacity: 0.8;
   cursor: not-allowed;
+  background-color: rgba(230, 232, 235, 1);
+  color: rgba(182, 188, 191, 1);
+}
+
+.popup__signin-btn_disabled:active {
+  cursor: not-allowed;
+  background-color: rgba(230, 232, 235, 1);
+  color: rgba(182, 188, 191, 1);
+  opacity: 0.6;
 }
 
 .popup__signin-plink {

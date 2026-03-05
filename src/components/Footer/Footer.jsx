@@ -2,7 +2,6 @@ import { NavLink, useLocation } from 'react-router-dom';
 import './Footer.css';
 
 function Footer() {
-  // Hook de localização para saber a rota atual
   const location = useLocation();
 
   return (

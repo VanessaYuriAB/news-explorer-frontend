@@ -173,7 +173,7 @@
     height: 3px;
     background: url('/images/line-link-active.svg') no-repeat center;
     margin: 23px auto 0;
-    left: 0; /* início junto ao __link correspondente, ajustado pelo DevTools */
+    left: 0; /* início junto ao __link correspondente */
     width: 45px; /* comprimento do sublinhado igual ao comprimento do __link */
   }
 

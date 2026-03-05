@@ -1,14 +1,22 @@
 import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import AuthContext from '../../../../contexts/AuthContext';
+import CurrentUserContext from '../../../../contexts/CurrentUserContext';
+import PopupsContext from '../../../../contexts/PopupsContext';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import newsExplorer from '../../../../assets/news-explorer-logo.svg';
 import lineHeader from '../../../../assets/line-header.svg';
 import btnOut from '../../../../assets/btn-out.svg';
 import './ForMobileHeaderAndNav.css';
 
-function ForMobileHeaderAndNav({ setMobile, handleOpenPopup, signinPopup }) {
-  // Contexto de autenticação, extraindo estado e set de login
-  const { loggedIn, setLoggedIn } = useContext(AuthContext);
+function ForMobileHeaderAndNav({ setMobile }) {
+  const { loggedIn, handleLogout } = useContext(AuthContext);
+
+  const { currentUser } = useContext(CurrentUserContext);
+
+  const { handleOpenPopup } = useContext(PopupsContext);
+
+  const { openSignin } = useOpenedPopups({ handleOpenPopup });
 
   // As funções getNavLinkClass e getNavLinkClassOut são nativas do componente <NavLink>
   // Aceitam um objeto como parâmetro, que possui uma propriedade, isActive, que é
@@ -75,12 +83,10 @@ function ForMobileHeaderAndNav({ setMobile, handleOpenPopup, signinPopup }) {
               <button
                 className="header-mobile__btn"
                 type="button"
-                onClick={() => {
-                  setLoggedIn(false);
-                }}
+                onClick={handleLogout}
                 aria-label="Deslogar usuário"
               >
-                <p className="header-mobile__btn-text">Nome</p>
+                <p className="header-mobile__btn-text">{currentUser.name}</p>
                 <img
                   className="header-mobile__btn-out"
                   src={btnOut}
@@ -98,7 +104,7 @@ function ForMobileHeaderAndNav({ setMobile, handleOpenPopup, signinPopup }) {
               <button
                 className="header-mobile__btn header-mobile__btn_out"
                 type="button"
-                onClick={() => handleOpenPopup(signinPopup)}
+                onClick={() => openSignin()}
                 aria-label="Logar usuário"
               >
                 <p className="header-mobile__btn-text header-mobile__btn-text_out">

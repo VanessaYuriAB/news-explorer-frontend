@@ -92,7 +92,7 @@
 }
 
 .header__btn {
-  width: 112px;
+  width: 200px;
   height: 48px;
   border-width: 1px;
   border: 1px solid rgba(255, 255, 255, 1);
@@ -172,7 +172,6 @@
   .header__link:last-of-type {
     margin-right: 16px;
     margin-left: 16px;
-    width: 160px;
   }
 
   /* Para implementar linha de link ativo, logado */
@@ -196,7 +195,7 @@
   }
 
   .header__btn {
-    width: 100px;
+    width: 180px;
     height: 40px;
   }
 

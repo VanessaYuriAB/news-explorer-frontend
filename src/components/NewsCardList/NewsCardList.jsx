@@ -3,8 +3,12 @@ import AuthContext from '../../contexts/AuthContext';
 import { useContext, useCallback, useState } from 'react';
 import './NewsCardList.css';
 
-function NewsCardList({ searchedNews, handleSaveCard, memoizedHandleUnsave }) {
-  // Contexto de autenticação, extraindo estado de login
+function NewsCardList({
+  searchedNews,
+  handleSaveCard,
+  memoizedHandleUnsave,
+  savedUserNews,
+}) {
   const { loggedIn } = useContext(AuthContext);
 
   // Variável de estado: controle da qtdd de cards renderizados, iniciando com apenas três
@@ -39,7 +43,7 @@ function NewsCardList({ searchedNews, handleSaveCard, memoizedHandleUnsave }) {
     );
   }
 
-  if (searchedNews.totalResults > 0) {
+  if (searchedNews.articles.length > 0) {
     return (
       <section className="searched-news main__searched-news">
         <h2 className="searched-news__title">Procurar resultados</h2>
@@ -56,36 +60,36 @@ function NewsCardList({ searchedNews, handleSaveCard, memoizedHandleUnsave }) {
               .slice(0, visibleCards) // copia uma parte do vetor e retorna como um novo vetor
               .map((searchedNewsCard) => (
                 /* Aqui, o return é necessário e está implícito: arrow function com
-              parênteses, retornando JSX */
+                parênteses, retornando JSX */
                 <NewsCard
                   key={
                     searchedNewsCard.url
                   } /* A API da NewsAPI não fornece _id, então foi aplicado url, por ser
-                algo único */
+                  algo único */
                   searchedNewsCard={searchedNewsCard}
                   handleSaveCard={memoizedHandleSave} // valor memorizado
                   memoizedHandleUnsave={memoizedHandleUnsave}
+                  savedUserNews={savedUserNews}
                 />
               ))}
           </ul>
         </div>
 
         {/* Condição para renderização do botão, apenas quando não houverem mais cartões
-        a serem exibidos > Como a conta da NewsApi (gratuita) permite apenas 100, a condição
-        está definida desta forma, mas existe a propriedade totalResults para renderização
-        do total de artigos pesquisados */}
+        a serem exibidos > Como a conta da NewsApi (gratuita) permite apenas 100 articles,
+        a condição está definida desta forma, mas existe a propriedade totalResults para
+        renderização do total de artigos pesquisados */}
         {/* {visibleCards < searchedNews.totalResults && ( */}
-        {visibleCards < searchedNews.totalResults &&
-          searchedNews.totalResults < 100 && (
-            <button
-              /* Condição para renderização de versões para o botão: logado e deslogado */
-              className={`searched-news__btn ${!loggedIn ? 'searched-news__btn_out' : ''} `}
-              type="button"
-              onClick={handleShowMore}
-            >
-              Mostrar mais
-            </button>
-          )}
+        {visibleCards < searchedNews.articles.length && (
+          <button
+            /* Condição para renderização de versões para o botão: logado e deslogado */
+            className={`searched-news__btn ${!loggedIn ? 'searched-news__btn_out' : ''} `}
+            type="button"
+            onClick={handleShowMore}
+          >
+            Mostrar mais
+          </button>
+        )}
       </section>
     );
   }

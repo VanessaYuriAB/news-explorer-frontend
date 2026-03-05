@@ -1,20 +1,21 @@
 import React from 'react';
-import useFormattedDateBR from '../../../../hooks/useformattedDateBR';
+import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
 import './SavedNewsCard.css';
 
 function SavedNewsCard({ savedCard, memoizedHandleUnsave }) {
-  // Desestruturação das propriedades de cada card salvo
-  const { source, title, description, url, urlToImage, publishedAt, tag } =
-    savedCard;
+  // Desestruturação das propriedades de cada card salvo no banco de dados (com backend
+  // ativo) > o nome das propriedades é definido no schema do modelo no backend
+  const { source, title, text, link, image, date, keyword } = savedCard;
 
   const { name } = source;
 
-  // Reformatação da data (publishedAt) com hook personalizado
-  const formattedDateBR = useFormattedDateBR(publishedAt);
+  // Reformatação da data (vem de publishedAt, com o formato da News Api) com hook
+  // personalizado
+  const formattedDateBR = useFormattedDateBR(date);
 
   // Apenas a primeira palavra da tag
-  const firstTag = tag.split(' ')[0];
+  const firstTag = keyword.split(' ')[0];
 
   return (
     <li className="saved-card">
@@ -22,7 +23,7 @@ function SavedNewsCard({ savedCard, memoizedHandleUnsave }) {
         <figure className="saved-card__figure">
           <img
             className="saved-card__img"
-            src={urlToImage ? urlToImage : imgIndisponivel}
+            src={image ? image : imgIndisponivel}
             alt={`Imagem do artigo: ${title ? title : 'descrição indisponível'}`}
           />
           <figcaption className="saved-card__tag">{`${firstTag}`}</figcaption>
@@ -34,14 +35,12 @@ function SavedNewsCard({ savedCard, memoizedHandleUnsave }) {
         <button
           type="button"
           className="saved-card__btn"
-          onClick={() => memoizedHandleUnsave(savedCard)}
+          onClick={() => memoizedHandleUnsave(savedCard._id)}
           aria-label="Remover dos salvos"
         ></button>
 
         <div className="saved-card__infos">
-          {/* Atualizar 'datetime' dinâmico */}
-
-          <time className="saved-card__date" dateTime={publishedAt}>
+          <time className="saved-card__date" dateTime={date}>
             {`${formattedDateBR}`}
           </time>
 
@@ -50,7 +49,7 @@ function SavedNewsCard({ savedCard, memoizedHandleUnsave }) {
 
           <a
             className="saved-card__title-link"
-            href={url}
+            href={link}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -60,7 +59,7 @@ function SavedNewsCard({ savedCard, memoizedHandleUnsave }) {
           </a>
 
           <p className="saved-card__text">
-            {`${description ? description : 'Descrição indisponível'}`}
+            {`${text ? text : 'Descrição indisponível'}`}
           </p>
           <cite className="saved-card__source">{`${name ? name : 'Fonte indisponível'}`}</cite>
         </div>

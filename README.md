@@ -1,6 +1,6 @@
-<a id="top"></a>
-
 # 🅽 Projeto Final - Web Project News Explorer
+
+Aplicação **full‑stack** para pesquisa e salvamento de notícias, com autenticação JWT, arquitetura desacoplada e foco em boas práticas de React e UX. Desenvolvida como projeto final do bootcamp **TripleTen**, dividida em fases incrementais, com foco em **React**, **Vite**, **Node.js**, **Express**, **MongoDB** e **autorização baseada em JWT**.
 
 <!-- ⚙️ Tecnologias principais -->
 
@@ -31,20 +31,26 @@
 
 ---
 
+<a id="top"></a>
+
 ## 📑 Índice
 
 1. [Descrição 📚](#-1-descrição)
-2. [Funcionalidades 🚀](#-2-funcionalidades)
-3. [Estrutura do Projeto 🗃️](#️-3-estrutura-do-projeto)
-4. [Principais Tecnologias Utilizadas 🛠️](#️-4-principais-tecnologias-utilizadas)
-5. [Design do Projeto 📐](#-5-design-do-projeto)
-6. [Instalação, Configuração e Execução 📦](#-6-instalação,-configuração-e-execução)
-7. [Funcionalidades Obrigatórias Implementadas 📄](#-7-funcionalidades-obrigatórias-implementadas)
-8. [Status do Projeto 🚧](#-8-status-do-projeto)
-9. [Capturas de Tela 📸](#-9-capturas-de-tela)
-10. [Demonstração 🎥](#-10-demonstração)
-11. [Melhorias 📈](#-11-melhorias)
-12. [Autora 👩‍💻](#-12-autora)
+2. [Arquitetura do Projeto 🧱](#-2-arquitetura-do-projeto)
+3. [Fases do Desenvolvimento 🧩](#-3-fases-do-desenvolvimento)
+4. [Funcionalidades Implementadas 🚀](#-4-funcionalidades-implementadas)
+5. [Autorização e Autenticação 🔐](#-5-autorização-e-autenticação)
+6. [Gerenciamento de Estado Global 🧠](#-6-gerenciamento-de-estado-global)
+7. [Proteção de Rota 🛡️](#-7-proteção-de-rota)
+8. [Validação de Formulários ✅](#-8-validação-de-formulários)
+9. [Tratamento de Erros ⚠️](#-9-tratamento-de-erros)
+10. [Estrutura do Projeto 🗃️](#-10-estrutura-do-projeto)
+11. [Instalação e Execução 📦](#-11-instalação-e-execução)
+12. [Status do Projeto 🚧](#-12-status-do-projeto)
+13. [Capturas de Tela 📸](#-13-capturas-de-tela)
+14. [Demonstração 🎥](#-14-demonstração)
+15. [Melhorias 📈](#-15-melhorias)
+16. [Autora 👩‍💻](#-16-autora)
 
 ---
 
@@ -52,117 +58,285 @@
 
 ## 📚 1. Descrição
 
-Este projeto é uma aplicação front-end desenvolvida como parte do projeto final do bootcamp da TripleTen.
+O **News Explorer** é uma aplicação web full‑stack que permite aos usuários:
 
-É a **fase 1 — Marcação e JSX + API de terceiros**.
+- Pesquisar notícias a partir de palavras‑chave (API de terceiros: https://newsapi.org)
+- Criar conta e autenticar‑se
+- Salvar e remover artigos associados ao seu perfil
+- Acessar uma área protegida com artigos salvos
 
-O objetivo do aplicativo é permitir que usuários pesquisem notícias recentes a partir de uma palavra‑chave e salvem artigos em seus perfis.
-
-[Voltar ao topo 🔝](#top)
-
----
-
-<a id="-2-funcionalidades"></a>
-
-## 🚀 2. Funcionalidades
-
-- Pesquisa de notícias usando a **News API**.
-- Exibição dos resultados com:
-  - `Preloader` enquanto a API responde
-  - Mensagem de erro para falhas na requisição
-  - Estado `Nada encontrado`
-- Exibição inicial de 3 cartões + botão `“Mostrar mais”`
-- Layout responsivo seguindo o design do **Figma**
-- Página principal (`/`) com formulário de busca
-- Página `/saved-news` com artigos salvos
-- Navegação entre rotas usando `React Router`
-- Componentes funcionais organizados por diretórios
-- Uso de hooks (ex: `useState`, `useEffect`)
-- Janelas modais com abertura e fechamento via clique, overlay e tecla ESC
+O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios técnicos e de qualidade exigidos pelo bootcamp da **TripleTen**.
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-3-estrutura-do-projeto"></a>
+<a id="-2-arquitetura-do-projeto"></a>
 
-## 🗃️ 3. Estrutura do Projeto
+## 🧱 2. Arquitetura do Projeto
+
+- **Frontend**: React + Vite (deploy independente)
+- **Backend**: Node.js + Express + MongoDB
+- **Autenticação**: JWT
+- **Comunicação**: API REST via fetch
+- **Deploy**:
+  - Frontend: Vercel (https://new-explorer-frontend-git-stage-51d26c-vanessayuriabs-projects.vercel.app)
+  - Backend: servidor próprio em VM no Google Cloud (API acessível via domínio: https://api.newsexplorer.sevencomets.com)
+
+📦 Repositório do backend: https://github.com/VanessaYuriAB/new-explorer-backend
+
+📌 Como frontend e backend estão em **origens diferentes**, a aplicação utiliza **CSP via meta tag** no frontend para permitir comunicação segura entre domínios, quando o deploy é separado.
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-3-fases-do-desenvolvimento"></a>
+
+## 🧩 3. Fases do Desenvolvimento
+
+### ✅ Fase 1 — Marcação, JSX e API de terceiros
+
+- Interface React
+- Pesquisa de notícias
+- Estados de carregamento e erro
+- Layout responsivo
+- Persistência local (fallback)
+
+### ✅ Fase 2 — Backend
+
+- API REST própria
+- Modelos e schemas no MongoDB
+- Rotas de usuários e artigos
+- Autenticação via JWT
+
+### ✅ Fase 3 — Autorização com React
+
+- Integração frontend ↔ backend
+- Registro e login
+- Proteção de rotas
+- Contexto global de usuário
+- Persistência e validação do token
+- Validação de formulários
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-4-funcionalidades-implementadas"></a>
+
+## 🚀 4. Funcionalidades Implementadas
+
+- Cadastro de usuário (`/signup`)
+- Login (`/signin`)
+- Armazenamento seguro de **JWT**
+- Busca de notícias via **API externa**
+- Salvamento e remoção de artigos
+- Formatação de datas com hook reutilizável aplicado aos cards de artigos
+- Página de artigos salvos protegida
+- Classificação de palavras pesquisadas em ordem descendente por popularidade
+- Cabeçalho com estados **autorizado / não autorizado**
+- Persistência de sessão após refresh
+- Redirecionamento automático para usuários não autorizados e para rotas inexistentes
+- Validação instantânea de formulários
+- Tratamento de erros
+
+### 📌 Hook de formatação de datas
+
+O hook utilitário (`useFormattedDateBR`) é utilizado para formatar a data de publicação dos artigos conforme o padrão visual do projeto, definido no Figma, usando `Intl.DateTimeFormat` com locale `pt-BR`.
+
+O hook utiliza `useMemo` para evitar processamento desnecessário durante a renderização de múltiplos cards.
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-5-autorização-e-autenticação"></a>
+
+## 🔐 5. Autorização e Autenticação
+
+- Autenticação baseada em **JWT**
+- O token:
+  - É armazenado no **localStorage**
+  - É validado pelo servidor
+  - É removido no logout
+- O frontend **não confia apenas no armazenamento local**:
+  - O token é validado via **requisição ao backend**
+- O token mantido em estado React (`state`) é a _fonte da verdade_ durante a sessão:
+  - `localStorage` é usado apenas para _hidratação inicial_
+
+📌 Um hook personalizado de submissão de formulários (`useFormSubmit`) centraliza:
+
+- `preventDefault` no submit
+- Estados de **loading**
+- Fluxo de sucesso/erro via callbacks (`onSuccess`, `onError`)
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-6-gerenciamento-de-estado-global"></a>
+
+## 🧠 6. Gerenciamento de Estado Global
+
+- `AuthContext`: responsável pelo fluxo de autenticação, armazenando o estado de login e expondo handlers como login, logout e registro.
+
+- `CurrentUserContext`: responsável por armazenar os dados do usuário logado, nome e email.
+
+- `PopupsContext`: responsável pelo controle global dos handlers de abertura e fechamento de popups.
+
+O projeto utiliza a `Context API` do `React` para gerenciar estados globais, **evitando prop drilling** e mantendo as responsabilidades bem separadas, já que são consumidos diretamente pelos componentes que precisam das informações.
+
+Os contextos são criados com `createContext` e incorporados no componente App pelo `.Provider` de cada um.
+
+### 📌 Hook auxiliar de UI global (`useOpenedPopups`)
+
+Hook responsável por centralizar a lógica de abertura de quase todos os popups da aplicação (signin, signup e tooltips), evitando código redundante nos componentes.
+
+O hook encapsula a criação dos objetos de configuração de popups (`type`, `tooltipType` e `children`) e expõe funções semânticas: `openSignin`, `openSignup`, `openSignupTooltip` e `openSearchTooltip`.
+
+O popup de erro de API é tratado separadamente por um hook específico (`useApiError`), melhor detalhado na _seção 9 - Tratamento de Erros_.
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-7-proteção-de-rota"></a>
+
+## 🛡️ 7. Proteção de Rota
+
+- A rota `/saved-news` é protegida via HOC (`ProtectedRoute`)
+- Comportamento:
+  - Usuário não autorizado → redirecionado para `/`
+  - Popup de login é aberto automaticamente
+- A rota `/` permanece pública
+- Usuários logados podem acessar rotas diretamente via URL
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-8-validação-de-formulários"></a>
+
+## ✅ 8. Validação de Formulários
+
+Os formulários de **cadastro** e **login** possuem:
+
+- Validação instantânea (`onChange`)
+- Campos obrigatórios (`required`)
+- Validação via `pattern` + mensagens customizadas (`title`)
+- Inputs controlados pelo React (`useState`)
+- Validação visual resetada após envio bem-sucedido
+- Validação nativa do HTML desativada (`noValidate`)
+
+### 📌 Hook de validação e controle do formulário
+
+Um hook personalizado (`useFormAndValidationWithReset`) centraliza:
+
+- Estado dos campos (`values`)
+- Mensagens de erro por campo (`errors`)
+- Estado geral de validade (`isFormValid`)
+- Reset de valores/erros/validade (`resetForm`)
+
+A validação usa a `Constraint Validation API` (`validationMessage`, `patternMismatch`) e verifica a validade do formulário com `checkValidity()`.
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-9-tratamento-de-erros"></a>
+
+## ⚠️ 9. Tratamento de Erros
+
+- Todas as requisições utilizam:
+  - Função genérica de verificação de resposta
+  - `catch()` no final da cadeia de promessas
+- Erros HTTP e erros de rede são tratados separadamente
+- Mensagens de erro são exibidas ao usuário via:
+  - Mensagem no próprio formulário
+  - Popups (tooltips) de feedback
+- Handlers **lançam erros** (`throw`) para que o hook de envio possa distinguir:
+  - `onSuccess`
+  - `onError`
+
+### 📌 Hook de tratamento de erro da API
+
+Um hook personalizado (`useApiError`) centraliza a exibição de erros retornados pela API do backend, durante:
+
+- Salvamento e remoção de artigos
+- Execução do efeito de montagem, em erros HTTP, como `500` e `429`
+
+O hook é envolto por uma função (`showApiError`) que recebe o erro capturado e é responsável por:
+
+- Definir a mensagem conforme o status HTTP
+- Abrir o popup de erro apropriado (`ApiErrorTooltip`)
+- Isolar completamente a lógica de UI do bloco `catch`
+
+Permitindo a reutilização da lógica sem acoplamento aos componentes de UI.
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-10-estrutura-do-projeto"></a>
+
+🗃️ 10. Estrutura do Projeto
 
 ```
-src/
-├─ assets/
-├─ components/
-│ ├─ About/
-│ ├─ App/
-│ ├─ Footer/
-│ ├─ Header/
-│ │ ├─ componentes/
-│ │   ├─ ForMobileHeaderAndNav/
-│ │   └─ Navigation/
-│ ├─ NewsCardList/
-│ │ ├─ componentes/
-│ │   └─ NewsCard/
-│ ├─ NothingFound/
-│ ├─ Popups/
-│ │ ├─ componentes/
-│ │   ├─ SearchTooltip/
-│ │   ├─ Signin/
-│ │   ├─ Signup/
-│ │   └─ SignupTooltip/
-│ ├─ Preloader/
-│ ├─ ProtectedRoute/
-│ ├─ SavedNewsCardList/
-│ │ ├─ componentes/
-│ │   └─ SavedNewsCard/
-│ ├─ SavedNewsHeader/
-│ │ ├─ componentes/
-│ │   ├─ ForMobileSavedNewsHeaderAndNav/
-│ │   └─ SavedNewsNavigation/
-│ ├─ SearchMain/
-│ │ ├─ componentes/
-│ └   └─ SearchForm/
-├─ contexts/
-├─ hooks/
-├─ utils/
-│ ├─ NewsApi.js
-│ └─ ...
-├─ index.css
-└─ main.jsx
+│  src/
+│  ├─ assets/
+│  ├─ components/
+│  │ ├─ About/
+│  │ ├─ App/
+│  │ ├─ Footer/
+│  │ ├─ Header/
+│  │ │ └─ componentes/
+│  │ │   ├─ ForMobileHeaderAndNav/
+│  │ │   └─ Navigation/
+│  │ ├─ NewsCardList/
+│  │ │ └─ componentes/
+│  │ │   └─ NewsCard/
+│  │ ├─ NothingFound/
+│  │ ├─ Popups/
+│  │ │ └─ componentes/
+│  │ │   ├─ ApiErrorTooltip/
+│  │ │   ├─ SearchTooltip/
+│  │ │   ├─ Signin/
+│  │ │   ├─ Signup/
+│  │ │   └─ SignupTooltip/
+│  │ ├─ Preloader/
+│  │ ├─ ProtectedRoute/
+│  │ ├─ SavedNewsCardList/
+│  │ │ └─ componentes/
+│  │ │   └─ SavedNewsCard/
+│  │ ├─ SavedNewsHeader/
+│  │ │ └─ componentes/
+│  │ │   ├─ ForMobileSavedNewsHeaderAndNav/
+│  │ │   └─ SavedNewsNavigation/
+│  │ ├─ SearchMain/
+│  │ │ └─ componentes/
+│  │ └   └─ SearchForm/
+│  ├─ contexts/
+│  ├─ hooks/
+│  ├─ utils/
+│  ├─ index.css
+│  └─ main.jsx
+├─ .env
+├─ .gitignore
+├─ package-lock.json
+├─ package.json
+├─ index.html
+├─ README.md
+└─ vite.config.js
 ```
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-4-principais-tecnologias-utilizadas"></a>
+<a id="-11-instalação-e-execução"></a>
 
-## 🛠️ 4. Principais Tecnologias Utilizadas
-
-- **React + Vite** ⚛️⚡
-- **React Router** 🌐
-- **JavaScript (ES6+)** 📜
-- **CSS (BEM + Flexbox + Grid)** 🎨
-- **News API** 📰
-- **Normalize.css** ⚙️
-- **Git e GitHub** 💾
-
-[Voltar ao topo 🔝](#top)
-
----
-
-<a id="-5-design-do-projeto"></a>
-
-## 📐 5. Design do Projeto
-
-Layout baseado no protótipo oficial: https://www.figma.com/design/7tUd4j0h1hgfWL39UNJhRt/Seu-Projeto-Final-PT
-
-[Voltar ao topo 🔝](#top)
-
----
-
-<a id="-6-instalação,-configuração-e-execução"></a>
-
-## 📦 6. Instalação, Configuração e Execução
+## 📦 11. Instalação e Execução
 
 ### 1️⃣ Clone o repositório
 
@@ -181,11 +355,17 @@ npm install
 
 - URL base da News Api:
 
-  `VITE_BASE_NEWS_API_URL=https://api.exemplo.com`
+  ```env
+  # endpoint base da News API
+
+  VITE_BASE_NEWS_API_URL=https://api.exemplo.com
+  ```
 
 - Chave de acesso da News Api:
 
-  `VITE_NEWS_API_KEY=sua-chave-aqui`
+  ```env
+  VITE_NEWS_API_KEY=sua-chave-aqui
+  ```
 
 ### 4️⃣ Execute o projeto em modo de desenvolvimento
 
@@ -193,118 +373,174 @@ npm install
 npm run dev
 ```
 
-📌 **Observação**: a aplicação funcionará normalmente mesmo com o backend offline. As operações de salvar e remover artigos utilizarão o fallback com `localStorage` para persistência temporária dos dados quando o servidor não estiver disponível.
+📌 O frontend funciona mesmo sem o backend ativo, porém:
+
+- Salvamento e autenticação dependem da API
+- O fallback com `localStorage` é usado apenas para a pesquisa de artigos
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-7-funcionalidades-obrigatórias-implementadas"></a>
+<a id="-12-status-do-projeto"></a>
 
-## 📄 7. Funcionalidades Obrigatórias Implementadas
+## 🚧 12. Status do Projeto
 
-✔️ Marcação portada para **JSX**
+- Fase 1 — Concluída
 
-✔️ Componentização completa
+- Fase 2 — Concluída
 
-✔️ Responsividade, sem rolagem horizontal
+- Fase 3 — Em finalização / revisão
 
-✔️ Rotas `/` e `/saved-news`
+🔗 Aplicação **full‑stack** online (Preview Deployment – branch estágio-react-auth):
 
-✔️ `Preloader` integrado ao fluxo da **API**
-
-✔️ Conexão com API via `fetch`
-
-✔️ Mensagens de erro e estados de interface
-
-✔️ Layout seguindo o **Figma**
-
-✔️ Estrutura recomendada (`utils`, `components`, etc.)
-
-✔️ Modais funcionais (abrir/fechar/ESC)
-
-✔️ `“Mostrar mais”` implementado
-
-✔️ `Armazenamento local` com persistência de dados configurado
+https://new-explorer-frontend-git-stage-51d26c-vanessayuriabs-projects.vercel.app
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-8-status-do-projeto"></a>
+<a id="-13-capturas-de-tela"></a>
 
-## 🚧 8. Status do Projeto
+## 📸 13. Capturas de Tela
 
-Em desenvolvimento.
+- 1️⃣ Tela inicial (deslogado)
 
-- **Fase 1 (atual): Marcação, JSX e integração com a API de terceiros.**
-- Fase 2: Back-end
-- Fase 3: Autorização com React
-- Fase 4: Finalização do Projeto
-
-[Voltar ao topo 🔝](#top)
-
----
-
-<a id="-9-capturas-de-tela"></a>
-
-## 📸 9. Capturas de Tela
-
-- 1️⃣ Tela de Pesquisa (estado inicial)
-
-![Tela de Pesquisa](./screenshots/1tela_de_pesquisa.png)
+![Início Deslogado](./screenshots/01inicio-deslogado.png)
 
 _Campo de busca, header, layout limpo. "Porta de entrada" do app._
 
-- 2️⃣ Tela com Cards Retornados da Pesquisa
+- 2️⃣ Cards Retornados da Pesquisa
 
-![Tela de Resultados](./screenshots/2tela-de-resultados.png)
+![Searched News](./screenshots/02searched-news.png)
 
 _Cards organizados em 3 colunas, botão “Mostrar mais”, imagens, títulos e fontes. O funcionamento principal do projeto._
 
-- 3️⃣ Tela de Cards Salvos
+- 3️⃣ Preloader em Ação
 
-![Tela de Artigos Salvos](./screenshots/3tela-de-artigos-salvos.png)
-
-_Estado logado, ícones de lixeira, lista de artigos salvos, header especial de “Artigos Salvos”. O CRUD (parcial)._
-
-- 4️⃣ Tela do Preloader em ação
-
-![Tela do Preloader](./screenshots/4tela-de-preloader.png)
+![Tela do Preloader](./screenshots/03preloader.png)
 
 _Atenção ao UX e uso correto de estado de carregamento._
 
-- 5️⃣ Tela “Nada Encontrado”
+- 4️⃣ “Nada Encontrado”
 
-![Tela do Nothing Found](./screenshots/5tela-de-nothing-found.png)
+![Tela do Nothing Found](./screenshots/04nothing-found.png)
 
-_Tratamento de erro/estado vazio._
+_Tratamento de erro: estado vazio._
 
-- 6️⃣ Tooltip do botão de salvar (versão deslogada)
+- 5️⃣ Erro na Pesquisa
 
-![Tela do Tooltip Login To Save](./screenshots/6tooltip-login-to-save.png)
+![Searched News com Msg de Erro na Pesquisa](./screenshots/05searched-news-msg-de-erro.png)
+
+_Tratamento de erro: algo errado durante a solicitação enviada._
+
+- 6️⃣ Tooltip do Botão 'Salvar' (versão deslogada)
+
+![Searched News com Tooltip Login To Save](./screenshots/06searched-news-com-tooltip-login.png)
 
 _O hover com a mensagem “Faça login para salvar artigos”._
 
+- 7️⃣ Tooltip do botão 'Salvar' (versão logada)
+
+![Searched News com Tooltip Save](./screenshots/07searched-news-com-tooltip-salvar.png)
+
+_O hover com a mensagem “Adicionar aos salvos”._
+
+- 8️⃣ Tooltip do botão 'Des-salvar'
+
+![Searched News com Tooltip Remove](./screenshots/08searched-news-com-tooltip-remover.png)
+
+_Ícone no estado 'salvo' + hover com a mensagem “Remover dos salvos”._
+
+- 9️⃣ Popups de Inscrição e Login
+
+![Signup](./screenshots/09A-signup-ok.png)
+
+![Signin](./screenshots/09B-signin-ok.png)
+
+_Popups preenchidos, no estado 'ok', sem erros de validação e botão ativo._
+
+- 🔟 Popups de Inscrição e Login com Erros de Validação de Campos
+
+![Signup - Validação](./screenshots/10A-signup-msg-validation.png)
+
+![Signin - Validação](./screenshots/10B-signin-msg-validation.png)
+
+_Popups com mensagens de erros de validação de cada campo._
+
+- 1️⃣1️⃣ Popups de Inscrição e Login com Erros no Processamento
+
+![Signup - Erro](./screenshots/11A-signup-msg-de-erro.png)
+
+![Signin - Erro](./screenshots/11B-signin-msg-de-erro.png)
+
+_Popups com mensagens de erros em cada solicitação enviada._
+
+- 1️⃣2️⃣ Artigos Salvos
+
+![Saved News](./screenshots/12saved-news.png)
+
+_Estado logado, ícones de lixeira, lista de artigos salvos, header especial de “Artigos Salvos”. O CRUD (parcial)._
+
+- 1️⃣3️⃣ Artigos Salvos (sem artigo)
+
+![Saved News - Vazia](./screenshots/13saved-news-vazia.png)
+
+_Mensagem ao usuário, informando que não há artigos salvos._
+
+- 1️⃣4️⃣ Tooltip do botão 'Des-salvar' na Página de Artigos Salvos
+
+![Saved News - Tooltip](./screenshots/14saved-news-tooltip-remove.png)
+
+_Hover com a mensagem “Remover dos salvos”._
+
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-10-demonstração"></a>
+<a id="-14-demonstração"></a>
 
-## 🎥 10. Demonstração
+## 🎥 14. Demonstração
 
-Vídeo demonstrativo no Loom: [clique aqui](https://www.loom.com/share/b7abb3ad2cc44866975bfcc2a84251f6)
+Vídeo demonstrativo no Loom: [clique aqui](https://www.loom.com/share/35eb573676a84098822b770295206871)
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-11-melhorias"></a>
+<a id="-15-melhorias"></a>
 
-## 📈 11. Melhorias
+## 📈 15. Melhorias
 
-🧩 **Refatoração do Popups**: centralizar a lógica dos formulários em contexto, inclusive objetos para configuração de childrens. Reduzindo duplicação, melhorando a composição e flexibilizando os modais.
+🧩 **Refatoração da estrutura do cabeçalho (Header)**: atualmente, o projeto utiliza diferentes componentes para representar o cabeçalho da aplicação, considerando variações de estado (usuário logado e deslogado), de rota (página principal e página de artigos salvos) e de responsividade (desktop e dispositivos móveis).
+
+A refatoração visa tornar o código mais modular e sustentável, facilitando futuras alterações de layout, estilo ou regras de navegação:
+
+- Reduzir duplicação de código por meio da extração de componentes menores e reutilizáveis (ex.: logo e menu, navegação, botões de autenticação)
+- Centralizar regras comuns de renderização, como links de navegação e estado de autenticação do usuário;
+- Preservar o padrão do projeto de um arquivo `.css` para cada componente `.jsx`, mantendo a organização e a separação de responsabilidades
+- Melhorar a legibilidade e a manutenibilidade do código sem alterar o comportamento visual ou funcional da interface.
+
+🏷️ **Refatoração da lógica de classificação e exibição de palavras-chave**: a ideia é centralizar a lógica em um trecho mais declarativo e legível, tornando o código mais expressivo, reutilizável e fácil de manter, além de facilitar ajustes futuros na regra de exibição sem impactar outros pontos da aplicação. Ex:
+
+```js
+const entries = Object.entries(contagem).sort(
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+);
+
+const [first, second, third, ...others] = entries.map((e) => e[0]);
+
+const text =
+  entries.length <= 1
+    ? first
+    : entries.length === 2
+      ? `${first} e ${second}`
+      : entries.length === 3
+        ? `${first}, ${second} e ${third}`
+        : `${first}, ${second} e mais ${entries.length - 2}`;
+```
+
+🌐 **Mover a integração com a NewsAPI para o backend**: evitando a exposição da API key no frontend. Atualmente, a chave é enviada via query param (`apiKey`) porque o proxy do bootcamp estava gerando erro ao encaminhar via header customizado (`x-api-key`).
 
 📐 **Ajuste no posicionamento do Header**: revisar o comportamento atual para evitar deslocamento artificial do conteúdo. A ideia é reposicionar apenas o Header e eliminar espaçamentos compensatórios (como `height: 100vh` usado apenas para empurrar elementos).
 
@@ -316,10 +552,12 @@ Vídeo demonstrativo no Loom: [clique aqui](https://www.loom.com/share/b7abb3ad2
 
 ---
 
-<a id="-12-autora"></a>
+<a id="-16-autora"></a>
 
-## 👩‍💻 12. Autora
+## 👩‍💻 16. Autora
 
-Desenvolvido com React, dedicação e muitos estudos por Vanessa Yuri A. Brito, explorando o universo do front‑end um componente por vez.
+Desenvolvido com `React`, dedicação e muitos estudos por **Vanessa Yuri A. Brito**.
+
+Explorando o universo do `front‑end` um componente por vez. Aplicando boas práticas, arquitetura, integração com `backend`e autorização segura baseada em `JWT`.
 
 [Voltar ao topo 🔝](#top)

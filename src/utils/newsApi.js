@@ -5,10 +5,10 @@ import {
   dataFromSevenDays,
 } from './utilsApis';
 
-// Assinatura: fetch(url-to-requested-resource, options-object);
+// Assinatura: fetch(url-to-requested-resource, options-object)
 // É um método assíncrono, retorna uma promisse e method padrão: GET
 
-// GET - /everything > aplicado no botão do SearchForm
+// GET - /everything
 const getNews = async (queryString) => {
   const news = await makeApisRequest({
     endpoint: `${baseNewsApiUrl}/everything`,
@@ -17,15 +17,17 @@ const getNews = async (queryString) => {
       from: dataFromSevenDays() /* função para calcular 7 dias atrás */,
       to: new Date().toISOString() /* data atual no formato ISO 8601 completo */,
       pageSize: 100,
+      apiKey: newsApiKey,
+
+      // API key enviada via query param porque o proxy do bootcamp estava gerando erro
+      // ao enviar via header customizado, x-api-key
     },
     method: 'GET',
-    headers: {
+    /* headers: {
       'X-Api-Key': `${newsApiKey}`,
-    },
+    }, */
   });
 
-  // Se a solicitação for bem-sucedida, retorna os dados para serem aplicados
-  // no handleGetNews
   return news;
 
   // Try/catch desnecessário aqui tbm, se a solicitação não for bem-sucedida,

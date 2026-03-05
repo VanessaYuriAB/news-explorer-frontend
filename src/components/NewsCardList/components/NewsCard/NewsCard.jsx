@@ -1,17 +1,28 @@
 import React, { useContext } from 'react';
 import AuthContext from '../../../../contexts/AuthContext';
-import useFormattedDateBR from '../../../../hooks/useformattedDateBR';
+import PopupsContext from '../../../../contexts/PopupsContext';
+import useOpenedPopups from '../../../../hooks/useOpenedPopups';
+import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
 import './NewsCard.css';
 
-function NewsCard({ searchedNewsCard, handleSaveCard, memoizedHandleUnsave }) {
-  // Desestruturação de propriedades do obj para cada notícia, dentro do array de
-  // artigos da resposta bem-sucedida da NewsApi
+function NewsCard({
+  searchedNewsCard,
+  handleSaveCard,
+  memoizedHandleUnsave,
+  savedUserNews,
+}) {
+  // Os nomes das propriedades são definidas pela News Api
   const { source, title, description, url, urlToImage, publishedAt, isSaved } =
     searchedNewsCard;
 
-  // Contexto de autenticação, extraindo estado de login
   const { loggedIn } = useContext(AuthContext);
+
+  const { handleOpenPopup } = useContext(PopupsContext);
+
+  const { openSignup } = useOpenedPopups({
+    handleOpenPopup,
+  });
 
   // Verificação para classe do botão 'salvar': a classe 'new-card__btn_active'
   // será aplicada para mostrar que o botão está no status "salvo"
@@ -47,10 +58,26 @@ function NewsCard({ searchedNewsCard, handleSaveCard, memoizedHandleUnsave }) {
                 isSaved === true ? 'Remover dos salvos' : 'Salvar notícia'
               }
               onClick={() => {
+                // Condiciona salvar e des-salvar
+                // Salva passando o obj completo do artigo
+                // Des-salva passando apenas o ID
                 if (isSaved === false) {
                   handleSaveCard(searchedNewsCard);
                 } else {
-                  memoizedHandleUnsave(searchedNewsCard);
+                  // Busca o card em questão pelo link da url
+                  // .link na coleção do banco de dados e .url na lista vinda da NewsApi
+                  const cardToUnsave = savedUserNews.userArticles.filter(
+                    (card) => {
+                      return card.link === searchedNewsCard.url;
+                    },
+                  );
+                  // Busca o _id do card a ser deletado
+                  // Pq o obj vindo da NewsApi não possui a propriedade
+                  // Apenas o salvo no Mongo DB
+                  // cardToUnsave é um array com um objeto
+                  const cardId = cardToUnsave[0]._id;
+                  // Passa o ID do card a ser removido
+                  memoizedHandleUnsave(cardId);
                 }
               }}
             ></button>
@@ -62,6 +89,9 @@ function NewsCard({ searchedNewsCard, handleSaveCard, memoizedHandleUnsave }) {
               className="new-card__btn new-card__btn_out"
               type="button"
               aria-label="Logar para poder salvar"
+              onClick={() => {
+                openSignup();
+              }}
             ></button>
           </>
         )}

@@ -121,7 +121,6 @@ deslogado */
   margin: 0;
   min-width: 197.75px;
   max-width: 256px;
-  height: 24px;
   font-size: 18px;
   line-height: 1.33;
   vertical-align: middle;
@@ -138,7 +137,7 @@ deslogado */
 
 .new-card__title {
   margin: 0;
-  width: 88%; /* 400/100 - 352/x > 400x = 35200 > X = 88 */
+  width: 88%; /* 400/100 - 352/x > X = 88 */
   max-height: 90px;
   font-family: 'Roboto Slab', Arial, sans-serif;
   font-weight: 400;
@@ -166,7 +165,7 @@ deslogado */
 
 .new-card__text {
   margin: 0;
-  width: 88%; /* 400/100 - 352/x > 400x = 35200 > X = 88 */
+  width: 88%; /* 400/100 - 352/x > X = 88 */
   max-height: 88px;
   min-height: 66px;
   font-size: 16px;

@@ -1,0 +1,49 @@
+.popup__error {
+  width: 480px;
+  height: 260px;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup__error-user {
+  width: 315px;
+  height: 56px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1;
+  color: rgba(26, 27, 34, 1);
+  margin: 0;
+  filter: drop-shadow(
+    0 0 0.2em rgba(47, 113, 229, 1)
+  ); /* aplica iluminação azul */
+}
+
+.popup__error-message {
+  color: rgba(26, 27, 34, 1);
+  font-size: 20px;
+  line-height: 1;
+  margin: 0 50px 0;
+}
+
+/* ------ Responsividade ------ */
+
+/* ---- Smartphone ---- */
+@media screen and (min-width: 320px) and (max-width: 640px) {
+  .popup__error {
+    width: 320px;
+  }
+
+  .popup__error-user {
+    width: 234px; /* 430/315 - 320/x > x=234,42 */
+    font-size: 22px;
+  }
+
+  .popup__error-message {
+    font-size: 18px;
+  }
+}

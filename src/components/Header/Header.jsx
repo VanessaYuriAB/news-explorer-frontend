@@ -5,7 +5,7 @@ import ForMobileHeaderAndNav from './components/ForMobileHeaderAndNav/ForMobileH
 import newsExplorer from '../../assets/news-explorer-logo.svg';
 import './Header.css';
 
-function Header({ handleOpenPopup, mobile, setMobile, signinPopup }) {
+function Header({ mobile, setMobile }) {
   return (
     <header className="header page__header">
       <div className="header__box">
@@ -29,10 +29,7 @@ function Header({ handleOpenPopup, mobile, setMobile, signinPopup }) {
             aria-label="Ícone com traços, um abaixo do outro, na horizontal: abrir menu"
           ></button>
         </div>
-        <Navigation
-          handleOpenPopup={handleOpenPopup}
-          signinPopup={signinPopup}
-        />
+        <Navigation />
       </div>
       <img
         className="header__line"
@@ -40,13 +37,7 @@ function Header({ handleOpenPopup, mobile, setMobile, signinPopup }) {
         alt="Linha de divisão do cabeçalho, em branco"
       />
 
-      {mobile && (
-        <ForMobileHeaderAndNav
-          setMobile={setMobile}
-          handleOpenPopup={handleOpenPopup}
-          signinPopup={signinPopup}
-        />
-      )}
+      {mobile && <ForMobileHeaderAndNav setMobile={setMobile} />}
     </header>
   );
 }
