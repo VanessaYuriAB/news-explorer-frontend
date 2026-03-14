@@ -64,16 +64,22 @@ function NewsCard({
                 } else {
                   // Busca o card em questão pelo link da url
                   // .link na coleção do banco de dados e .url na lista vinda da NewsApi
-                  const cardToUnsave = savedUserNews.userArticles.filter(
+                  const cardToUnsave = savedUserNews.userArticles.find(
                     (card) => {
                       return card.link === searchedNewsCard.url;
                     },
                   );
+
+                  // Para evitar crash de retorno undefined no .find(), por inconsistência
+                  // entre os estados (ex.: merge atrasado, lista desatualizada)
+                  if (!cardToUnsave) return;
+
                   // Busca o _id do card a ser deletado
                   // Pq o obj vindo da NewsApi não possui a propriedade
                   // Apenas o salvo no Mongo DB
                   // cardToUnsave é um array com um objeto
-                  const cardId = cardToUnsave[0]._id;
+                  const cardId = cardToUnsave._id;
+
                   // Passa o ID do card a ser removido
                   memoizedHandleUnsave(cardId);
                 }
