@@ -26,7 +26,7 @@ function NewsCard({
 
   // Verificação para classe do botão 'salvar': a classe 'new-card__btn_active'
   // será aplicada para mostrar que o botão está no status "salvo"
-  const getCardBtnClassName = `new-card__btn ${isSaved === true ? 'new-card__btn_active' : ''}`;
+  const getCardBtnClassName = `new-card__btn ${isSaved ? 'new-card__btn_active' : ''}`;
 
   // Reformatação da data (publishedAt) com hook personalizado
   const formattedDateBR = useFormattedDateBR(publishedAt);
@@ -54,14 +54,12 @@ function NewsCard({
             <button
               className={getCardBtnClassName}
               type="button"
-              aria-label={
-                isSaved === true ? 'Remover dos salvos' : 'Salvar notícia'
-              }
+              aria-label={isSaved ? 'Remover dos salvos' : 'Salvar notícia'}
               onClick={() => {
                 // Condiciona salvar e des-salvar
                 // Salva passando o obj completo do artigo
                 // Des-salva passando apenas o ID
-                if (isSaved === false) {
+                if (!isSaved) {
                   handleSaveCard(searchedNewsCard);
                 } else {
                   // Busca o card em questão pelo link da url
