@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { useFormAndValidationWithReset } from '../../../../hooks/useFormAndValidationWithReset';
+import useFormAndValidationWithReset from '../../../../hooks/useFormAndValidationWithReset';
 import AuthContext from '../../../../contexts/AuthContext';
 import PopupsContext from '../../../../contexts/PopupsContext';
 import useFormSubmit from '../../../../hooks/useFormSubmit';
