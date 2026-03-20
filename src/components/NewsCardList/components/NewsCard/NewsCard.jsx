@@ -1,4 +1,3 @@
-import useAuth from '../../../../hooks/useAuth';
 import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
@@ -7,16 +6,16 @@ import React from 'react';
 import './NewsCard.css';
 
 function NewsCard({
+  loggedIn,
+  savedUserNews,
   searchedNewsCard,
   handleSaveCard,
   memoizedHandleUnsave,
-  savedUserNews,
 }) {
   const { source, title, description, url, urlToImage, publishedAt, isSaved } =
     searchedNewsCard; // os nomes das propriedades são definidas pela News Api
 
-  const { loggedIn } = useAuth();
-
+  // consumo de PopupsContext
   const { handleOpenPopup } = usePopups();
 
   const { openSignup } = useOpenedPopups({

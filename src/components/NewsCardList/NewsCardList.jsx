@@ -67,6 +67,7 @@ function NewsCardList() {
                   searchedNewsCard={searchedNewsCard}
                   handleSaveCard={memoizedHandleSave} // valor memorizado
                   memoizedHandleUnsave={memoizedHandleUnsave}
+                  loggedIn={loggedIn}
                   savedUserNews={savedUserNews}
                 />
               ))}
