@@ -1,14 +1,18 @@
 import React from 'react';
+import useNews from '../../../../hooks/useNews';
 import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
 import './SavedNewsCard.css';
 
-function SavedNewsCard({ savedCard, memoizedHandleUnsave }) {
+function SavedNewsCard({ savedCard }) {
   // Desestruturação das propriedades de cada card salvo no banco de dados (com backend
   // ativo) > o nome das propriedades é definido no schema do modelo no backend
   const { source, title, text, link, image, date, keyword } = savedCard;
 
   const { name } = source;
+
+  // Consumo de NewsContext
+  const { memoizedHandleUnsave } = useNews();
 
   // Reformatação da data (vem de publishedAt, com o formato da News Api) com hook
   // personalizado

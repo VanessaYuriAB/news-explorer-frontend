@@ -2,7 +2,7 @@ import useAuth from '../../hooks/useAuth';
 import SavedNewsCard from './components/SavedNewsCard/SavedNewsCard';
 import './SavedNewsCardList.css';
 
-function SavedNewsCardList({ memoizedHandleUnsave }) {
+function SavedNewsCardList() {
   const { currentUser, savedUserNews } = useAuth();
 
   // Se o array do estado para os cards salvos do usuário estiver vazio, renderiza msg
@@ -182,11 +182,7 @@ function SavedNewsCardList({ memoizedHandleUnsave }) {
               // A lista de cards salvos possui a propriedade _id em cada elemento, pois
               // é o servidor do banco de dados (Mongo DB)
               return (
-                <SavedNewsCard
-                  key={savedCard._id}
-                  savedCard={savedCard}
-                  memoizedHandleUnsave={memoizedHandleUnsave}
-                />
+                <SavedNewsCard key={savedCard._id} savedCard={savedCard} />
               );
             })}
           </ul>
