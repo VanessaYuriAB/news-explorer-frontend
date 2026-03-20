@@ -1,15 +1,10 @@
 import NewsCard from './components/NewsCard/NewsCard';
-import AuthContext from '../../contexts/AuthContext';
-import { useContext, useCallback, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
+import { useCallback, useState } from 'react';
 import './NewsCardList.css';
 
-function NewsCardList({
-  searchedNews,
-  handleSaveCard,
-  memoizedHandleUnsave,
-  savedUserNews,
-}) {
-  const { loggedIn } = useContext(AuthContext);
+function NewsCardList({ searchedNews, handleSaveCard, memoizedHandleUnsave }) {
+  const { loggedIn, savedUserNews } = useAuth();
 
   // Variável de estado: controle da qtdd de cards renderizados, iniciando com apenas três
   const [visibleCards, setVisibleCards] = useState(3);

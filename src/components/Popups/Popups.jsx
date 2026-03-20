@@ -1,12 +1,8 @@
-import { useEffect, useRef, useContext } from 'react';
-import PopupsContext from '../../contexts/PopupsContext';
+import { useEffect, useRef } from 'react';
 import './Popups.css';
 
 function Popups(props) {
-  // 'children' é o conteúdo de popup
-  const { popup, children, type } = props;
-
-  const { handleClosePopup } = useContext(PopupsContext);
+  const { handleClosePopup, type, children } = props; // 'children' é o conteúdo de popup
 
   // Ref para encapsulamento de children: para fechamento do popup por clique fora da
   // caixa
@@ -27,10 +23,10 @@ function Popups(props) {
     // Wipe function: função de limpeza
     return () => {
       document.removeEventListener('keydown', handleEscClose);
-      // remove o listener ao desmontar ou ao mudar dependências → evita múltiplas inscrições
-      // ou vazamentos
+      // remove o listener ao desmontar ou ao mudar dependências → evita múltiplas
+      // inscrições ou vazamentos
     };
-  }, [popup, handleClosePopup]); // aciona sempre que o popup for aberto e limpa sempre que fechar
+  }, [handleClosePopup]); // aciona sempre que o popup for aberto e limpa sempre que fechar
 
   // Handler: fechamento por clique fora
   const handleClickClose = (evt) => {
@@ -38,14 +34,16 @@ function Popups(props) {
     const clickOutside =
       childrenContent && !childrenContent.contains(evt.target);
 
-    if (clickOutside) handleClosePopup(); // se children estiver aberto e o click não for em
-    // children, fecha o popup
+    if (clickOutside) handleClosePopup(); // se children estiver aberto e o click não for
+    // em children, fecha o popup
   };
 
   return (
     /* Modificadores, para ajuste da margem superior para cada tipo de janela modal */
     <div
-      className={`popup ${type === 'signin' ? 'popup_signin' : ''} ${type === 'signup' ? 'popup_signup' : ''} ${type === 'tooltip' ? 'popup_tooltip' : ''}`}
+      className={`popup ${type === 'signin' ? 'popup_signin' : ''} ${
+        type === 'signup' ? 'popup_signup' : ''
+      } ${type === 'tooltip' ? 'popup_tooltip' : ''}`}
       onClick={handleClickClose}
     >
       {/* Para configuração do fechamento dos popups por clique na tela */}

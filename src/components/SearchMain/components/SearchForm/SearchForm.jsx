@@ -1,5 +1,5 @@
-import { useState, useContext } from 'react';
-import PopupsContext from '../../../../contexts/PopupsContext';
+import { useState } from 'react';
+import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import useFormSubmit from '../../../../hooks/useFormSubmit';
 import './SearchForm.css';
@@ -8,7 +8,7 @@ function SearchForm({ setIsSearchLoading, handleGetNews, setSearchedNews }) {
   // Variável de estado: controle do input do formulário
   const [queryString, setQueryString] = useState('');
 
-  const { handleOpenPopup } = useContext(PopupsContext);
+  const { handleOpenPopup } = usePopups();
 
   const { openSearchTooltip } = useOpenedPopups({
     handleOpenPopup,

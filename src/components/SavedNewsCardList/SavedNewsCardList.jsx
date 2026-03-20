@@ -1,10 +1,9 @@
-import { useContext } from 'react';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
+import useAuth from '../../hooks/useAuth';
 import SavedNewsCard from './components/SavedNewsCard/SavedNewsCard';
 import './SavedNewsCardList.css';
 
-function SavedNewsCardList({ savedUserNews, memoizedHandleUnsave }) {
-  const { currentUser } = useContext(CurrentUserContext);
+function SavedNewsCardList({ memoizedHandleUnsave }) {
+  const { currentUser, savedUserNews } = useAuth();
 
   // Se o array do estado para os cards salvos do usuário estiver vazio, renderiza msg
   if (savedUserNews.userArticles.length === 0) {

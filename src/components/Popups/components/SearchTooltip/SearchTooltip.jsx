@@ -1,11 +1,8 @@
-import { useContext } from 'react';
-import AuthContext from '../../../../contexts/AuthContext';
-import CurrentUserContext from '../../../../contexts/CurrentUserContext';
+import useAuth from '../../../../hooks/useAuth';
 import './SearchTooltip.css';
 
 function SearchTooltip() {
-  const { loggedIn } = useContext(AuthContext);
-  const { currentUser } = useContext(CurrentUserContext);
+  const { loggedIn, currentUser } = useAuth();
 
   // Em React, o padrão é retornar null (ou nem renderizar) > verificação com &&
   // para renderizar apenas caso true > e não com ?

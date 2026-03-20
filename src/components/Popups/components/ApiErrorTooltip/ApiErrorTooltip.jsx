@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import CurrentUserContext from '../../../../contexts/CurrentUserContext';
+import useAuth from '../../../../hooks/useAuth';
 import './ApiErrorTooltip.css';
 
 // Componente para exibir erros ao salvar e des-salvar artigos, também para setar
@@ -7,7 +6,7 @@ import './ApiErrorTooltip.css';
 // Registro e login são exibidos no próprio componente do form
 
 function ApiErrorTooltip({ message }) {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useAuth();
 
   return (
     <div className="popup__error">

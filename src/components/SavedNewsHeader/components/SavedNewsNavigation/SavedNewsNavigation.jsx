@@ -1,14 +1,10 @@
-import { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import AuthContext from '../../../../contexts/AuthContext';
-import CurrentUserContext from '../../../../contexts/CurrentUserContext';
+import useAuth from '../../../../hooks/useAuth';
 import btnOutBlack from '../../../../assets/btn-out-black.svg';
 import './SavedNewsNavigation.css';
 
 function SavedNewsNavigation() {
-  const { handleLogout } = useContext(AuthContext);
-
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, handleLogout } = useAuth();
 
   // A função getNavLinkClass é nativa do componente <NavLink>
   // Aceita um objeto como um parâmetro, que possui uma propriedade,

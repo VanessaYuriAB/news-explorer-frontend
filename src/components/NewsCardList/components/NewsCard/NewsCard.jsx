@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import AuthContext from '../../../../contexts/AuthContext';
-import PopupsContext from '../../../../contexts/PopupsContext';
+import useAuth from '../../../../hooks/useAuth';
+import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
+import React from 'react';
 import './NewsCard.css';
 
 function NewsCard({
@@ -12,13 +12,12 @@ function NewsCard({
   memoizedHandleUnsave,
   savedUserNews,
 }) {
-  // Os nomes das propriedades são definidas pela News Api
   const { source, title, description, url, urlToImage, publishedAt, isSaved } =
-    searchedNewsCard;
+    searchedNewsCard; // os nomes das propriedades são definidas pela News Api
 
-  const { loggedIn } = useContext(AuthContext);
+  const { loggedIn } = useAuth();
 
-  const { handleOpenPopup } = useContext(PopupsContext);
+  const { handleOpenPopup } = usePopups();
 
   const { openSignup } = useOpenedPopups({
     handleOpenPopup,
