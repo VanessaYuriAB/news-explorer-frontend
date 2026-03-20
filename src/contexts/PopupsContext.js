@@ -1,7 +1,7 @@
-// ------------------------------------------------------
-// Contexto que armazena informações sobre gerenciamento
-// dos popups do app (apenas handlers)
-// ------------------------------------------------------
+// ------------------------------------------
+// Contexto que armazena informações sobre
+// o gerenciamento dos popups do app
+// ------------------------------------------
 
 import { createContext } from 'react';
 
