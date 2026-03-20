@@ -27,7 +27,7 @@ function App() {
   const { checkingAuth, loggedIn } = useAuth();
 
   // Consumo de PopupsContext
-  const { popup, handleClosePopup } = usePopups();
+  const { popup } = usePopups();
 
   // Consumo de NewsProvider
   const { isSearchLoading, searchedNews } = useNews();
@@ -114,11 +114,7 @@ function App() {
       {/* Se o popup não for nulo, algum dos componentes será renderizado na tela: Signup,
       Signin, SignupTooltip, SearchTooltip ou ApiErrorTooltip */}
 
-      {popup && (
-        <Popups handleClosePopup={handleClosePopup} type={popup.type}>
-          {popup.children}
-        </Popups>
-      )}
+      {popup && <Popups>{popup.children}</Popups>}
     </div>
   );
 }

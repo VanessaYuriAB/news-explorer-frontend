@@ -1,8 +1,13 @@
 import { useEffect, useRef } from 'react';
+import usePopups from '../../hooks/usePopups';
 import './Popups.css';
 
-function Popups(props) {
-  const { handleClosePopup, type, children } = props; // 'children' é o conteúdo de popup
+function Popups({ children }) {
+  // 'children' é o conteúdo de popup
+
+  // Consumo de PopupsContext
+  const { handleClosePopup, popup } = usePopups();
+  const { type } = popup;
 
   // Ref para encapsulamento de children: para fechamento do popup por clique fora da
   // caixa
