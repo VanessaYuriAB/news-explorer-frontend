@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import useAuth from '../hooks/useAuth';
 import usePopups from '../hooks/usePopups';
+import useSearchedNewsStorage from '../hooks/useSearchedNewsStorage';
 import getNews from '../utils/newsApi';
 import { saveNews, unsaveNews } from '../utils/mainApi';
 import NewsContext from './NewsContext';
@@ -40,11 +41,7 @@ function NewsProvider({ children }) {
   // Efeito para atualizar o localStorage sempre que o estado para notícias pesquisadas
   // (searchedNews) mudar > pq a pesquisa pode ser feita deslogado, para persistência dos
   // dados ao recarregar a página e pq o backend não tem nada relacionado à pesquisa
-  useEffect(() => {
-    if (searchedNews) {
-      localStorage.setItem('searchedNewsData', JSON.stringify(searchedNews));
-    }
-  }, [searchedNews]);
+  useSearchedNewsStorage(searchedNews);
 
   // Efeito derivado: para sincronizar estados derivados (merge de searchedNews com
   // savedUserNews) e adicionar a info 'isSaved' aos artigos (para o ícone do botão
