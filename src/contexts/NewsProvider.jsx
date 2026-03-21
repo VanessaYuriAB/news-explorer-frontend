@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import useAuth from '../hooks/useAuth';
 import usePopups from '../hooks/usePopups';
 import useSearchedNewsStorage from '../hooks/useSearchedNewsStorage';
+import useMergeSavedFlag from '../hooks/useMergeSavedFlag';
 import getNews from '../utils/newsApi';
 import { saveNews, unsaveNews } from '../utils/mainApi';
 import NewsContext from './NewsContext';
@@ -35,7 +36,7 @@ function NewsProvider({ children }) {
   const { showApiError } = usePopups();
 
   /* ---------------------------
-             EFEITOS
+              HOOKS
   ---------------------------- */
 
   // Efeito para atualizar o localStorage sempre que o estado para notícias pesquisadas
@@ -43,63 +44,18 @@ function NewsProvider({ children }) {
   // dados ao recarregar a página e pq o backend não tem nada relacionado à pesquisa
   useSearchedNewsStorage(searchedNews);
 
-  // Efeito derivado: para sincronizar estados derivados (merge de searchedNews com
-  // savedUserNews) e adicionar a info 'isSaved' aos artigos (para o ícone do botão
-  // 'salvar', no NewsCard)
-  useEffect(() => {
-    if (!loggedIn) return;
+  // Hook derivado para sincronizar estados (merge de searchedNews com savedUserNews) e adicionar a info
+  // (flag) 'isSaved' aos artigos (para o ícone do botão 'salvar', no NewsCard)
+  const mergedArticles = useMergeSavedFlag({
+    loggedIn,
+    searchedNews,
+    savedUserNews,
+  });
 
-    // Verificação de segurança para erro de leitura de searchedNews.articles > null
-    // Com o same dentro do setState, o efeito só altera o estado quando os articles
-    // realmente mudam
-    if (!searchedNews || !Array.isArray(searchedNews.articles)) return;
-
-    function mergeNewsLists() {
-      try {
-        // Dentro do array searchedNews.articles, existe algum elemento com a propriedade
-        // url igual a algum elemento dentro do array savedUserNews.userArticles? Se sim,
-        // adiciona flag isSaved como true, se não, como false
-        const mergedArticles = searchedNews.articles.map((searchedItem) => {
-          const isSaved = savedUserNews.userArticles.some((savedItem) => {
-            return searchedItem.url === savedItem.link;
-          });
-
-          return { ...searchedItem, isSaved };
-        });
-
-        // Merge: atualizando estado
-        setSearchedNews((prev) => {
-          // Verificação: evita loop
-
-          // E o efeito só altera o estado quando os articles realmente mudam, por causa
-          // do searchedNews nas dependências do efeito e não searchedNews.articles que é
-          // o que é realmente utilizado no efeito > recomendado pelo React: não coloque
-          // dependência profunda em efeitos pq o React avalia a dependência antes do
-          // effect e o estado pode estar null em transições
-
-          // Gerada por I.A. (Copilot)
-          const same =
-            prev.articles.length === mergedArticles.length &&
-            prev.articles.every(
-              (a, i) =>
-                a.url === mergedArticles[i].url &&
-                a.isSaved === mergedArticles[i].isSaved,
-            );
-
-          if (same) return prev; // evita re-render
-
-          return { ...prev, articles: mergedArticles };
-        });
-      } catch (error) {
-        console.error(
-          'Erro no efeito de merge das listas de cards, mergeNewsLists \n',
-          error,
-        );
-      }
-    }
-
-    mergeNewsLists();
-  }, [loggedIn, searchedNews, savedUserNews]);
+  // Deriva searchedNews com array mergeado
+  const derivedSearchedNews = useMemo(() => {
+    return { ...searchedNews, articles: mergedArticles };
+  }, [searchedNews, mergedArticles]);
 
   /* ---------------------------
              HANDLERS
@@ -229,7 +185,7 @@ function NewsProvider({ children }) {
       value={{
         isSearchLoading,
         setIsSearchLoading,
-        searchedNews,
+        searchedNews: derivedSearchedNews,
         setSearchedNews,
         handleGetNews,
         handleSaveCard,
