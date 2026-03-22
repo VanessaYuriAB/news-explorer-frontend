@@ -1,4 +1,4 @@
-import useAuth from '../../../../hooks/useAuth';
+import useUser from '../../../../hooks/useUser';
 import './ApiErrorTooltip.css';
 
 // Componente para exibir erros ao salvar e des-salvar artigos, também para setar
@@ -6,7 +6,7 @@ import './ApiErrorTooltip.css';
 // Registro e login são exibidos no próprio componente do form
 
 function ApiErrorTooltip({ message }) {
-  const { currentUser } = useAuth();
+  const { currentUser } = useUser();
 
   return (
     <div className="popup__error">

@@ -53,6 +53,9 @@ function useUserData({
     // Se não houver token, retorna
     if (!tokenJwt) return;
 
+    // Se a verificação tiver sido encerrada pelo useAuthBootstrap, não procede
+    if (!checkingAuth) return;
+
     // Impede o retry automático
     if (bootstrapFailedRef.current) return;
 

@@ -1,5 +1,6 @@
 import NewsCard from './components/NewsCard/NewsCard';
 import useAuth from '../../hooks/useAuth';
+import useUser from '../../hooks/useUser';
 import useNews from '../../hooks/useNews';
 import { useCallback, useState } from 'react';
 import './NewsCardList.css';
@@ -9,7 +10,8 @@ function NewsCardList() {
   const [visibleCards, setVisibleCards] = useState(3);
 
   // Consumo de contextos
-  const { loggedIn, savedUserNews } = useAuth();
+  const { loggedIn } = useAuth();
+  const { savedUserNews } = useUser();
   const { searchedNews, handleSaveCard, memoizedHandleUnsave } = useNews();
 
   // Memoriza a função passada ao NewsCard, para não recriar a cada render

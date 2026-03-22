@@ -1,10 +1,12 @@
 import { NavLink, Link } from 'react-router-dom';
 import useAuth from '../../../../hooks/useAuth';
+import useUser from '../../../../hooks/useUser';
 import btnOutBlack from '../../../../assets/btn-out-black.svg';
 import './SavedNewsNavigation.css';
 
 function SavedNewsNavigation() {
-  const { currentUser, handleLogout } = useAuth();
+  const { handleLogout } = useAuth();
+  const { currentUser } = useUser();
 
   // A função getNavLinkClass é nativa do componente <NavLink>
   // Aceita um objeto como um parâmetro, que possui uma propriedade,

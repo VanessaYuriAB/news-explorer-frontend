@@ -5,6 +5,7 @@ import AuthProvider from './contexts/AuthProvider';
 import PopupsProvider from './contexts/PopupsProvider';
 import App from './components/App/App.jsx';
 import NewsProvider from './contexts/NewsProvider';
+import UserProvider from './contexts/UserProvider';
 import './index.css';
 
 createRoot(document.getElementById('root')).render(
@@ -12,9 +13,11 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <PopupsProvider>
         <AuthProvider>
-          <NewsProvider>
-            <App />
-          </NewsProvider>
+          <UserProvider>
+            <NewsProvider>
+              <App />
+            </NewsProvider>
+          </UserProvider>
         </AuthProvider>
       </PopupsProvider>
     </BrowserRouter>

@@ -1,12 +1,15 @@
 import { NavLink } from 'react-router-dom';
 import useAuth from '../../../../hooks/useAuth';
+import useUser from '../../../../hooks/useUser';
 import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import btnOut from '../../../../assets/btn-out.svg';
 import './Navigation.css';
 
 function Navigation() {
-  const { loggedIn, handleLogout, currentUser } = useAuth();
+  const { loggedIn, handleLogout } = useAuth();
+
+  const { currentUser } = useUser();
 
   const { handleOpenPopup } = usePopups();
 

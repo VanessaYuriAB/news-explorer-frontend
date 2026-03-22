@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import useAuth from '../../../../hooks/useAuth';
+import useUser from '../../../../hooks/useUser';
 import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import newsExplorer from '../../../../assets/news-explorer-logo.svg';
@@ -8,7 +9,8 @@ import btnOut from '../../../../assets/btn-out.svg';
 import './ForMobileHeaderAndNav.css';
 
 function ForMobileHeaderAndNav({ setMobile }) {
-  const { loggedIn, handleLogout, currentUser } = useAuth();
+  const { loggedIn, handleLogout } = useAuth();
+  const { currentUser } = useUser();
 
   const { handleOpenPopup } = usePopups();
 

@@ -1,9 +1,9 @@
-import useAuth from '../../hooks/useAuth';
+import useUser from '../../hooks/useUser';
 import SavedNewsCard from './components/SavedNewsCard/SavedNewsCard';
 import './SavedNewsCardList.css';
 
 function SavedNewsCardList() {
-  const { currentUser, savedUserNews } = useAuth();
+  const { currentUser, savedUserNews } = useUser();
 
   // Se o array do estado para os cards salvos do usuário estiver vazio, renderiza msg
   if (savedUserNews.userArticles.length === 0) {

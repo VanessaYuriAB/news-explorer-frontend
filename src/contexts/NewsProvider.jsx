@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import useAuth from '../hooks/useAuth';
+import useUser from '../hooks/useUser';
 import usePopups from '../hooks/usePopups';
 import useSearchedNewsStorage from '../hooks/useSearchedNewsStorage';
 import useMergeSavedFlag from '../hooks/useMergeSavedFlag';
@@ -30,7 +31,10 @@ function NewsProvider({ children }) {
           CONTEXTOS
   ---------------------------- */
   // Consumo de AuthContext
-  const { savedUserNews, tokenJwt, setSavedUserNews, loggedIn } = useAuth();
+  const { tokenJwt, loggedIn } = useAuth();
+
+  // Consumo de UserContext
+  const { savedUserNews, setSavedUserNews } = useUser();
 
   // Consumo de PopupsContext
   const { showApiError } = usePopups();
