@@ -25,7 +25,7 @@ function SavedNewsCardList() {
 
     // Reduce para contabilizar qtdd de repetições de cada palavra-chave,
     // retorna objeto com pares de propriedade(palavra-chave)/valor(qtdd)
-    const contagem = savedUserNews.userArticles.reduce((acc, item) => {
+    const count = savedUserNews.userArticles.reduce((acc, item) => {
       // Acessa a chave dentro do acumulador (a palavra-chave do item que está sendo
       // percorrido no momento)
       // Se a chave não existe ainda, usa 0 como valor inicial
@@ -58,12 +58,12 @@ function SavedNewsCardList() {
 
     // Transforma obj de retorno do reduce em array de entries, com propriedades completas
     // tbm em array, para uso no .sort() para ordenação dos itens
-    const contagemEmEntries = Object.entries(contagem);
+    const countInEntries = Object.entries(count);
 
     // Ordena palavras-chaves por qtdd de repetições, da maior para menor
     // Passa o array com spread para ser criado um novo vetor e não alterar o original
     // Em caso de empate, mantém a ordem original
-    const contagemOrdenada = [...contagemEmEntries].sort((a, b) => {
+    const orderedCounting = [...countInEntries].sort((a, b) => {
       return b[1] - a[1];
     });
 
@@ -76,7 +76,7 @@ function SavedNewsCardList() {
     // Acessa o primeiro item do array ordenado decrescentemente (que tbm é um array) e,
     // depois, acessa o primeiro item deste array, que é a palavra-chave com maior qtdd
     // de repetições
-    const firstKeyword = contagemOrdenada[0][0];
+    const firstKeyword = orderedCounting[0][0];
 
     // Definição para as demais palavras-chave
 
@@ -86,43 +86,43 @@ function SavedNewsCardList() {
 
       // Se houverem três palavras-chave ou menos, exibe todas as palavras-chave
 
-      if (contagemOrdenada.length > 1 && contagemOrdenada.length <= 3) {
+      if (orderedCounting.length > 1 && orderedCounting.length <= 3) {
         // Define a segunda palavra-chave
-        secondKeyword = contagemOrdenada[1][0];
+        secondKeyword = orderedCounting[1][0];
 
         // Define a terceira palavra-chave
         // Se não houver a terceira, 'reseta' variável
-        contagemOrdenada.length === 3
-          ? (thirdKeyword = contagemOrdenada[2][0])
+        orderedCounting.length === 3
+          ? (thirdKeyword = orderedCounting[2][0])
           : '';
       }
 
       // Se houverem mais do que três palavras-chave, exiba as primeiras duas e o número
       // de palavras-chave restantes
 
-      if (contagemOrdenada.length > 3) {
+      if (orderedCounting.length > 3) {
         // Define a segunda palavra-chave
-        secondKeyword = contagemOrdenada[1][0];
+        secondKeyword = orderedCounting[1][0];
 
         // Define a qtdd de outras no lugar da terceira palavra-chave
-        thirdKeyword = ` e ${contagemOrdenada.length - 2} outras`;
+        thirdKeyword = ` e ${orderedCounting.length - 2} outras`;
       }
 
       // Configura estrutura do texto para a segunda palavra-chave, de acordo com a qtdd
       // total de palavras-chave
       const secondKey = () => {
         // Se não houver segunda palavra-chave
-        if (contagemOrdenada.length < 2) {
+        if (orderedCounting.length < 2) {
           return '';
         }
 
         // Se houverem apenas duas palavras-chave
-        if (contagemOrdenada.length === 2) {
+        if (orderedCounting.length === 2) {
           return ` e ${secondKeyword}`;
         }
 
         // Se houverem mais do que duas palavras-chave
-        if (contagemOrdenada.length > 2) {
+        if (orderedCounting.length > 2) {
           return `, ${secondKeyword}`;
         }
       };
@@ -131,17 +131,17 @@ function SavedNewsCardList() {
       // total de palavras-chave
       const thirdKey = () => {
         // Se houver menos do que três palavras-chave
-        if (contagemOrdenada.length < 3) {
+        if (orderedCounting.length < 3) {
           return '';
         }
 
         // Se houverem três palavras-chave
-        if (contagemOrdenada.length === 3) {
+        if (orderedCounting.length === 3) {
           return ` e ${thirdKeyword}`;
         }
 
         // Se houverem mais do que três
-        if (contagemOrdenada.length > 3) {
+        if (orderedCounting.length > 3) {
           return thirdKeyword;
         }
       };
