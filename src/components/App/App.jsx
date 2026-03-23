@@ -10,8 +10,9 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Footer from '../Footer/Footer';
 import Popups from '../Popups/Popups';
 import useAuth from '../../hooks/useAuth';
-import usePopups from '../../hooks/usePopups';
+import useUser from '../../hooks/useUser';
 import useNews from '../../hooks/useNews';
+import usePopups from '../../hooks/usePopups';
 import { useState } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './App.css';
@@ -26,11 +27,14 @@ function App() {
   // Consumo de AuthContext
   const { checkingAuth, loggedIn } = useAuth();
 
-  // Consumo de PopupsContext
-  const { popup } = usePopups();
+  // Consumo de UserContext
+  const { checkingUser } = useUser();
 
   // Consumo de NewsProvider
   const { isSearchLoading, searchedNews } = useNews();
+
+  // Consumo de PopupsContext
+  const { popup } = usePopups();
 
   /* ------------------------------
                 JSX
@@ -41,7 +45,16 @@ function App() {
   if (checkingAuth) {
     return (
       <div className="loading-screen">
-        <p className="loading-text">Carregando...</p>
+        <p className="loading-text">Verificando seus dados...</p>
+      </div>
+    );
+  }
+
+  // Enquanto estiver verificando os artigos salvos pelo usuário, renderiza outra tela de carregamento
+  if (loggedIn && checkingUser) {
+    return (
+      <div className="loading-screen">
+        <p className="loading-text">Carregando seus artigos...</p>
       </div>
     );
   }

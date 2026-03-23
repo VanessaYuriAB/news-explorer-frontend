@@ -10,6 +10,7 @@ import './ForMobileHeaderAndNav.css';
 
 function ForMobileHeaderAndNav({ setMobile }) {
   const { loggedIn, handleLogout } = useAuth();
+
   const { currentUser } = useUser();
 
   const { handleOpenPopup } = usePopups();

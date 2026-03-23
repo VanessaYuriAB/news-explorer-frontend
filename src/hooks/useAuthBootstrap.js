@@ -27,20 +27,50 @@ Retorno típico:
 */
 
 import { useEffect } from 'react';
+import { getCurrentUser } from '../utils/mainApi';
 
 // Resolve o “gate” quando não há token: não tenta “validar” token, só encerra o
 // loading quando não existe
 
-function useAuthBootstrap({ tokenJwt, setCheckingAuth }) {
+function useAuthBootstrap({
+  tokenJwt,
+  setLoggedIn,
+  setCheckingAuth,
+  handleLogout,
+}) {
   useEffect(() => {
-    // Sempre que token mudar, decide o gate
-    if (tokenJwt) {
-      setCheckingAuth(true); // com token, precisa do bootstrap (carregar user/news)
-    } else {
-      setCheckingAuth(false); // sem token, encerra gate, finalizando a verificação de
-      // autenticação
+    if (!tokenJwt) {
+      setCheckingAuth(false); // sem token, já encerra gate, finalizando a verificação de
+      // autenticação e retornando
+      return;
     }
-  }, [tokenJwt, setCheckingAuth]);
+
+    // Valida JWT, buscando dados do usuário no backend e encerra checkingAuth
+    (async () => {
+      try {
+        await getCurrentUser(tokenJwt);
+        setLoggedIn(true);
+      } catch (error) {
+        console.error(
+          `Erro no efeito 'autenticação', em 'useAuthBootstrap', para a busca dos dados do
+          usuário logado \n`,
+          error,
+        );
+
+        // Se ocorrer erro de autorização (token inválido), desloga o usuário
+        if (error.status === 401) {
+          handleLogout();
+          return;
+        }
+      } finally {
+        // Finaliza a verificação de autenticação
+        setCheckingAuth(false);
+      }
+    })();
+
+    // Sempre que token mudar, decide o gate
+    // Com token, precisa do bootstrap (user/news)
+  }, [tokenJwt, setLoggedIn, setCheckingAuth, handleLogout]);
 }
 
 export default useAuthBootstrap;

@@ -7,14 +7,7 @@ import UserContext from './UserContext';
 
 function UserProvider({ children }) {
   // Consumo de AuthContext
-  const {
-    tokenJwt,
-    loggedIn,
-    setLoggedIn,
-    handleLogout,
-    checkingAuth,
-    setCheckingAuth,
-  } = useAuth();
+  const { tokenJwt, loggedIn } = useAuth();
 
   // Consumo de PopupsContext
   const { showApiError } = usePopups();
@@ -30,21 +23,21 @@ function UserProvider({ children }) {
 
   const [savedUserNews, setSavedUserNews] = useState({ userArticles: [] });
 
+  const [checkingUser, setCheckingUser] = useState(false);
+
   /* ---------------------------
               HOOK
   ---------------------------- */
 
-  // Efeito de montagem/refresh: carregamento dos dados do usuário
+  // Efeito de montagem/refresh: carregamento dos dados e artigos do usuário
   // Só roda se estiver com backend ativo (com o token do usuário)
   useUserData({
     tokenJwt,
-    setLoggedIn,
+    loggedIn,
     setCurrentUser,
     setSavedUserNews,
-    handleLogout,
     showApiError,
-    checkingAuth,
-    setCheckingAuth,
+    setCheckingUser,
   });
 
   // Reseta dados do perfil do usuário, conforme status de loggedIn
@@ -60,6 +53,7 @@ function UserProvider({ children }) {
         currentUser,
         savedUserNews,
         setSavedUserNews, // usado por salvar/des-salvar em app
+        checkingUser,
       }}
     >
       {children}

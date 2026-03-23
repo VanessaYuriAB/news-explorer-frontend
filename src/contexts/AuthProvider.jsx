@@ -46,8 +46,13 @@ function AuthProvider({ children }) {
 
   // Efeito de autenticação
 
-  // Gate de autenticação
-  useAuthBootstrap({ tokenJwt, setCheckingAuth });
+  // Gate de autenticação com validação do JWT
+  useAuthBootstrap({
+    tokenJwt,
+    setLoggedIn,
+    setCheckingAuth,
+    handleLogout,
+  });
 
   /* ---------------------------
             HANDLERS
@@ -85,9 +90,7 @@ function AuthProvider({ children }) {
       value={{
         tokenJwt,
         loggedIn,
-        setLoggedIn,
         checkingAuth,
-        setCheckingAuth,
         handleLogout,
         handleRegistration,
         handleLogin,

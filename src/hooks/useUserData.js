@@ -25,19 +25,17 @@ useUserData({
 */
 
 import { useRef, useEffect } from 'react';
-import { getUserNews, getCurrentUser } from '../utils/mainApi';
+import { getCurrentUser, getUserNews } from '../utils/mainApi';
 
-// Carrega perfil + cards, e encerra checkingAuth
+// Carrega perfil + cards, e manipula checkingUser
 
 function useUserData({
   tokenJwt,
-  setLoggedIn,
+  loggedIn,
   setCurrentUser,
   setSavedUserNews,
-  handleLogout,
   showApiError,
-  checkingAuth,
-  setCheckingAuth,
+  setCheckingUser,
 }) {
   // Ref para indicar sucesso ou falha na montagem do app e efeito não rodar em loop
   // Em efeitos de bootstrap, erro ≠ sucesso parcial
@@ -50,11 +48,11 @@ function useUserData({
   }, [tokenJwt]);
 
   useEffect(() => {
+    // Se não estiver logado, retorna
+    if (!loggedIn) return;
+
     // Se não houver token, retorna
     if (!tokenJwt) return;
-
-    // Se a verificação tiver sido encerrada pelo useAuthBootstrap, não procede
-    if (!checkingAuth) return;
 
     // Impede o retry automático
     if (bootstrapFailedRef.current) return;
@@ -62,39 +60,31 @@ function useUserData({
     // Flag para verificar se o componente está montado: evita setState após desmontar
     let isMounted = true;
 
-    // Fetch e set dos dados + checkingAuth
+    // Ativa flag de verificação
+    setCheckingUser(true);
+
+    // Fetch e set dos dados e artigos do usuário + checkingUser
     // Define e executa a função assíncrona
     (async () => {
       try {
         const userInfos = await getCurrentUser(tokenJwt);
-
         const userSavedCards = await getUserNews(tokenJwt);
 
         if (!isMounted) return;
 
-        setLoggedIn(true);
-
-        // Seta variáveis de estado com dados do backend (user e articles)
         setCurrentUser({
           email: userInfos.user.email,
           name: userInfos.user.name,
         });
-
         setSavedUserNews(userSavedCards);
       } catch (error) {
         console.error(
-          `Erro no efeito 'de montagem', em 'useUserData', para a busca e set dos dados do
-          usuário logado \n`,
+          `Erro no efeito 'de montagem', em 'useUserData', para a busca e set dos dados e
+          artigos do usuário logado \n`,
           error,
         );
 
         if (!isMounted) return;
-
-        // Se ocorrer erro de autorização (token inválido), desloga o usuário
-        if (error.status === 401) {
-          handleLogout();
-          return;
-        }
 
         // Para erros 429, 500, etc: mostra msg de erro em popup tooltip
         // Usa o mesmo hook implementado nos handlers para salvar e des-salvar artigos
@@ -109,8 +99,8 @@ function useUserData({
         bootstrapFailedRef.current = true;
       } finally {
         if (isMounted) {
-          // Finaliza a verificação de autenticação
-          setCheckingAuth(false);
+          // Finaliza a verificação do usuário
+          setCheckingUser(false);
         }
       }
     })();
@@ -121,13 +111,11 @@ function useUserData({
     };
   }, [
     tokenJwt,
-    setLoggedIn,
+    loggedIn,
     setCurrentUser,
     setSavedUserNews,
-    handleLogout,
     showApiError,
-    checkingAuth,
-    setCheckingAuth,
+    setCheckingUser,
   ]);
 }
 
