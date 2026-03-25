@@ -10,7 +10,7 @@ function NewsCard({
   savedUserNews,
   searchedNewsCard,
   handleSaveCard,
-  memoizedHandleUnsave,
+  handleUnsaveCard,
 }) {
   const { source, title, description, url, urlToImage, publishedAt, isSaved } =
     searchedNewsCard; // os nomes das propriedades são definidas pela News Api
@@ -79,7 +79,7 @@ function NewsCard({
                   const cardId = cardToUnsave._id;
 
                   // Passa o ID do card a ser removido
-                  memoizedHandleUnsave(cardId);
+                  handleUnsaveCard(cardId);
                 }
               }}
             ></button>

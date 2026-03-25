@@ -148,10 +148,10 @@ function NewsProvider({ children }) {
 
   // Handler: des-salvar cards de pesquisa (NewsCard) e remover cards de salvos
   // (SavedNewsCard)
-  // useCallback: para memorizar a função e não recriar a cada render > NewsCard
-  // e SavedNewsCard
+  // useCallback: inicialmente, para memorizar a função e não recriar a cada render >
+  // NewsCard e SavedNewsCard
   // Em conjunto com React.memo() e useMemo() para os dados
-  const memoizedHandleUnsave = useCallback(
+  const handleUnsaveCard = useCallback(
     async (cardId) => {
       try {
         // Passa o _id do card como parâmetro (_id gerado automaticamente pelo Mongo DB ao
@@ -175,10 +175,7 @@ function NewsProvider({ children }) {
         // Abre o tooltip, renderizado por Popup
         showApiError(error);
 
-        console.error(
-          'Erro ao des-salvar artigo, memoizedHandleUnsave \n',
-          error,
-        );
+        console.error('Erro ao des-salvar artigo, handleUnsaveCard \n', error);
       }
     },
     [tokenJwt, setSavedUserNews, showApiError],
@@ -196,14 +193,14 @@ function NewsProvider({ children }) {
       setSearchedNews,
       handleGetNews,
       handleSaveCard,
-      memoizedHandleUnsave,
+      handleUnsaveCard,
     };
   }, [
     isSearchLoading,
     derivedSearchedNews,
     handleGetNews,
     handleSaveCard,
-    memoizedHandleUnsave,
+    handleUnsaveCard,
   ]);
 
   return (

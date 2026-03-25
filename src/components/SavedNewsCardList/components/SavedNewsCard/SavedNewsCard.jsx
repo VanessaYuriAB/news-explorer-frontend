@@ -12,7 +12,7 @@ function SavedNewsCard({ savedCard }) {
   const { name } = source;
 
   // Consumo de NewsContext
-  const { memoizedHandleUnsave } = useNews();
+  const { handleUnsaveCard } = useNews();
 
   // Reformatação da data (vem de publishedAt, com o formato da News Api) com hook
   // personalizado
@@ -39,7 +39,7 @@ function SavedNewsCard({ savedCard }) {
         <button
           type="button"
           className="saved-card__btn"
-          onClick={() => memoizedHandleUnsave(savedCard._id)}
+          onClick={() => handleUnsaveCard(savedCard._id)}
           aria-label="Remover dos salvos"
         ></button>
 

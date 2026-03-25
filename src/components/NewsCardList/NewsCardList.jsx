@@ -2,7 +2,7 @@ import NewsCard from './components/NewsCard/NewsCard';
 import useAuth from '../../hooks/useAuth';
 import useUser from '../../hooks/useUser';
 import useNews from '../../hooks/useNews';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import './NewsCardList.css';
 
 function NewsCardList() {
@@ -12,14 +12,7 @@ function NewsCardList() {
   // Consumo de contextos
   const { loggedIn } = useAuth();
   const { savedUserNews } = useUser();
-  const { searchedNews, handleSaveCard, memoizedHandleUnsave } = useNews();
-
-  // Memoriza a função passada ao NewsCard, para não recriar a cada render
-  // Em conjunto com React.memo() e useMemo() para os dados
-  const memoizedHandleSave = useCallback(
-    (card) => handleSaveCard(card),
-    [handleSaveCard],
-  );
+  const { searchedNews, handleSaveCard, handleUnsaveCard } = useNews();
 
   // Handler: mostrar mais três cartões
   const handleShowMore = () => {
@@ -67,8 +60,8 @@ function NewsCardList() {
                   } /* A API da NewsAPI não fornece _id, então foi aplicado url, por ser
                   algo único */
                   searchedNewsCard={searchedNewsCard}
-                  handleSaveCard={memoizedHandleSave} // valor memorizado
-                  memoizedHandleUnsave={memoizedHandleUnsave}
+                  handleSaveCard={handleSaveCard}
+                  handleUnsaveCard={handleUnsaveCard}
                   loggedIn={loggedIn}
                   savedUserNews={savedUserNews}
                 />
