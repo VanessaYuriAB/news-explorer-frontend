@@ -2,28 +2,26 @@
 
 Aplicação **full‑stack** para pesquisa e salvamento de notícias, com autenticação JWT, arquitetura desacoplada e foco em boas práticas de React e UX. Desenvolvida como projeto final do bootcamp **TripleTen**, dividida em fases incrementais, com foco em **React**, **Vite**, **Node.js**, **Express**, **MongoDB** e **autorização baseada em JWT**.
 
-<!-- ⚙️ Tecnologias principais -->
+<!-- ⚙️ Stack principal -->
 
 [![Node](https://img.shields.io/badge/Node-v22.15.0-darkgreen?logo=node.js)](https://nodejs.org/pt)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=yellow)](https://developer.mozilla.org/docs/Web/JavaScript)
-
 [![React](https://img.shields.io/badge/React-19.2.0-blue?style=flat&logo=react&logoColor=blue)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-7.1.12-646CFF?style=flat&logo=vite&logoColor=989CFF)](https://vitejs.dev/)
 
-<!-- 🧰 Ferramentas e qualidade de código -->
+<!-- 🧰 Qualidade de código e workflow -->
 
 [![ESLint](https://img.shields.io/badge/ESLint-Airbnb%20base-darkblue?logo=eslint&logoColor=darkblue)](https://www.npmjs.com/package/eslint-config-airbnb)
 [![Prettier](https://img.shields.io/badge/Prettier-Code_Formatter-red?style=flat&logo=prettier&logoColor=black)](https://prettier.io/)
-
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-config-orange?logo=editorconfig&logoColor=white)](https://editorconfig.org/)
-
 [![Husky](https://img.shields.io/badge/Husky-Git_Hooks-pink?logo=git)](https://typicode.github.io/husky/)
 [![Lint-Staged](https://img.shields.io/badge/Lint_Staged-Precommit-green?logo=git)](https://github.com/okonet/lint-staged)
 
-<!-- 💾 Infraestrutura e controle de versão -->
+<!-- 💾 Infraestrutura e deploy -->
 
 [![Git](https://img.shields.io/badge/Git-Control-646CFF?style=flat&logo=git)](https://git-scm.com/)
 [![GitHub](https://img.shields.io/badge/Repo-Available-181717?style=flat&logo=github&logoColor=white)](https://github.com/VanessaYuriAB/web_project_api_full)
+[![Deploy na Vercel](https://img.shields.io/badge/Vercel-Deploy-black?logo=vercel&logoColor=black)](https://vercel.com)
 
 <!-- 🌍 Compatibilidade -->
 
@@ -37,20 +35,22 @@ Aplicação **full‑stack** para pesquisa e salvamento de notícias, com autent
 
 1. [Descrição 📚](#-1-descrição)
 2. [Arquitetura do Projeto 🧱](#-2-arquitetura-do-projeto)
-3. [Fases do Desenvolvimento 🧩](#-3-fases-do-desenvolvimento)
-4. [Funcionalidades Implementadas 🚀](#-4-funcionalidades-implementadas)
-5. [Autorização e Autenticação 🔐](#-5-autorização-e-autenticação)
-6. [Gerenciamento de Estado Global 🧠](#-6-gerenciamento-de-estado-global)
-7. [Proteção de Rota 🛡️](#-7-proteção-de-rota)
-8. [Validação de Formulários ✅](#-8-validação-de-formulários)
-9. [Tratamento de Erros ⚠️](#-9-tratamento-de-erros)
-10. [Estrutura do Projeto 🗃️](#-10-estrutura-do-projeto)
-11. [Instalação e Execução 📦](#-11-instalação-e-execução)
-12. [Status do Projeto 🚧](#-12-status-do-projeto)
-13. [Capturas de Tela 📸](#-13-capturas-de-tela)
-14. [Demonstração 🎥](#-14-demonstração)
-15. [Melhorias 📈](#-15-melhorias)
-16. [Autora 👩‍💻](#-16-autora)
+3. [Decisões Técnicas Relevantes ⚖️](#-3-decisões-técnicas-relevantes)
+4. [Fases do Desenvolvimento 🧩](#-4-fases-do-desenvolvimento)
+5. [Funcionalidades Implementadas 🚀](#-5-funcionalidades-implementadas)
+6. [Autorização e Autenticação 🔐](#-6-autorização-e-autenticação)
+7. [Gerenciamento de Estado Global 🧠](#-7-gerenciamento-de-estado-global)
+8. [Proteção de Rota 🛡️](#-8-proteção-de-rota)
+9. [Validação de Formulários ✅](#-9-validação-de-formulários)
+10. [Tratamento de Erros ⚠️](#-10-tratamento-de-erros)
+11. [Estrutura do Projeto 🗃️](#-11-estrutura-do-projeto)
+12. [Instalação e Execução 📦](#-12-instalação-e-execução)
+13. [Status do Projeto 🚧](#-13-status-do-projeto)
+14. [Capturas de Tela 📸](#-14-capturas-de-tela)
+15. [Demonstração 🎥](#-15-demonstração)
+16. [Melhorias 📈](#-16-melhorias)
+17. [Aprendizados Técnicos 📘](#-17-aprendizados-técnicos)
+18. [Autora 👩‍💻](#-18-autora)
 
 ---
 
@@ -67,6 +67,8 @@ O **News Explorer** é uma aplicação web full‑stack que permite aos usuário
 
 O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios técnicos e de qualidade exigidos pelo bootcamp da **TripleTen**.
 
+📌 A busca de notícias, **em produção**, utiliza o **proxy** fornecido pela escola para evitar problemas de CORS em navegadores - _comportamento validado em Chrome, Edge e Firefox (via BrowserStack)_. Em produção real, essa integração seria feita pelo backend da aplicação.
+
 [Voltar ao topo 🔝](#top)
 
 ---
@@ -80,24 +82,37 @@ O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios té
 - **Autenticação**: JWT
 - **Comunicação**: API REST via fetch
 - **Deploy**:
-  - Frontend: Vercel (https://new-explorer-frontend-git-stage-51d26c-vanessayuriabs-projects.vercel.app)
+  - Frontend: Vercel (https://new-explorer-frontend.vercel.app)
   - Backend: servidor próprio em VM no Google Cloud (API acessível via domínio: https://api.newsexplorer.sevencomets.com)
 
 📦 Repositório do backend: https://github.com/VanessaYuriAB/new-explorer-backend
 
-📌 Como frontend e backend estão em **origens diferentes**, a aplicação utiliza **CSP via meta tag** no frontend para permitir comunicação segura entre domínios, quando o deploy é separado.
+📌 A _política de segurança de conteúdo_ (`CSP`) é definida via _meta tag no `index.html`_, permitindo comunicação controlada entre frontend e backend em origens distintas, já que o deploy é separado.
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-3-fases-do-desenvolvimento"></a>
+<a id="-3-decisões-técnicas-relevantes"></a>
 
-## 🧩 3. Fases do Desenvolvimento
+## 🧭 3. Decisões Técnicas Relevantes
+
+- Uso de _estado derivado_ (`useMemo`) em vez de `useEffect` para sincronização de listas
+- Separação entre _Auth_ e _User_ para reduzir re-renderizações globais
+- _Centralização de lógica de domínio_ em hooks reutilizáveis
+- Uso de `Set.has()` para otimizar merge de artigos (lookup O(1))
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-4-fases-do-desenvolvimento"></a>
+
+## 🧩 4. Fases do Desenvolvimento
 
 ### ✅ Fase 1 — Marcação, JSX e API de terceiros
 
-- Interface React
+- Interface `React`
 - Pesquisa de notícias
 - Estados de carregamento e erro
 - Layout responsivo
@@ -105,10 +120,10 @@ O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios té
 
 ### ✅ Fase 2 — Backend
 
-- API REST própria
-- Modelos e schemas no MongoDB
+- `API REST` própria
+- Modelos e `schemas` no _MongoDB_
 - Rotas de usuários e artigos
-- Autenticação via JWT
+- Autenticação via `JWT`
 
 ### ✅ Fase 3 — Autorização com React
 
@@ -119,13 +134,21 @@ O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios té
 - Persistência e validação do token
 - Validação de formulários
 
+### ✅ Fase 4 — Refatoração
+
+- Testes de integração com `Jest` e `Supertest` (no _backend_)
+- Divisão de responsabilidades de `App.jsx`
+- Implementação de `Providers` em `main.jsx`
+- Divisão do efeito de montagem em `useAuthBootstrap` e `useUserData`
+- Merge de artigos pesquisados com artigos salvos calculados por _derivado_, usando `useMemo()` e _lookup_ com `Set.has()`
+
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-4-funcionalidades-implementadas"></a>
+<a id="-5-funcionalidades-implementadas"></a>
 
-## 🚀 4. Funcionalidades Implementadas
+## 🚀 5. Funcionalidades Implementadas
 
 - Cadastro de usuário (`/signup`)
 - Login (`/signin`)
@@ -141,69 +164,144 @@ O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios té
 - Validação instantânea de formulários
 - Tratamento de erros
 
-### 📌 Hook de formatação de datas
+### 📌 Hook `useFormattedDateBR`
 
-O hook utilitário (`useFormattedDateBR`) é utilizado para formatar a data de publicação dos artigos conforme o padrão visual do projeto, definido no Figma, usando `Intl.DateTimeFormat` com locale `pt-BR`.
+O hook utilitário para formatação de datas é utilizado para formatar a data de publicação dos artigos conforme o padrão visual do projeto, definido no Figma, usando `Intl.DateTimeFormat` com locale `pt-BR`.
 
-O hook utiliza `useMemo` para evitar processamento desnecessário durante a renderização de múltiplos cards.
-
-[Voltar ao topo 🔝](#top)
-
----
-
-<a id="-5-autorização-e-autenticação"></a>
-
-## 🔐 5. Autorização e Autenticação
-
-- Autenticação baseada em **JWT**
-- O token:
-  - É armazenado no **localStorage**
-  - É validado pelo servidor
-  - É removido no logout
-- O frontend **não confia apenas no armazenamento local**:
-  - O token é validado via **requisição ao backend**
-- O token mantido em estado React (`state`) é a _fonte da verdade_ durante a sessão:
-  - `localStorage` é usado apenas para _hidratação inicial_
-
-📌 Um hook personalizado de submissão de formulários (`useFormSubmit`) centraliza:
-
-- `preventDefault` no submit
-- Estados de **loading**
-- Fluxo de sucesso/erro via callbacks (`onSuccess`, `onError`)
+Utiliza `useMemo` para evitar processamento desnecessário durante a renderização de múltiplos cards.
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-6-gerenciamento-de-estado-global"></a>
+<a id="-6-autorização-e-autenticação"></a>
 
-## 🧠 6. Gerenciamento de Estado Global
+## 🔐 6. Autorização e Autenticação
 
-- `AuthContext`: responsável pelo fluxo de autenticação, armazenando o estado de login e expondo handlers como login, logout e registro.
+A autenticação é baseada em _JWT_ e centralizada no _AuthProvider_, consumido via hook `useAuth()`.
 
-- `CurrentUserContext`: responsável por armazenar os dados do usuário logado, nome e email.
+### Fluxo geral
 
-- `PopupsContext`: responsável pelo controle global dos handlers de abertura e fechamento de popups.
+- O _token JWT_ é persistido no _localStorage_ para manter sessão após refresh.
+- No carregamento inicial, a aplicação executa um _bootstrap de autenticação_:
+  - lê o token do storage
+  - valida o token no backend
+  - define `loggedIn` e controla o estado `checkingAuth`
 
-O projeto utiliza a `Context API` do `React` para gerenciar estados globais, **evitando prop drilling** e mantendo as responsabilidades bem separadas, já que são consumidos diretamente pelos componentes que precisam das informações.
+### Responsabilidades separadas
 
-Os contextos são criados com `createContext` e incorporados no componente App pelo `.Provider` de cada um.
+- **AuthProvider**:
+  - controla `loggedIn`, `tokenJwt`, `checkingAuth`, `login/logout/register`
+  - executa a validação do token com o hook `useAuthBootstrap`
+  - realiza `logout` automaticamente quando recebe _401 (Unauthorized)_
 
-### 📌 Hook auxiliar de UI global (`useOpenedPopups`)
+- **UserProvider** (ver _seção 7_):
+  - busca e armazena os dados do usuário (nome/email)
+  - controla `checkingUser`
+  - trata erros de API exibindo feedback ao usuário
 
-Hook responsável por centralizar a lógica de abertura de quase todos os popups da aplicação (signin, signup e tooltips), evitando código redundante nos componentes.
+📌 O frontend _não confia apenas no armazenamento local_, o token é validado via _requisição ao backend_.
+
+📌 O token mantido em estado React (`state`) é a _fonte da verdade_ durante a sessão, `localStorage` é usado apenas para _hidratação inicial_.
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-7-gerenciamento-de-estado-global"></a>
+
+## 🧠 7. Gerenciamento de Estado Global
+
+A aplicação utiliza `Context API + Providers` do `React` com hooks de consumo para gerenciar estados globais e organizar responsabilidades, evitando _prop drilling_ e re-renderizações desnecessárias.
+
+Os contextos são criados com `createContext` e encapsulados em seus respectivos `Providers`. Estados e ações são consumidos exclusivamente por hooks dedicados, evitando `imports` diretos de `context` e padronizando o uso nos componentes.
+
+### Providers / Contextos
+
+- **AuthProvider** + `useAuth()`
+  - Estado: `loggedIn`, `tokenJwt`, `checkingAuth`
+  - Ações: `handleLogin`, `handleLogout`, `handleRegistration`
+  - Valida token no hook `useAuthBootstrap` e faz _logout automático em 401_
+
+- **UserProvider** + `useUser()`
+  - Estado: `currentUser`, `savedUserNews`, `checkingUser`
+  - Responsável por:
+    - buscar e armazenar dados do usuário logado (nome/email), aplicando o efeito de montagem no hook `useUserData`
+    - resetar dados do usuário ao deslogar, com o hook `useResetUserData`
+  - O efeito de montagem/refresh trata erros de API e expõe feedback via UI (tooltips)
+
+- **NewsProvider** + `useNews()`
+  - Estado e ações relacionados às notícias pesquisadas/salvas: `isSearchLoading`, `searchedNews`, `handleGetNews`, `handleSaveCard`, `handleUnsaveCard`
+  - Centraliza lógica de persistência em `useSearchedNewsStorage` e _cálculo de derivado_ (merge de artigos salvos) em `useMergeSavedFlag`
+
+📌 Estado e _derivados_ de notícias
+
+A lógica de notícias foi centralizada em `NewsProvider` e dividida em hooks menores:
+
+- `useSearchedNewsStorage`: isola a persistência/recuperação de resultados de busca (fallback com storage)
+
+- `useMergeSavedFlag`:
+  - gera estados _derivados_:
+    - `mergedArticles`
+    - `derivedSearchedNews`
+  - calcula o _merge_ usando _lookup_ eficiente com `Set.has()`
+  - evita o uso de `useEffect` para “sincronizar” arrays
+
+Essa abordagem reduz complexidade e efeitos colaterais, tornando a UI mais previsível, já que os dados consumidos pelos componentes passam a ser derivados diretamente da fonte de verdade (estado).
+
+- **PopupsProvider** + `usePopups()`
+  - Estado global (`popup`) e handlers para abertura/fechamento de popups
+  - Também armazena `showApiError`, função que chama o hook `useApiError` para renderização do popup de mensagens de erros da Api do servidor
+
+📌 Outros popups são gerenciados pelo hook `useOpenedPopups`
+
+Hook auxiliar de UI global responsável por centralizar a lógica de abertura de quase todos os popups da aplicação (signin, signup e tooltips). É chamado, separadamente, dentro de cada componente, não em `PopupsProvider`.
 
 O hook encapsula a criação dos objetos de configuração de popups (`type`, `tooltipType` e `children`) e expõe funções semânticas: `openSignin`, `openSignup`, `openSignupTooltip` e `openSearchTooltip`.
 
-O popup de erro de API é tratado separadamente por um hook específico (`useApiError`), melhor detalhado na _seção 9 - Tratamento de Erros_.
+### Organização no entrypoint
+
+Os providers foram elevados para o `main.jsx` para que toda a aplicação tenha acesso consistente aos estados globais e handlers, antes da renderização do `App`.
+
+Composição dos Providers:
+
+```jsx
+<BrowserRouter>
+  <PopupsProvider>
+    <AuthProvider>
+      <UserProvider>
+        <NewsProvider>
+          <App />
+        </NewsProvider>
+      </UserProvider>
+    </AuthProvider>
+  </PopupsProvider>
+</BrowserRouter>
+```
+
+_A aplicação inicializa os estados globais no `main.jsx`._
+
+### Motivação arquitetural
+
+A separação entre _Auth_ e _User_ desacopla responsabilidades:
+
+- _Auth não re-renderiza_ quando o usuário salva/remove notícias
+- _User_ gerencia apenas dados do usuário e seus estados de carregamento/erro
+
+### Otimização de re-render nos Providers
+
+Os objetos de `value` expostos pelos Providers são memoizados com `useMemo`.  
+Isso garante que os consumidores dos contextos só re-renderizem quando os estados _realmente relevantes_ mudam, evitando atualizações desnecessárias causadas por novas referências de objeto a cada render.
+
+Essa estratégia complementa a separação de responsabilidades entre `Auth`, `User` e `News`, mantendo o fluxo previsível e performático.
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-7-proteção-de-rota"></a>
+<a id="-8-proteção-de-rota"></a>
 
-## 🛡️ 7. Proteção de Rota
+## 🛡️ 8. Proteção de Rota
 
 - A rota `/saved-news` é protegida via HOC (`ProtectedRoute`)
 - Comportamento:
@@ -212,13 +310,15 @@ O popup de erro de API é tratado separadamente por um hook específico (`useApi
 - A rota `/` permanece pública
 - Usuários logados podem acessar rotas diretamente via URL
 
+📌 A aplicação condiciona a renderização inicial aguardando `checkingAuth` e `checkingUser`, evitando redirecionamentos incorretos durante o bootstrap.
+
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-8-validação-de-formulários"></a>
+<a id="-9-validação-de-formulários"></a>
 
-## ✅ 8. Validação de Formulários
+## ✅ 9. Validação de Formulários
 
 Os formulários de **cadastro** e **login** possuem:
 
@@ -244,24 +344,39 @@ A validação usa a `Constraint Validation API` (`validationMessage`, `patternMi
 
 ---
 
-<a id="-9-tratamento-de-erros"></a>
+<a id="-10-tratamento-de-erros"></a>
 
-## ⚠️ 9. Tratamento de Erros
+## ⚠️ 10. Tratamento de Erros
 
+- A aplicação separa responsabilidades de erro entre autenticação e dados do usuário:
+  - **AuthProvider**
+    - trata erros de autenticação (token inválido/expirado)
+    - ao receber _401_, realiza `handleLogout` e limpa sessão com segurança (`useResetUserData`)
+  - **UserProvider**
+    - trata erros de API relacionados à busca de dados do usuário (`currentUser`)
+    - exibe feedback ao usuário via tooltips de erro, usando o hook `useApiError`
 - Todas as requisições utilizam:
   - Função genérica de verificação de resposta
   - `catch()` no final da cadeia de promessas
-- Erros HTTP e erros de rede são tratados separadamente
+- **Erros HTTP** e **erros de rede** são tratados separadamente
 - Mensagens de erro são exibidas ao usuário via:
-  - Mensagem no próprio formulário
+  - Mensagem no próprio formulário (signin e signup)
   - Popups (tooltips) de feedback
 - Handlers **lançam erros** (`throw`) para que o hook de envio possa distinguir:
   - `onSuccess`
   - `onError`
 
-### 📌 Hook de tratamento de erro da API
+### 📌 Hook `useFormSubmit`
 
-Um hook personalizado (`useApiError`) centraliza a exibição de erros retornados pela API do backend, durante:
+Um hook personalizado de submissão de formulários que centraliza:
+
+- `preventDefault` no submit
+- Estados de _loading_
+- Fluxo de sucesso/erro via callbacks (`onSuccess`, `onError`)
+
+### 📌 Hook `useApiError`
+
+Um hook personalizado de tratamento de erro que centraliza a exibição de **erros retornados pela API do backend**, durante:
 
 - Salvamento e remoção de artigos
 - Execução do efeito de montagem, em erros HTTP, como `500` e `429`
@@ -278,55 +393,95 @@ Permitindo a reutilização da lógica sem acoplamento aos componentes de UI.
 
 ---
 
-<a id="-10-estrutura-do-projeto"></a>
+<a id="-11-estrutura-do-projeto"></a>
 
-🗃️ 10. Estrutura do Projeto
+🗃️ 11. Estrutura do Projeto
 
 ```
-│  src/
-│  ├─ assets/
-│  ├─ components/
-│  │ ├─ About/
-│  │ ├─ App/
-│  │ ├─ Footer/
-│  │ ├─ Header/
-│  │ │ └─ componentes/
-│  │ │   ├─ ForMobileHeaderAndNav/
-│  │ │   └─ Navigation/
-│  │ ├─ NewsCardList/
-│  │ │ └─ componentes/
-│  │ │   └─ NewsCard/
-│  │ ├─ NothingFound/
-│  │ ├─ Popups/
-│  │ │ └─ componentes/
-│  │ │   ├─ ApiErrorTooltip/
-│  │ │   ├─ SearchTooltip/
-│  │ │   ├─ Signin/
-│  │ │   ├─ Signup/
-│  │ │   └─ SignupTooltip/
-│  │ ├─ Preloader/
-│  │ ├─ ProtectedRoute/
-│  │ ├─ SavedNewsCardList/
-│  │ │ └─ componentes/
-│  │ │   └─ SavedNewsCard/
-│  │ ├─ SavedNewsHeader/
-│  │ │ └─ componentes/
-│  │ │   ├─ ForMobileSavedNewsHeaderAndNav/
-│  │ │   └─ SavedNewsNavigation/
-│  │ ├─ SearchMain/
-│  │ │ └─ componentes/
-│  │ └   └─ SearchForm/
-│  ├─ contexts/
-│  ├─ hooks/
-│  ├─ utils/
-│  ├─ index.css
-│  └─ main.jsx
+├─ src/
+│ ├─ assets/
+│ ├─ components/
+│ │ ├─ About/
+│ │ ├─ App/
+│ │ ├─ Footer/
+│ │ ├─ Header/
+│ │ │ └─ componentes/
+│ │ │   ├─ ForMobileHeaderAndNav/
+│ │ │   └─ Navigation/
+│ │ ├─ NewsCardList/
+│ │ │ └─ componentes/
+│ │ │   └─ NewsCard/
+│ │ ├─ NothingFound/
+│ │ ├─ Popups/
+│ │ │ └─ componentes/
+│ │ │   ├─ ApiErrorTooltip/
+│ │ │   ├─ SearchTooltip/
+│ │ │   ├─ Signin/
+│ │ │   ├─ Signup/
+│ │ │   └─ SignupTooltip/
+│ │ ├─ Preloader/
+│ │ ├─ ProtectedRoute/
+│ │ ├─ SavedNewsCardList/
+│ │ │ └─ componentes/
+│ │ │   └─ SavedNewsCard/
+│ │ ├─ SavedNewsHeader/
+│ │ │ └─ componentes/
+│ │ │   ├─ ForMobileSavedNewsHeaderAndNav/
+│ │ │   └─ SavedNewsNavigation/
+│ │ └─ SearchMain/
+│ │   └─ componentes/
+│ │     └─ SearchForm/
+│ ├─ contexts/
+│ │ ├─ AuthContext.js
+│ │ ├─ AuthProvider.jsx
+│ │ ├─ NewsContext.js
+│ │ ├─ NewsProvider.jsx
+│ │ ├─ PopupsContext.js
+│ │ ├─ PopupsProvider.jsx
+│ │ ├─ UserContext.js
+│ │ └─ UserProvider.jsx
+│ ├─ hooks/
+│ │ ├─ useApiError.jsx
+│ │ ├─ useAuth.js
+│ │ ├─ useAuthBootstrap.js
+│ │ ├─ useFormAndValidationWithReset.js
+│ │ ├─ useFormattedDateBR.js
+│ │ ├─ useFormSubmit.js
+│ │ ├─ useMergeSavedFlag.js
+│ │ ├─ useNews.js
+│ │ ├─ useOpenedPopups.jsx
+│ │ ├─ usePopups.js
+│ │ ├─ useResetUserData.js
+│ │ ├─ useSearchedNewsStorage.js
+│ │ ├─ useUser.js
+│ │ └─ useUserData.js
+│ ├─ utils/
+│ │ ├─ authApi.js
+│ │ ├─ mainApi.js
+│ │ ├─ newsApi.js
+│ │ ├─ token.js
+│ │ └─ utilsApis.js
+│ ├─ index.css
+│ └─ main.jsx
+├─ vendor/
+│ ├─ fonts/
+│ ├─ fonts.css
+│ └─ normalize.css
+├─ .editorconfig
 ├─ .env
 ├─ .gitignore
+├─ .npmrc
+├─ .nvmrc
+├─ .prettierignore
+├─ .prettierrc
+├─ eslint.config.js
+├─ index.html
+├─ jsconfig.json
 ├─ package-lock.json
 ├─ package.json
-├─ index.html
+├─ postcss.config.js
 ├─ README.md
+├─ vercel.json
 └─ vite.config.js
 ```
 
@@ -334,9 +489,9 @@ Permitindo a reutilização da lógica sem acoplamento aos componentes de UI.
 
 ---
 
-<a id="-11-instalação-e-execução"></a>
+<a id="-12-instalação-e-execução"></a>
 
-## 📦 11. Instalação e Execução
+## 📦 12. Instalação e Execução
 
 ### 1️⃣ Clone o repositório
 
@@ -367,6 +522,8 @@ npm install
   VITE_NEWS_API_KEY=sua-chave-aqui
   ```
 
+📌 Essas variáveis são utilizadas apenas em ambiente de desenvolvimento. Em _produção_, a aplicação utiliza o _proxy_ fornecido pela _TripleTen_. O proxy fornecido resolve _CORS_, mas não elimina a _exposição da API key no frontend_. Em _produção real_, a integração com a _NewsAPI_ seria feita exclusivamente pelo _backend_, com a _chave_ armazenada em _variáveis de ambiente_.
+
 ### 4️⃣ Execute o projeto em modo de desenvolvimento
 
 ```bash
@@ -382,27 +539,27 @@ npm run dev
 
 ---
 
-<a id="-12-status-do-projeto"></a>
+<a id="-13-status-do-projeto"></a>
 
-## 🚧 12. Status do Projeto
+## 🚧 13. Status do Projeto
 
 - Fase 1 — Concluída
 
 - Fase 2 — Concluída
 
-- Fase 3 — Em finalização / revisão
+- Fase 3 — Concluída
 
-🔗 Aplicação **full‑stack** online (Preview Deployment – branch estágio-react-auth):
+- Fase 4 — Concluída
 
-https://new-explorer-frontend-git-stage-51d26c-vanessayuriabs-projects.vercel.app
+🔗 Aplicação **full‑stack** online: https://new-explorer-frontend.vercel.app
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-13-capturas-de-tela"></a>
+<a id="-14-capturas-de-tela"></a>
 
-## 📸 13. Capturas de Tela
+## 📸 14. Capturas de Tela
 
 - 1️⃣ Tela inicial (deslogado)
 
@@ -498,9 +655,9 @@ _Hover com a mensagem “Remover dos salvos”._
 
 ---
 
-<a id="-14-demonstração"></a>
+<a id="-15-demonstração"></a>
 
-## 🎥 14. Demonstração
+## 🎥 15. Demonstração
 
 Vídeo demonstrativo no Loom: [clique aqui](https://www.loom.com/share/35eb573676a84098822b770295206871)
 
@@ -508,11 +665,97 @@ Vídeo demonstrativo no Loom: [clique aqui](https://www.loom.com/share/35eb57367
 
 ---
 
-<a id="-15-melhorias"></a>
+<a id="-16-melhorias"></a>
 
-## 📈 15. Melhorias
+## 📈 16. Melhorias
 
-🧩 **Refatoração da estrutura do cabeçalho (Header)**: atualmente, o projeto utiliza diferentes componentes para representar o cabeçalho da aplicação, considerando variações de estado (usuário logado e deslogado), de rota (página principal e página de artigos salvos) e de responsividade (desktop e dispositivos móveis).
+### ✅ Concluídas:
+
+- **Refatoração do fluxo de autenticação e bootstrap**
+  - Separação do efeito de montagem em hooks dedicados (bootstrap de autenticação e carregamento de dados do usuário)
+  - Introdução de estados explícitos de verificação (`checkingAuth` e `checkingUser`) para evitar renderizações e redirecionamentos prematuros
+
+- **Criação e reorganização de Providers globais**
+  - Implementação de `AuthProvider`, `UserProvider`, `NewsProvider` e `PopupsProvider`
+  - Consumo padronizado via hooks (`useAuth`, `useUser`, `useNews`, `usePopups`)
+  - Elevação dos providers essenciais para o `main.jsx`, garantindo inicialização consistente da aplicação
+
+- **Desacoplamento entre autenticação e dados do usuário**
+  - Remoção do `CurrentUserContext`
+  - Separação clara de responsabilidades:
+    - `Auth`: validação de token, controle de sessão e logout automático em 401
+    - `User`: busca e armazenamento de dados do usuário, com tratamento de erro isolado
+  - Redução de re-renderizações desnecessárias ao salvar/remover notícias
+
+- **Centralização do estado de notícias**
+  - Criação do `NewsContext` para unificar regras de busca, salvamento e estados derivados
+  - Extração da persistência de resultados de busca para o hook `useSearchedNewsStorage`
+
+- **Substituição de efeitos por estado derivado**
+  - Extração da lógica de merge para `useMergeSavedFlag`
+  - Geração de dados derivados (`mergedArticles`, `derivedSearchedNews`) sem uso de `useEffect`
+  - Código mais declarativo, previsível e fácil de manter
+
+- **Otimização de re-render nos Providers**
+  - Memoização dos objetos `value` dos Providers com `useMemo`
+  - Garantia de que consumidores dos contextos re-renderizam apenas quando estados relevantes mudam
+
+- **Otimização do merge de artigos**
+  - Substituição de iteração com `Array.some()` por lookup com `Set.has()`
+  - Redução de complexidade do merge para O(n + m)
+
+### 🔜 Próximas:
+
+🧠 **Passar para cada card o `savedId` (ou `isSaved` + `savedId`) pronto**
+
+Dentro do `NewsCard`, é aplicado o método `.find()` na lista de salvos para achar o `_id` baseado em `url`; esse `.find()` dentro de cada card pode ficar custoso e mistura responsabilidade. Exemplo:
+
+No `NewsProvider` (ou no `NewsCardList`):
+
+Crie um mapa por URL:
+
+```JavaScript
+const savedByLink = useMemo(() => {
+  const map = new Map();
+  savedUserNews.userArticles.forEach(a => map.set(a.link, a.\_id));
+  return map;
+}, [savedUserNews.userArticles]);
+```
+
+No `.map()`:
+
+```JSX
+const savedId = savedByLink.get(searchedNewsCard.url);
+
+<NewsCard
+  key={searchedNewsCard.url}
+  searchedNewsCard={searchedNewsCard}
+  savedId={savedId}
+  onSave={handleSaveCard}
+  onUnsave={handleUnsaveCard}/>
+```
+
+E no `NewsCard`, o clique vira:
+
+```JavaScript
+if (!isSaved) onSave(searchedNewsCard);
+else if (savedId) onUnsave(savedId);
+```
+
+Resultado:
+
+- `NewsCard` não precisa conhecer `savedUserNews` inteiro
+- Remove `.find()` de dentro do card
+- Menos props “gordas”
+- Menos chance de inconsistência
+
+📐 **Ajuste no posicionamento do Header**
+
+Revisar o comportamento atual para evitar deslocamento artificial do conteúdo. A ideia é reposicionar apenas o Header e eliminar espaçamentos compensatórios (como `height: 100vh` usado apenas para empurrar elementos).
+
+🧩 **Refatoração da estrutura do cabeçalho (Header)**
+
+Atualmente, o projeto utiliza diferentes componentes para representar o cabeçalho da aplicação, considerando variações de estado (usuário logado e deslogado), de rota (página principal e página de artigos salvos) e de responsividade (desktop e dispositivos móveis).
 
 A refatoração visa tornar o código mais modular e sustentável, facilitando futuras alterações de layout, estilo ou regras de navegação:
 
@@ -521,10 +764,12 @@ A refatoração visa tornar o código mais modular e sustentável, facilitando f
 - Preservar o padrão do projeto de um arquivo `.css` para cada componente `.jsx`, mantendo a organização e a separação de responsabilidades
 - Melhorar a legibilidade e a manutenibilidade do código sem alterar o comportamento visual ou funcional da interface.
 
-🏷️ **Refatoração da lógica de classificação e exibição de palavras-chave**: a ideia é centralizar a lógica em um trecho mais declarativo e legível, tornando o código mais expressivo, reutilizável e fácil de manter, além de facilitar ajustes futuros na regra de exibição sem impactar outros pontos da aplicação. Ex:
+🏷️ **Refatoração da lógica de classificação e exibição de palavras-chave**
+
+A ideia é centralizar a lógica em um trecho mais declarativo e legível, tornando o código mais expressivo, reutilizável e fácil de manter, além de facilitar ajustes futuros na regra de exibição sem impactar outros pontos da aplicação. Ex:
 
 ```js
-const entries = Object.entries(contagem).sort(
+const entries = Object.entries(count).sort(
   (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
 );
 
@@ -540,24 +785,81 @@ const text =
         : `${first}, ${second} e mais ${entries.length - 2}`;
 ```
 
-🌐 **Mover a integração com a NewsAPI para o backend**: evitando a exposição da API key no frontend. Atualmente, a chave é enviada via query param (`apiKey`) porque o proxy do bootcamp estava gerando erro ao encaminhar via header customizado (`x-api-key`).
+📦 **Unificação de componentes duplicados**
 
-📐 **Ajuste no posicionamento do Header**: revisar o comportamento atual para evitar deslocamento artificial do conteúdo. A ideia é reposicionar apenas o Header e eliminar espaçamentos compensatórios (como `height: 100vh` usado apenas para empurrar elementos).
+Refatorar componentes que possuem lógica ou estrutura muito semelhante, consolidando-os em versões reutilizáveis posicionadas um nível acima na arquitetura. Reduz redundância, facilita manutenção e deixa o código mais limpo.
 
-🛈 **Melhoria de acessibilidade no Tooltip**: os tooltips exibidos ao passar o mouse sobre o botão de salvar funciona via CSS. Substituir por um elemento real (como `<span>` ou `<div>`) com `role="tooltip"` para maior acessibilidade e compatibilidade com leitores de tela.
+🛈 **Melhoria de acessibilidade no Tooltip**
 
-📦 **Unificação de componentes duplicados**: refatorar componentes que possuem lógica ou estrutura muito semelhante, consolidando-os em versões reutilizáveis posicionadas um nível acima na arquitetura. Reduz redundância, facilita manutenção e deixa o código mais limpo.
+Os tooltips exibidos ao passar o mouse sobre o botão de salvar funciona via CSS. Substituir por um elemento real (como `<span>` ou `<div>`) com `role="tooltip"` para maior acessibilidade e compatibilidade com leitores de tela.
+
+🧭 **Unificar estados em um status**
+
+Para reduzir estados paralelos, exemplo:
+
+```JavaScript
+status: 'checking' | 'authenticated' | 'unauthenticated'
+user: null | { email, name }
+token: null | string
+```
+
+🔁 **Aplicar `useReducer` no lugar de alguns `useState`**
+
+Quando `Auth` cresce, `useReducer` fica mais previsível:
+LOGIN_SUCCESS, LOGOUT, BOOTSTRAP_DONE, USER_LOADED, AUTH_ERROR
+
+🌐 **Mover a integração com a NewsAPI para o backend**
+
+Evitando a exposição da API key no frontend. Atualmente, a chave é enviada via query param (`apiKey`) porque o proxy do bootcamp estava gerando erro ao encaminhar via header customizado (`x-api-key`).
+
+🧪 **Introdução de testes unitários para hooks de domínio**
+
+Com a extração de grande parte da lógica para hooks puros (`useAuth`, `useUser`, `useNews`, hooks de merge e storage), o projeto fica bem posicionado para introduzir testes unitários focados em lógica de domínio, sem dependência direta de UI. Foco inicial:
+
+- Hooks de estado derivado (`useMergeSavedFlag`)
+- Hooks de persistência (`useSearchedNewsStorage`)
+- Hooks de bootstrap (autenticação e dados do usuário)
+
+Isso aumentaria a confiabilidade do código e permitiria refatorações futuras com maior segurança.
+
+⚡ **React Suspense e carregamento progressivo da aplicação**
+
+Atualmente, o App condiciona a renderização aguardando `checkingAuth` e `checkingUser`, garantindo previsibilidade no bootstrap. Como evolução, é possível explorar `React Suspense` para tratar estados de carregamento de forma declarativa, especialmente para:
+
+- Dados do usuário
+- Conteúdos protegidos
+- Listas de notícias dependentes de autenticação
+
+A adoção de `Suspense` permitiria:
+
+- Código mais expressivo
+- Redução de estados manuais de loading
+- Melhor experiência de carregamento progressivo
 
 [Voltar ao topo 🔝](#top)
 
 ---
 
-<a id="-16-autora"></a>
+<a id="-17-aprendizados-técnicos"></a>
 
-## 👩‍💻 16. Autora
+## 📘 17. Aprendizados Técnicos
+
+- Diferença prática entre _estado base_ e _estado derivado_
+- Importância de _desacoplar_ autenticação de dados do usuário
+- Otimização de `.map()` com `Set` ao invés de `.some()`
+- Reduzir efeitos colaterais evitando `useEffect` desnecessário
+- Valor de _centralizar regras de domínio_ fora dos componentes de UI
+
+[Voltar ao topo 🔝](#top)
+
+---
+
+<a id="-18-autora"></a>
+
+## 👩‍💻 18. Autora
 
 Desenvolvido com `React`, dedicação e muitos estudos por **Vanessa Yuri A. Brito**.
 
-Explorando o universo do `front‑end` um componente por vez. Aplicando boas práticas, arquitetura, integração com `backend`e autorização segura baseada em `JWT`.
+Explorando o universo do `front‑end` um componente por vez. Aplicando boas práticas, arquitetura, integração com `backend` e autorização segura baseada em `JWT`.
 
 [Voltar ao topo 🔝](#top)
