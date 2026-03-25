@@ -8,449 +8,33 @@ import NothingFound from '../NothingFound/NothingFound';
 import About from '../About/About';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Footer from '../Footer/Footer';
-import Signin from '../Popups/components/Signin/Signin';
-import Signup from '../Popups/components/Signup/Signup';
 import Popups from '../Popups/Popups';
-import AuthContext from '../../contexts/AuthContext';
-import CurrentUserContext from '../../contexts/CurrentUserContext';
-import PopupsContext from '../../contexts/PopupsContext';
-import getNews from '../../utils/newsApi';
-import { register, login } from '../../utils/authApi';
-import { setAndStorageToken, getToken, removeToken } from '../../utils/token';
-import {
-  saveNews,
-  unsaveNews,
-  getUserNews,
-  getCurrentUser,
-} from '../../utils/mainApi';
-import useApiError from '../../hooks/useApiError';
-import { useState, useEffect, useCallback, useRef } from 'react';
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  Navigate,
-} from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import useUser from '../../hooks/useUser';
+import useNews from '../../hooks/useNews';
+import usePopups from '../../hooks/usePopups';
+import { useState } from 'react';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './App.css';
 
 function App() {
-  /* ------------------------------
-          HOOKS DE ROUTER
-  ------------------------------- */
-
+  // Hook de Router
   const location = useLocation();
 
-  const navigate = useNavigate();
-
-  /* ------------------------------
-              ESTADOS
-  ------------------------------- */
-
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const [isSearchLoading, setIsSearchLoading] = useState(false);
-
-  const [searchedNews, setSearchedNews] = useState(() => {
-    const searched = localStorage.getItem('searchedNewsData');
-    return searched
-      ? JSON.parse(searched)
-      : {
-          status: null,
-          totalResults: 0,
-          articles: [],
-          code: null,
-          message: null,
-        };
-  });
-
-  const [tokenJwt, setTokenJwt] = useState(() => {
-    const jwt = getToken();
-    return jwt ? jwt : '';
-  });
-
-  const [currentUser, setCurrentUser] = useState({
-    email: '',
-    name: '',
-  });
-
-  const [savedUserNews, setSavedUserNews] = useState({ userArticles: [] });
-
-  const [popup, setPopup] = useState(null);
-
+  // Estado
   const [mobile, setMobile] = useState(false);
 
-  // Para verificar autenticação ao montar o app: está verificando?
-  const [checkingAuth, setCheckingAuth] = useState(true);
+  // Consumo de AuthContext
+  const { checkingAuth, loggedIn } = useAuth();
 
-  /* ------------------------------
-                REF
-  ------------------------------- */
+  // Consumo de UserContext
+  const { checkingUser } = useUser();
 
-  // Ref para indicar sucesso ou falha na montagem do app
-  // Para efeito não rodar em loop
-  const bootstrapFailedRef = useRef(false);
+  // Consumo de NewsProvider
+  const { isSearchLoading, searchedNews } = useNews();
 
-  /* ------------------------------
-           HANDLERS POPUP
-  ------------------------------- */
-
-  // Open e Close: genéricos
-  // Para abrir Popups, que renderiza cinco children diferentes
-
-  // Memoizada para não gerar loop no efeito de montagem e efeito do ProtectedRoute
-  // Com verificação de type, tbm para evitar loop, no efeito para proteção de rota
-  // Se o tipo de popup for o mesmo do anteriormente aberto, não altera, não re-renderiza
-  // Verificação de prev pq state inicializa como null
-  // Verificação, tbm, do tipo de tooltip, já que existem três popups deste tipo
-  const handleOpenPopup = useCallback((nextPopup) => {
-    setPopup((prev) => {
-      if (prev?.type === nextPopup.type) {
-        if (nextPopup.type === 'tooltip') {
-          return prev.tooltipType === nextPopup.tooltipType ? prev : nextPopup;
-        }
-
-        return prev;
-      }
-
-      return nextPopup;
-    });
-  }, []);
-
-  const handleClosePopup = () => {
-    setPopup(null);
-  };
-
-  /* ------------------------------
-            HOOK DERIVADO
-  ------------------------------- */
-
-  // Função para chamar o hook que renderiza popup de msgs de erros da Api do servidor
-  // Chamado ao salvar/des-salvar artigos e no efeito de montagem e refresh, após get para
-  // dados do usuário logado
-  // É configurado por uma função externa pq o hook não pode ser chamada dentro dos
-  // handlers
-  const showApiError = useApiError(handleOpenPopup);
-
-  /* ------------------------------
-              LOGOUT
-  ------------------------------- */
-
-  // Manipulador para deslogar: configurado antes do efeito de montagem e memorizado em
-  // useCallback para estabilizar e não causar re-render
-  const handleLogout = useCallback(() => {
-    setCurrentUser({ email: '', name: '' });
-    setSavedUserNews({ userArticles: [] });
-
-    removeToken(setTokenJwt);
-
-    setLoggedIn(false);
-
-    navigate('/', { replace: true });
-  }, [navigate]);
-
-  /* ------------------------------
-              EFEITOS
-  ------------------------------- */
-
-  // Efeito para atualizar o localStorage sempre que o estado para notícias pesquisadas
-  // (searchedNews) mudar > pq a pesquisa pode ser feita deslogado, para persistência dos
-  // dados ao recarregar a página e pq o backend não tem nada relacionado à pesquisa
-  useEffect(() => {
-    if (searchedNews) {
-      localStorage.setItem('searchedNewsData', JSON.stringify(searchedNews));
-    }
-  }, [searchedNews]);
-
-  // Efeito 'de montagem' e refresh: ciclo de autenticação + carregamento: autenticação,
-  // fetch de dados do usuário, navegação e set dos estados globais
-  // Só roda se estiver com backend ativo (com o token do usuário)
-  useEffect(() => {
-    // Para efeito não rodar em loop (em efeitos de bootstrap, erro ≠ sucesso parcial)
-    // Impede o retry automático
-    if (bootstrapFailedRef.current) return;
-
-    // Flag para verificar se o componente está montado:
-    // evita setState após desmontar
-    let isMounted = true;
-
-    // Verifica se há um JWT no armazenamento local, pela variável state
-    // Se não houver, sai da função do efeito
-    if (!tokenJwt) {
-      setCheckingAuth(false);
-
-      // Cleanup
-      return () => {
-        isMounted = false;
-      };
-    }
-
-    // Fetch e set dos dados + navegação
-    // Define e executa função assíncrona
-    (async () => {
-      try {
-        const userInfos = await getCurrentUser(tokenJwt);
-
-        const userSavedCards = await getUserNews(tokenJwt);
-
-        // Verifica se o componente ainda está montado
-        if (!isMounted) return;
-
-        setLoggedIn(true);
-
-        // Seta variável de estado com dados do backend (user)
-        setCurrentUser({
-          email: userInfos.user.email,
-          name: userInfos.user.name,
-        });
-
-        // Seta a variável de estado com dados do backend (articles)
-        setSavedUserNews(userSavedCards);
-      } catch (error) {
-        console.error(
-          `Erro no efeito 'de montagem', busca e set dos dados do usuário logado \n`,
-          error,
-        );
-
-        if (!isMounted) return;
-
-        // Se ocorrer erro de autorização (token inválido), desloga o usuário
-        if (error.status === 401) {
-          handleLogout();
-          return;
-        }
-
-        // Para 429, 500, etc: mostra msg de erro em popup tooltip
-        // Usa o mesmo hook implementado nos handlers para salvar e des-salvar artigos
-        showApiError(error);
-        // Evita loop de montagem, travando a ref ao defini-la como true para indicar
-        // falha no bootstrap - impede tds as próximas tentativas, controla o ciclo de
-        // vida da aplicação, quebrando definitivamente o loop
-        // Se usado apenas o return: interrompe apenas a tentativa atual, permitindo o loop
-        // O return controla uma execução e o bootstrapFailedRef controla o comportamento
-        // futuro do app
-        bootstrapFailedRef.current = true;
-      } finally {
-        // Se componente estiver montado, finaliza a verificação de autenticação
-        if (isMounted) {
-          setCheckingAuth(false);
-        }
-      }
-    })();
-
-    // Cleanup
-    return () => {
-      isMounted = false;
-    };
-  }, [tokenJwt, handleLogout, showApiError]);
-
-  // Efeito derivado: para sincronizar estados derivados (merge de searchedNews com
-  // savedUserNews) e adicionar a info 'isSaved' aos artigos (para o ícone do botão
-  // 'salvar', no NewsCard)
-  useEffect(() => {
-    if (!loggedIn) return;
-
-    // Verificação de segurança para erro de leitura de searchedNews.articles > null
-    // Com o same dentro do setState, o efeito só altera o estado quando os articles
-    // realmente mudam
-    if (!searchedNews || !Array.isArray(searchedNews.articles)) return;
-
-    function mergeNewsLists() {
-      try {
-        // Dentro do array searchedNews.articles, existe algum elemento com a propriedade
-        // url igual a algum elemento dentro do array savedUserNews.userArticles? Se sim,
-        // adiciona flag isSaved como true, se não, como false
-        const mergedArticles = searchedNews.articles.map((searchedItem) => {
-          const isSaved = savedUserNews.userArticles.some((savedItem) => {
-            return searchedItem.url === savedItem.link;
-          });
-
-          return { ...searchedItem, isSaved };
-        });
-
-        // Merge: atualizando estado
-        setSearchedNews((prev) => {
-          // Verificação: evita loop
-
-          // E o efeito só altera o estado quando os articles realmente mudam, por causa
-          // do searchedNews nas dependências do efeito e não searchedNews.articles que é
-          // o que é realmente utilizado no efeito > recomendado pelo React: não coloque
-          // dependência profunda em efeitos pq o React avalia a dependência antes do
-          // effect e o estado pode estar null em transições
-
-          // Gerada por I.A. (Copilot)
-          const same =
-            prev.articles.length === mergedArticles.length &&
-            prev.articles.every(
-              (a, i) =>
-                a.url === mergedArticles[i].url &&
-                a.isSaved === mergedArticles[i].isSaved,
-            );
-
-          if (same) return prev; // evita re-render
-
-          return { ...prev, articles: mergedArticles };
-        });
-      } catch (error) {
-        console.error(
-          'Erro no efeito de merge das listas de cards, mergeNewsLists \n',
-          error,
-        );
-      }
-    }
-
-    mergeNewsLists();
-  }, [loggedIn, searchedNews, savedUserNews]);
-
-  /* ------------------------------
-              HANDLERS
-  ------------------------------- */
-
-  // Handler para getNews + adicionar queryString para a tag do card
-  const handleGetNews = async (queryToSearch) => {
-    try {
-      // GET para a API externa: News Api
-      const responseOfNews = await getNews(queryToSearch);
-
-      // Adiciona uma nova propriedade ('tag') no obj de cada cartão, para implementar na
-      // tag, se salvo
-      const articlesWithTag = responseOfNews.articles.map((card) => {
-        return {
-          ...card,
-          tag: queryToSearch,
-        };
-      });
-
-      // Atualizado todo o objeto de resposta, com a atualização da flag 'tag' em cada
-      // card, no array para artigos
-      const responseOfNewsWithTag = {
-        ...responseOfNews,
-        articles: articlesWithTag,
-      };
-
-      // Define o estado do resultado de pesquisa, com o obj inteiro retornado
-      // Para acesso às propriedades do obj em outras funcionalidades
-      // Caso o status seja 'ok' ou, tbm, 'error'; condicionando a renderização de
-      // componentes
-      setSearchedNews(responseOfNewsWithTag); // status 'ok'
-    } catch (responseOfError) {
-      setSearchedNews({
-        status: 'error',
-        code: responseOfError.code,
-        message: responseOfError.message,
-        totalResults: 0,
-        articles: [],
-      }); // status 'error' > para renderização da msg de erro em NewsCardList
-      throw responseOfError; // repassa o erro para o componente SearchForm
-    }
-  };
-
-  // Signup e signin sem try/catch para lançar erro, já será lançado naturalmente pela
-  // função chamada em cada um (register() ou login()), subindo para o useFormSubmit
-  // do seu componente, essencial para o funcionamento de onSuccess e onError
-
-  // Handler: signup
-  const handleRegistration = async (newUserData) => {
-    await register(newUserData);
-  };
-
-  // Handler: signin
-  const handleLogin = async (userData) => {
-    const loggedUser = await login(userData);
-
-    if (loggedUser.token) {
-      // Antes de logar, limpa dados anteriores de perfil de usuário
-      // Para reforço, pq a limpeza tbm é aplicada no logout
-      setCurrentUser({
-        email: '',
-        name: '',
-      });
-      setSavedUserNews({ userArticles: [] });
-
-      setAndStorageToken(loggedUser.token, setTokenJwt);
-    }
-
-    // Login apenas ajusta token, focado na autenticação
-    // Dados de perfil apenas no efeito de montagem
-    // A lógica de carregamento de perfil pode ser aplicada tanto no login quanto no
-    // refresh da página
-  };
-
-  // Salvar e des-salvar artigos: com o backend ativo, sem armazenamento local
-
-  // Handler: salvar cards
-  const handleSaveCard = async (searchedNewsCard) => {
-    try {
-      const normalizeCard = (card) => ({
-        tag: card.tag, // propriedade adicionada em handleGetNews
-        title: card.title,
-        description: card.description,
-        publishedAt: card.publishedAt,
-        source: card.source?.name || null, // para ajustar formato da
-        // propriedade source, como esperado no backend, e não retornar
-        // 400, devido validação do celebrate/joi
-        url: card.url,
-        urlToImage: card.urlToImage,
-      });
-
-      const savedCard = await saveNews(
-        normalizeCard(searchedNewsCard),
-        tokenJwt,
-      );
-
-      // Set do estado para cartões salvos do usuário (savedUserNews)
-      // Atualiza o array (userArticles) dentro do objeto da variável (savedUserNews),
-      // definindo nova lista de objetos de artigos do usuário com a inclusão do novo
-      // card no começo do array
-      setSavedUserNews((prev) => ({
-        userArticles: [savedCard, ...prev.userArticles],
-      }));
-    } catch (error) {
-      // Exibe popup com msg do erro ao usuário
-      // Abre o tooltip, renderizado por Popup
-      showApiError(error);
-
-      console.error('Erro ao salvar artigo, handleSaveCard \n', error);
-    }
-  };
-
-  // Handler: des-salvar cards de pesquisa (NewsCard) e remover cards de salvos
-  // (SavedNewsCard)
-  // useCallback: para memorizar a função e não recriar a cada render > NewsCard
-  // e SavedNewsCard
-  // Em conjunto com React.memo() e useMemo() para os dados
-  const memoizedHandleUnsave = useCallback(
-    async (cardId) => {
-      try {
-        // Passa o _id do card como parâmetro (_id gerado automaticamente pelo Mongo DB ao
-        // salvar o artigo na coleção do banco de dados)
-        await unsaveNews(cardId, tokenJwt);
-
-        // Set do estado para cartões salvos do usuário (savedUserNews)
-        // .filter(): cria um novo vetor baseado no original, filtrando elementos e
-        // retornando apenas os que estão de acordo com a verificação fornecida
-        // Filtra um novo vetor com apenas os cards que não possuem o msm _id do card a ser
-        // deletado
-        setSavedUserNews((prev) => {
-          return {
-            userArticles: prev.userArticles.filter((userCard) => {
-              return userCard._id !== cardId;
-            }),
-          };
-        });
-      } catch (error) {
-        // Exibe popup com msg do erro ao usuário
-        // Abre o tooltip, renderizado por Popup
-        showApiError(error);
-
-        console.error(
-          'Erro ao des-salvar artigo, memoizedHandleUnsave \n',
-          error,
-        );
-      }
-    },
-    [showApiError, tokenJwt],
-  );
+  // Consumo de PopupsContext
+  const { popup } = usePopups();
 
   /* ------------------------------
                 JSX
@@ -461,113 +45,90 @@ function App() {
   if (checkingAuth) {
     return (
       <div className="loading-screen">
-        <p className="loading-text">Carregando...</p>
+        <p className="loading-text">Verificando seus dados...</p>
+      </div>
+    );
+  }
+
+  // Enquanto estiver verificando os artigos salvos pelo usuário, renderiza outra tela de carregamento
+  if (loggedIn && checkingUser) {
+    return (
+      <div className="loading-screen">
+        <p className="loading-text">Carregando seus artigos...</p>
       </div>
     );
   }
 
   // Depois que verificar, renderiza o app normalmente
   return (
-    // Provedores de contexto: compartilham infos de login, infos do usuário atual e
-    // infos de popups
-    <AuthContext.Provider
-      value={{
-        loggedIn,
-        handleRegistration,
-        handleLogin,
-        handleLogout,
-      }}
-    >
-      <CurrentUserContext.Provider value={{ currentUser }}>
-        <PopupsContext.Provider value={{ handleOpenPopup, handleClosePopup }}>
-          <div className="page">
-            {/* O Header é renderizado estando deslogado ou logado, em '/' */}
+    <div className="page">
+      {/* O Header é renderizado estando deslogado ou logado, em '/' */}
 
-            {/* O SavedNewsHeader precisa ser renderizado caso o usuário esteja logado e
+      {/* O SavedNewsHeader precisa ser renderizado caso o usuário esteja logado e
           acesse '/saved-news' */}
 
-            {loggedIn && location.pathname === '/saved-news' ? (
-              <SavedNewsHeader mobile={mobile} setMobile={setMobile} />
-            ) : (
-              <Header mobile={mobile} setMobile={setMobile} />
-            )}
+      {loggedIn && location.pathname === '/saved-news' ? (
+        <SavedNewsHeader mobile={mobile} setMobile={setMobile} />
+      ) : (
+        <Header mobile={mobile} setMobile={setMobile} />
+      )}
 
-            <main className="main page__main">
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <>
-                      <SearchMain
-                        setIsSearchLoading={setIsSearchLoading}
-                        handleGetNews={handleGetNews}
-                        setSearchedNews={setSearchedNews}
-                      />
+      <main className="main page__main">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <SearchMain />
 
-                      {/* Enquanto a solicitação de pesquisa estiver em loading, renderiza
+                {/* Enquanto a solicitação de pesquisa estiver em loading, renderiza
                     o Preloader */}
 
-                      {isSearchLoading && <Preloader />}
+                {isSearchLoading && <Preloader />}
 
-                      {/* Se não estiver em loading e não houver resultados para a pesquisa
+                {/* Se não estiver em loading e não houver resultados para a pesquisa
                     realizada, renderiza o NothingFound */}
 
-                      {!isSearchLoading &&
-                        searchedNews.status === 'ok' &&
-                        searchedNews.articles.length === 0 && <NothingFound />}
+                {!isSearchLoading &&
+                  searchedNews.status === 'ok' &&
+                  searchedNews.articles.length === 0 && <NothingFound />}
 
-                      {/* Se não estiver em loading e houver resultados ou se não estiver em
+                {/* Se não estiver em loading e houver resultados ou se não estiver em
                     loading e o status for 'error', renderiza o NewsCardList com o devido
                     conteúdo */}
 
-                      {!isSearchLoading &&
-                        (searchedNews.articles.length > 0 ||
-                          searchedNews.status === 'error') && (
-                          <NewsCardList
-                            searchedNews={searchedNews}
-                            handleSaveCard={handleSaveCard}
-                            memoizedHandleUnsave={memoizedHandleUnsave}
-                            savedUserNews={savedUserNews}
-                          />
-                        )}
+                {!isSearchLoading &&
+                  (searchedNews.articles.length > 0 ||
+                    searchedNews.status === 'error') && <NewsCardList />}
 
-                      <About />
-                    </>
-                  }
-                />
+                <About />
+              </>
+            }
+          />
 
-                <Route
-                  path="/saved-news"
-                  element={
-                    <ProtectedRoute>
-                      <SavedNewsCardList
-                        savedUserNews={savedUserNews}
-                        memoizedHandleUnsave={memoizedHandleUnsave}
-                      />
-                    </ProtectedRoute>
-                  }
-                />
+          <Route
+            path="/saved-news"
+            element={
+              <ProtectedRoute>
+                <SavedNewsCardList />
+              </ProtectedRoute>
+            }
+          />
 
-                {/* Para qlqr outra rota que não exista no app, redireciona para página principal */}
+          {/* Para qlqr outra rota que não exista no app, redireciona para página
+              principal */}
 
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </main>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
 
-            <Footer />
+      <Footer />
 
-            {/* Se o popup não for nulo, algum dos componentes será renderizado na tela:
-          Signup, Signin, SignupTooltip, SearchTooltip ou ApiErrorTooltip */}
+      {/* Se o popup não for nulo, algum dos componentes será renderizado na tela: Signup,
+      Signin, SignupTooltip, SearchTooltip ou ApiErrorTooltip */}
 
-            {popup && (
-              <Popups popup={popup} type={popup.type}>
-                {popup.children}
-              </Popups>
-            )}
-          </div>
-        </PopupsContext.Provider>
-      </CurrentUserContext.Provider>
-    </AuthContext.Provider>
+      {popup && <Popups>{popup.children}</Popups>}
+    </div>
   );
 }
 

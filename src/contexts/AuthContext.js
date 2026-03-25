@@ -1,6 +1,7 @@
-// ------------------------------------------------------
-// Contexto que armazena informações de cadastro e login
-// ------------------------------------------------------
+// -------------------------------------
+// Contexto que armazena informações
+// de autenticação de usuário
+// -------------------------------------
 
 import { createContext } from 'react';
 

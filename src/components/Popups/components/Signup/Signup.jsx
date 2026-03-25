@@ -1,7 +1,7 @@
-import { useContext, useState, useEffect } from 'react';
-import { useFormAndValidationWithReset } from '../../../../hooks/useFormAndValidationWithReset';
-import AuthContext from '../../../../contexts/AuthContext';
-import PopupsContext from '../../../../contexts/PopupsContext';
+import { useState, useEffect } from 'react';
+import useFormAndValidationWithReset from '../../../../hooks/useFormAndValidationWithReset';
+import useAuth from '../../../../hooks/useAuth';
+import usePopups from '../../../../hooks/usePopups';
 import useFormSubmit from '../../../../hooks/useFormSubmit';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import './Signup.css';
@@ -27,13 +27,13 @@ function Signup() {
     };
   }, []);
 
-  const { handleOpenPopup } = useContext(PopupsContext);
+  const { handleOpenPopup } = usePopups();
 
   const { openSignin, openSignupTooltip } = useOpenedPopups({
     handleOpenPopup,
   });
 
-  const { handleRegistration } = useContext(AuthContext);
+  const { handleRegistration } = useAuth();
 
   // Hook de envio de formulário (inclui preventDefault,loading, onSubmit, onSuccess e
   // onError)

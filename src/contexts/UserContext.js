@@ -1,10 +1,10 @@
 // ------------------------------------------
 // Contexto que armazena informações sobre
-// o gerenciamento dos popups do app
+// usuário atual e funções de login/off
 // ------------------------------------------
 
 import { createContext } from 'react';
 
-const PopupsContext = createContext();
+const UserContext = createContext();
 
-export default PopupsContext;
+export default UserContext;

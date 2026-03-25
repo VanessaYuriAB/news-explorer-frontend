@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import AuthContext from '../../../../contexts/AuthContext';
-import CurrentUserContext from '../../../../contexts/CurrentUserContext';
-import PopupsContext from '../../../../contexts/PopupsContext';
+import useAuth from '../../../../hooks/useAuth';
+import useUser from '../../../../hooks/useUser';
+import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import newsExplorer from '../../../../assets/news-explorer-logo.svg';
 import lineHeader from '../../../../assets/line-header.svg';
@@ -10,11 +9,11 @@ import btnOut from '../../../../assets/btn-out.svg';
 import './ForMobileHeaderAndNav.css';
 
 function ForMobileHeaderAndNav({ setMobile }) {
-  const { loggedIn, handleLogout } = useContext(AuthContext);
+  const { loggedIn, handleLogout } = useAuth();
 
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useUser();
 
-  const { handleOpenPopup } = useContext(PopupsContext);
+  const { handleOpenPopup } = usePopups();
 
   const { openSignin } = useOpenedPopups({ handleOpenPopup });
 

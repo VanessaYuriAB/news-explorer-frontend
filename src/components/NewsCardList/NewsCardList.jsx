@@ -1,25 +1,18 @@
 import NewsCard from './components/NewsCard/NewsCard';
-import AuthContext from '../../contexts/AuthContext';
-import { useContext, useCallback, useState } from 'react';
+import useAuth from '../../hooks/useAuth';
+import useUser from '../../hooks/useUser';
+import useNews from '../../hooks/useNews';
+import { useState } from 'react';
 import './NewsCardList.css';
 
-function NewsCardList({
-  searchedNews,
-  handleSaveCard,
-  memoizedHandleUnsave,
-  savedUserNews,
-}) {
-  const { loggedIn } = useContext(AuthContext);
-
+function NewsCardList() {
   // Variável de estado: controle da qtdd de cards renderizados, iniciando com apenas três
   const [visibleCards, setVisibleCards] = useState(3);
 
-  // Memoriza a função passada ao NewsCard, para não recriar a cada render
-  // Em conjunto com React.memo() e useMemo() para os dados
-  const memoizedHandleSave = useCallback(
-    (card) => handleSaveCard(card),
-    [handleSaveCard],
-  );
+  // Consumo de contextos
+  const { loggedIn } = useAuth();
+  const { savedUserNews } = useUser();
+  const { searchedNews, handleSaveCard, handleUnsaveCard } = useNews();
 
   // Handler: mostrar mais três cartões
   const handleShowMore = () => {
@@ -67,8 +60,9 @@ function NewsCardList({
                   } /* A API da NewsAPI não fornece _id, então foi aplicado url, por ser
                   algo único */
                   searchedNewsCard={searchedNewsCard}
-                  handleSaveCard={memoizedHandleSave} // valor memorizado
-                  memoizedHandleUnsave={memoizedHandleUnsave}
+                  handleSaveCard={handleSaveCard}
+                  handleUnsaveCard={handleUnsaveCard}
+                  loggedIn={loggedIn}
                   savedUserNews={savedUserNews}
                 />
               ))}

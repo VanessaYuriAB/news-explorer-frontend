@@ -1,18 +1,17 @@
-import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import AuthContext from '../../../../contexts/AuthContext';
-import CurrentUserContext from '../../../../contexts/CurrentUserContext';
-import PopupsContext from '../../../../contexts/PopupsContext';
+import useAuth from '../../../../hooks/useAuth';
+import useUser from '../../../../hooks/useUser';
+import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import btnOut from '../../../../assets/btn-out.svg';
 import './Navigation.css';
 
 function Navigation() {
-  const { loggedIn, handleLogout } = useContext(AuthContext);
+  const { loggedIn, handleLogout } = useAuth();
 
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useUser();
 
-  const { handleOpenPopup } = useContext(PopupsContext);
+  const { handleOpenPopup } = usePopups();
 
   const { openSignin } = useOpenedPopups({ handleOpenPopup });
 

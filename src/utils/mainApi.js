@@ -40,7 +40,7 @@ const unsaveNews = async (cardId, tokenJwt) => {
 
   return unsavedCard;
 
-  // Se a solicitação não for bem-sucedida, repassa o erro adiante > memoizedHandleUnsave
+  // Se a solicitação não for bem-sucedida, repassa o erro adiante > handleUnsaveCard
   // Try/catch desnecessário aqui tbm
 };
 

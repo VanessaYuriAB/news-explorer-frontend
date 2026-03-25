@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 // Hook para controle de formulários + validação e reset da validação
 // Mantém tudo controlado pelo React (sem DOM imperativo)
 // Para os fomulários Signup e Signin
-export function useFormAndValidationWithReset() {
+function useFormAndValidationWithReset() {
   // Variáveis de estado: controle dos inputs dos formulários
   const [values, setValues] = useState({
     email: '',
@@ -63,3 +63,5 @@ export function useFormAndValidationWithReset() {
   // Retorna variáveis e funções para aplicação no componente do formulário
   return { values, handleChange, errors, isFormValid, resetForm };
 }
+
+export default useFormAndValidationWithReset;

@@ -1,0 +1,16 @@
+// Hook de consumo – recomendado: evita useContext(AuthContext) espalhado pelo código
+
+import { useContext } from 'react';
+import AuthContext from '../contexts/AuthContext';
+
+function useAuth() {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useAuth deve ser usado dentro de AuthProvider');
+  }
+
+  return context;
+}
+
+export default useAuth;

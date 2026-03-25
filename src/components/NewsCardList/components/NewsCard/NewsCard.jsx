@@ -1,24 +1,22 @@
-import React, { useContext } from 'react';
-import AuthContext from '../../../../contexts/AuthContext';
-import PopupsContext from '../../../../contexts/PopupsContext';
+import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import useFormattedDateBR from '../../../../hooks/useFormattedDateBR';
 import imgIndisponivel from '../../../../assets/img-indisponivel.jpg';
+import React from 'react';
 import './NewsCard.css';
 
 function NewsCard({
+  loggedIn,
+  savedUserNews,
   searchedNewsCard,
   handleSaveCard,
-  memoizedHandleUnsave,
-  savedUserNews,
+  handleUnsaveCard,
 }) {
-  // Os nomes das propriedades são definidas pela News Api
   const { source, title, description, url, urlToImage, publishedAt, isSaved } =
-    searchedNewsCard;
+    searchedNewsCard; // os nomes das propriedades são definidas pela News Api
 
-  const { loggedIn } = useContext(AuthContext);
-
-  const { handleOpenPopup } = useContext(PopupsContext);
+  // consumo de PopupsContext
+  const { handleOpenPopup } = usePopups();
 
   const { openSignup } = useOpenedPopups({
     handleOpenPopup,
@@ -26,7 +24,7 @@ function NewsCard({
 
   // Verificação para classe do botão 'salvar': a classe 'new-card__btn_active'
   // será aplicada para mostrar que o botão está no status "salvo"
-  const getCardBtnClassName = `new-card__btn ${isSaved === true ? 'new-card__btn_active' : ''}`;
+  const getCardBtnClassName = `new-card__btn ${isSaved ? 'new-card__btn_active' : ''}`;
 
   // Reformatação da data (publishedAt) com hook personalizado
   const formattedDateBR = useFormattedDateBR(publishedAt);
@@ -54,30 +52,34 @@ function NewsCard({
             <button
               className={getCardBtnClassName}
               type="button"
-              aria-label={
-                isSaved === true ? 'Remover dos salvos' : 'Salvar notícia'
-              }
+              aria-label={isSaved ? 'Remover dos salvos' : 'Salvar notícia'}
               onClick={() => {
                 // Condiciona salvar e des-salvar
                 // Salva passando o obj completo do artigo
                 // Des-salva passando apenas o ID
-                if (isSaved === false) {
+                if (!isSaved) {
                   handleSaveCard(searchedNewsCard);
                 } else {
                   // Busca o card em questão pelo link da url
                   // .link na coleção do banco de dados e .url na lista vinda da NewsApi
-                  const cardToUnsave = savedUserNews.userArticles.filter(
+                  const cardToUnsave = savedUserNews.userArticles.find(
                     (card) => {
                       return card.link === searchedNewsCard.url;
                     },
                   );
+
+                  // Para evitar crash de retorno undefined no .find(), por inconsistência
+                  // entre os estados (ex.: merge atrasado, lista desatualizada)
+                  if (!cardToUnsave) return;
+
                   // Busca o _id do card a ser deletado
                   // Pq o obj vindo da NewsApi não possui a propriedade
                   // Apenas o salvo no Mongo DB
                   // cardToUnsave é um array com um objeto
-                  const cardId = cardToUnsave[0]._id;
+                  const cardId = cardToUnsave._id;
+
                   // Passa o ID do card a ser removido
-                  memoizedHandleUnsave(cardId);
+                  handleUnsaveCard(cardId);
                 }
               }}
             ></button>

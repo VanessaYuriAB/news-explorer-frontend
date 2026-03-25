@@ -2,14 +2,14 @@ import { useCallback } from 'react';
 import ApiErrorTooltip from '../components/Popups/components/ApiErrorTooltip/ApiErrorTooltip';
 
 // Para as funções de salvar e des-salvar artigos, tbm para set dos dados do usuário no
-// efeito de montagem e refresh
+// efeito de montagem/refresh em useUserData
 // Registro e login são configurados no estado para o span de msg de erro de requisição,
 // no próprio componente do form
 
 // Com useCallback, showApiError fica estável enquanto handleOpenPopup for estável,
 // evitando erros por ter showApiError nas dependências do useEffect de montagem
 
-function useApiError(handleOpen) {
+function useApiError(handleOpenPopup) {
   return useCallback(
     (error) => {
       // Define mensagem de erro conforme status
@@ -37,9 +37,9 @@ function useApiError(handleOpen) {
       };
 
       // Chama o handle de abertura de Popups
-      handleOpen(apiErrorTooltip);
+      handleOpenPopup(apiErrorTooltip);
     },
-    [handleOpen],
+    [handleOpenPopup],
   );
 }
 

@@ -3,15 +3,15 @@
 // usuários não autorizados não podem acessá-la
 // ----------------------------------------------
 
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import AuthContext from '../../contexts/AuthContext';
-import PopupsContext from '../../contexts/PopupsContext';
+import useAuth from '../../hooks/useAuth';
+import usePopups from '../../hooks/usePopups';
 import useOpenedPopups from '../../hooks/useOpenedPopups';
 
 function ProtectedRoute({ children }) {
-  const { loggedIn } = useContext(AuthContext);
-  const { handleOpenPopup } = useContext(PopupsContext);
+  const { loggedIn } = useAuth();
+  const { handleOpenPopup } = usePopups();
 
   const { openSignin } = useOpenedPopups({
     handleOpenPopup,

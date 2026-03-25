@@ -1,10 +1,9 @@
-import { useContext } from 'react';
-import PopupsContext from '../../../../contexts/PopupsContext';
+import usePopups from '../../../../hooks/usePopups';
 import useOpenedPopups from '../../../../hooks/useOpenedPopups';
 import './SignupTooltip.css';
 
 function SignupTooltip() {
-  const { handleOpenPopup } = useContext(PopupsContext);
+  const { handleOpenPopup } = usePopups();
 
   const { openSignin } = useOpenedPopups({
     handleOpenPopup,

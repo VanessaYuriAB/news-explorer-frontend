@@ -14,8 +14,10 @@ function About() {
           TripleTen Brasil (full‑stack). Sou mãe solteira do Belquior, que tem 4
           anos, no momento. Atualmente estou dedicando-me aos estudos,
           desenvolvendo meu projeto final, este aplicativo. Ao longo da jornada,
-          adquiri experiência em HTML, CSS, JavaScript, React, Vite, Express.js,
-          MongoDB e deploy no Google Cloud com subdomínio via DNS gratuito.
+          adquiri experiência em HTML, CSS, JavaScript, React, Vite, Express.js
+          e MongoDB, além de deploy de aplicações full‑stack em produção, com
+          front‑end hospedado no Vercel e back‑end no Google Cloud, utilizando
+          subdomínio via DNS gratuito.
           <br></br>
           <br></br>
           Gosto de transformar ideias em produtos funcionais, acessíveis e bem
