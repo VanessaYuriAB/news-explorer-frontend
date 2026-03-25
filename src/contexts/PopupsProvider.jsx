@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import useApiError from '../hooks/useApiError';
 import PopupsContext from './PopupsContext';
 
@@ -16,7 +16,8 @@ function PopupsProvider({ children }) {
   // Open e Close: genéricos
 
   // Open, para abrir Popups, que renderiza cinco children diferentes
-  // Memoizada para não gerar loop no efeito de montagem e efeito do ProtectedRoute
+  // Memoizada para manter estabilidade referencial e não disparar efeitos dependentes,
+  // evitando loop no efeito de montagem e efeito do ProtectedRoute
   // Com verificação de type, tbm para evitar loop, no efeito para proteção de rota
   // Se o tipo de popup for o mesmo do anteriormente aberto, não altera, não re-renderiza
   // Verificação de prev pq state inicializa como null
@@ -36,9 +37,9 @@ function PopupsProvider({ children }) {
   }, []);
 
   // Close
-  const handleClosePopup = () => {
+  const handleClosePopup = useCallback(() => {
     setPopup(null);
-  };
+  }, []);
 
   /* ---------- alto nível (API pública) ---------- */
 
@@ -53,22 +54,26 @@ function PopupsProvider({ children }) {
   const showApiError = useApiError(handleOpenPopup);
 
   /*
-  Hook para abertura (e configuração de objs) de Popups chamado em cada componente, à parte: useOpenedPopups. Exceto ApiErrorTooltip, que é aberto pela showApiError usando o useApiError.
+  Hook para abertura (e configuração de objs) de Popups chamado em cada componente, à
+  parte: useOpenedPopups. Exceto ApiErrorTooltip, que é aberto pela showApiError usando
+  o useApiError.
   */
 
   /* ---------------------------
              PROVIDER
   ---------------------------- */
 
+  const valueOfPopupsProvider = useMemo(() => {
+    return {
+      popup,
+      showApiError,
+      handleOpenPopup,
+      handleClosePopup,
+    };
+  }, [popup, showApiError, handleOpenPopup, handleClosePopup]);
+
   return (
-    <PopupsContext.Provider
-      value={{
-        popup,
-        showApiError,
-        handleOpenPopup,
-        handleClosePopup,
-      }}
-    >
+    <PopupsContext.Provider value={valueOfPopupsProvider}>
       {children}
     </PopupsContext.Provider>
   );

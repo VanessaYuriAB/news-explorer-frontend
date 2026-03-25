@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { getToken, removeToken, setAndStorageToken } from '../utils/token';
 import useAuthBootstrap from '../hooks/useAuthBootstrap';
 import { register, login } from '../utils/authApi';
@@ -63,12 +63,12 @@ function AuthProvider({ children }) {
   // do seu componente, essencial para o funcionamento de onSuccess e onError
 
   // Signup
-  const handleRegistration = async (newUserData) => {
+  const handleRegistration = useCallback(async (newUserData) => {
     await register(newUserData);
-  };
+  }, []);
 
   // Signin
-  const handleLogin = async (userData) => {
+  const handleLogin = useCallback(async (userData) => {
     const loggedUser = await login(userData);
 
     if (loggedUser.token) {
@@ -79,23 +79,32 @@ function AuthProvider({ children }) {
     // Dados de perfil apenas no efeito de montagem/refresh, em useUserData, no UserProvider
     // A lógica de carregamento de perfil pode ser aplicada tanto no login quanto no
     // refresh da página
-  };
+  }, []);
 
   /* ---------------------------
              PROVIDER
   ---------------------------- */
 
+  const valueOfAuthProvider = useMemo(() => {
+    return {
+      tokenJwt,
+      loggedIn,
+      checkingAuth,
+      handleLogout,
+      handleRegistration,
+      handleLogin,
+    };
+  }, [
+    tokenJwt,
+    loggedIn,
+    checkingAuth,
+    handleLogout,
+    handleRegistration,
+    handleLogin,
+  ]);
+
   return (
-    <AuthContext.Provider
-      value={{
-        tokenJwt,
-        loggedIn,
-        checkingAuth,
-        handleLogout,
-        handleRegistration,
-        handleLogin,
-      }}
-    >
+    <AuthContext.Provider value={valueOfAuthProvider}>
       {children}
     </AuthContext.Provider>
   );

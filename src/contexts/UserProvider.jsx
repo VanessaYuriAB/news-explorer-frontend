@@ -1,6 +1,6 @@
 import useAuth from '../hooks/useAuth';
 import usePopups from '../hooks/usePopups';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import useUserData from '../hooks/useUserData';
 import useResetUserData from '../hooks/useResetUserData';
 import UserContext from './UserContext';
@@ -47,15 +47,18 @@ function UserProvider({ children }) {
              PROVIDER
   ---------------------------- */
 
+  const valueOfUserProvider = useMemo(() => {
+    return {
+      currentUser,
+      savedUserNews,
+      setSavedUserNews, // usado por salvar/des-salvar em app, setter: estável, ñ entra
+      // nas deps do memo
+      checkingUser,
+    };
+  }, [currentUser, savedUserNews, checkingUser]);
+
   return (
-    <UserContext.Provider
-      value={{
-        currentUser,
-        savedUserNews,
-        setSavedUserNews, // usado por salvar/des-salvar em app
-        checkingUser,
-      }}
-    >
+    <UserContext.Provider value={valueOfUserProvider}>
       {children}
     </UserContext.Provider>
   );

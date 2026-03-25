@@ -48,8 +48,9 @@ function NewsProvider({ children }) {
   // dados ao recarregar a página e pq o backend não tem nada relacionado à pesquisa
   useSearchedNewsStorage(searchedNews);
 
-  // Hook derivado para sincronizar estados (merge de searchedNews com savedUserNews) e adicionar a info
-  // (flag) 'isSaved' aos artigos (para o ícone do botão 'salvar', no NewsCard)
+  // Hook para cálculo de derivado: adição da flag 'isSaved' aos artigos (para o ícone
+  // do botão 'salvar', no NewsCard) e lista de sincronização de estados (merge de
+  // searchedNews com savedUserNews)
   const mergedArticles = useMergeSavedFlag({
     loggedIn,
     searchedNews,
@@ -66,7 +67,7 @@ function NewsProvider({ children }) {
   ---------------------------- */
 
   // Handler para getNews + adicionar queryString para a tag do card
-  const handleGetNews = async (queryToSearch) => {
+  const handleGetNews = useCallback(async (queryToSearch) => {
     try {
       // GET para a API externa: News Api
       const responseOfNews = await getNews(queryToSearch);
@@ -102,45 +103,48 @@ function NewsProvider({ children }) {
       }); // status 'error' > para renderização da msg de erro em NewsCardList
       throw responseOfError; // repassa o erro para o componente SearchForm
     }
-  };
+  }, []);
 
   // Salvar e des-salvar artigos: com o backend ativo, sem armazenamento local
 
   // Handler: salvar cards
-  const handleSaveCard = async (searchedNewsCard) => {
-    try {
-      const normalizeCard = (card) => ({
-        tag: card.tag, // propriedade adicionada em handleGetNews
-        title: card.title,
-        description: card.description,
-        publishedAt: card.publishedAt,
-        source: card.source?.name || null, // para ajustar formato da
-        // propriedade source, como esperado no backend, e não retornar
-        // 400, devido validação do celebrate/joi
-        url: card.url,
-        urlToImage: card.urlToImage,
-      });
+  const handleSaveCard = useCallback(
+    async (searchedNewsCard) => {
+      try {
+        const normalizeCard = (card) => ({
+          tag: card.tag, // propriedade adicionada em handleGetNews
+          title: card.title,
+          description: card.description,
+          publishedAt: card.publishedAt,
+          source: card.source?.name || null, // para ajustar formato da
+          // propriedade source, como esperado no backend, e não retornar
+          // 400, devido validação do celebrate/joi
+          url: card.url,
+          urlToImage: card.urlToImage,
+        });
 
-      const savedCard = await saveNews(
-        normalizeCard(searchedNewsCard),
-        tokenJwt,
-      );
+        const savedCard = await saveNews(
+          normalizeCard(searchedNewsCard),
+          tokenJwt,
+        );
 
-      // Set do estado para cartões salvos do usuário (savedUserNews)
-      // Atualiza o array (userArticles) dentro do objeto da variável (savedUserNews),
-      // definindo nova lista de objetos de artigos do usuário com a inclusão do novo
-      // card no começo do array
-      setSavedUserNews((prev) => ({
-        userArticles: [savedCard, ...prev.userArticles],
-      }));
-    } catch (error) {
-      // Exibe popup com msg do erro ao usuário
-      // Abre o tooltip, renderizado por Popup
-      showApiError(error);
+        // Set do estado para cartões salvos do usuário (savedUserNews)
+        // Atualiza o array (userArticles) dentro do objeto da variável (savedUserNews),
+        // definindo nova lista de objetos de artigos do usuário com a inclusão do novo
+        // card no começo do array
+        setSavedUserNews((prev) => ({
+          userArticles: [savedCard, ...prev.userArticles],
+        }));
+      } catch (error) {
+        // Exibe popup com msg do erro ao usuário
+        // Abre o tooltip, renderizado por Popup
+        showApiError(error);
 
-      console.error('Erro ao salvar artigo, handleSaveCard \n', error);
-    }
-  };
+        console.error('Erro ao salvar artigo, handleSaveCard \n', error);
+      }
+    },
+    [tokenJwt, setSavedUserNews, showApiError],
+  );
 
   // Handler: des-salvar cards de pesquisa (NewsCard) e remover cards de salvos
   // (SavedNewsCard)
@@ -184,18 +188,26 @@ function NewsProvider({ children }) {
              PROVIDER
   ---------------------------- */
 
+  const valueOfNewsProvider = useMemo(() => {
+    return {
+      isSearchLoading,
+      setIsSearchLoading,
+      searchedNews: derivedSearchedNews,
+      setSearchedNews,
+      handleGetNews,
+      handleSaveCard,
+      memoizedHandleUnsave,
+    };
+  }, [
+    isSearchLoading,
+    derivedSearchedNews,
+    handleGetNews,
+    handleSaveCard,
+    memoizedHandleUnsave,
+  ]);
+
   return (
-    <NewsContext.Provider
-      value={{
-        isSearchLoading,
-        setIsSearchLoading,
-        searchedNews: derivedSearchedNews,
-        setSearchedNews,
-        handleGetNews,
-        handleSaveCard,
-        memoizedHandleUnsave,
-      }}
-    >
+    <NewsContext.Provider value={valueOfNewsProvider}>
       {children}
     </NewsContext.Provider>
   );
