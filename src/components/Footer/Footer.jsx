@@ -53,7 +53,7 @@ function Footer() {
             <li className="footer__item footer__item_gh">
               <a
                 className="footer__link footer__link_gh"
-                href="https://github.com/VanessaYuriAB/new-explorer-frontend/tree/main"
+                href="https://github.com/VanessaYuriAB/news-explorer-frontend/tree/main"
                 target="_blank"
                 rel="noopener noreferrer"
               ></a>

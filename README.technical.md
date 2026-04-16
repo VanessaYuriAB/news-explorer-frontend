@@ -496,8 +496,8 @@ Permitindo a reutilização da lógica sem acoplamento aos componentes de UI.
 ### 1️⃣ Clone o repositório
 
 ```bash
-git clone git@github.com:VanessaYuriAB/new-explorer-frontend.git
-cd new-explorer-frontend
+git clone git@github.com:VanessaYuriAB/news-explorer-frontend.git
+cd news-explorer-frontend
 ```
 
 ### 2️⃣ Instale as dependências
