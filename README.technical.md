@@ -85,7 +85,7 @@ O projeto foi desenvolvido em **fases incrementais**, seguindo os critérios té
   - Frontend: Vercel (https://news-explorer-front-end.vercel.app)
   - Backend: servidor próprio em VM no Google Cloud (API acessível via domínio: https://api.newsexplorer.sevencomets.com)
 
-📦 Repositório do backend: https://github.com/VanessaYuriAB/new-explorer-backend
+📦 Repositório do backend: https://github.com/VanessaYuriAB/news-explorer-backend
 
 📌 A _política de segurança de conteúdo_ (`CSP`) é definida via _meta tag no `index.html`_, permitindo comunicação controlada entre frontend e backend em origens distintas, já que o deploy é separado.
 
