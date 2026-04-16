@@ -16,6 +16,8 @@ Este repositório contém a **interface web**, desenvolvida com foco em
 - 🌐 Aplicação online: https://news-explorer-front-end.vercel.app
 - 🔌 API (backend): https://api.newsexplorer.sevencomets.com
 
+> 📌 _Repositório do backend: https://github.com/VanessaYuriAB/news-explorer-backend_
+
 ---
 
 ## 🧠 Destaques Técnicos
