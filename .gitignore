@@ -23,8 +23,6 @@ pnpm-lock.yaml
 
 # Editor
 .vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -38,6 +36,3 @@ pnpm-lock.yaml
 .env.local
 .env.development
 .env.production
-
-# Husky
-.husky/
